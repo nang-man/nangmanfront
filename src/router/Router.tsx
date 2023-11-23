@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "./Layout";
 
-import Main from "../app/main/Main";
-import List from "../app/list/List";
+import Main from "@/app/main/Main";
+import List from "@/app/list/List";
 
 const Router = () => {
   return (

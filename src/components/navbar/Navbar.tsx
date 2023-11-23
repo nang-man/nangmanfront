@@ -1,15 +1,18 @@
-import React, { useCallback, useState } from "react";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
-import SignInModal from "../modal/SignInModal";
+
+import { useCreateModal } from "@/hooks/useCreateModal";
+import { useLoginModal } from "@/hooks/useLoginModal";
+import { useSignupModal } from "@/hooks/useSignupModal";
+
+import SignupModal from "../modal/SignInModal";
+import LoginModal from "../modal/LoginModal";
+import CreateChatModal from "../modal/CreateChatModal";
 
 const Navbar = () => {
-  const [isModal, setIsModal] = useState<boolean>(false);
-
-  //recoil 사용
-  const handleModal = useCallback(() => {
-    setIsModal(!isModal);
-  }, [isModal]);
+  const createModal = useCreateModal();
+  const loginModal = useLoginModal();
+  const signupModal = useSignupModal();
 
   return (
     <>
@@ -20,7 +23,7 @@ const Navbar = () => {
           </div>
           <nav className="flex flex-1 flex-col gap-y-4 pt-10">
             <button
-              onClick={handleModal}
+              onClick={createModal.onOpen}
               className="group relative rounded-xl bg-gray-100 p-2 hover:text-blue-600 hover:bg-gray-50"
             >
               <CgAddR size={30} />
@@ -33,8 +36,8 @@ const Navbar = () => {
                 </div>
               </div>
             </button>
-            <a
-              href="#"
+            <button
+              onClick={loginModal.onOpen}
               className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
             >
               <CgUser size={30} />
@@ -47,7 +50,7 @@ const Navbar = () => {
                   User
                 </div>
               </div>
-            </a>
+            </button>
             <a
               href="#"
               className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
@@ -66,7 +69,10 @@ const Navbar = () => {
           </nav>
 
           <div className="flex flex-col items-center gap-y-4 py-10">
-            <button className="mt-2 rounded-full bg-gray-100 relative group">
+            <button
+              onClick={signupModal.onOpen}
+              className="mt-2 rounded-full bg-gray-100 relative group"
+            >
               <img
                 className="h-10 w-10 rounded-full"
                 src="https://avatars.githubusercontent.com/u/35387401?v=4"
@@ -87,7 +93,9 @@ const Navbar = () => {
           </div>
         </aside>
       </div>
-      {isModal && <SignInModal />}
+      {loginModal.isOpen.isOpen && <LoginModal />}
+      {signupModal.isOpen.isOpen && <SignupModal />}
+      {createModal.isOpen.isOpen && <CreateChatModal />}
     </>
   );
 };

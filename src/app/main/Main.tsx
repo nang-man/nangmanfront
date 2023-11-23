@@ -9,7 +9,7 @@ const Main = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    if (!isNotLogin) {
+    if (isNotLogin === "") {
       setIsNotLogin(uuid());
     }
 

@@ -3,11 +3,13 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 
 interface ModalProps {
+  title?: string;
   body?: React.ReactElement;
+  footer?: React.ReactElement;
   onClose: () => void;
 }
 
-const Modal = ({ onClose, body }: ModalProps) => {
+const Modal = ({ onClose, body, title, footer }: ModalProps) => {
   return (
     <>
       <div
@@ -29,18 +31,12 @@ const Modal = ({ onClose, body }: ModalProps) => {
                 >
                   <IoMdClose size={30} />
                 </button>
-                <div className="text-lg font-semibold">Live Streem</div>
+                <div className="text-lg font-semibold">{title}</div>
               </div>
               {/* BODY */}
               <div className="relative p-6 flex-auto">{body}</div>
               {/* FOOTER */}
-              <div className="flex flex-col gap-2 p-6">
-                <div className="flex flex-row items-center gap-4 w-full">
-                  <button>Submit</button>
-                  <button onClick={onClose}>Cancle</button>
-                </div>
-                Footer
-              </div>
+              <div className="flex flex-col gap-2 p-6">{footer}</div>
             </div>
           </div>
         </div>
