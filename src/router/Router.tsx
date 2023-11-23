@@ -4,6 +4,7 @@ import Layout from "./Layout";
 
 import Main from "../app/main/Main";
 import List from "../app/list/List";
+import Chat from "../app/chat/Chat";
 
 const Router = () => {
   return (
@@ -12,6 +13,7 @@ const Router = () => {
         <Route path="/" element={<Main />} />
         <Route element={<Layout />}>
           <Route path="/list" element={<List />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>
