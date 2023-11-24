@@ -1,6 +1,6 @@
 // Chat page
-import ChatVideo from "@components/ChatVideo";
-import ChatBubble from "@components/ChatBubble";
+import ChatVideo from "@/app/chat/ChatVideo";
+import ChatBubble from "@/app/chat/ChatBubble";
 
 import { IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
