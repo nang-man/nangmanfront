@@ -4,21 +4,19 @@ import { useNavigate } from "react-router-dom";
 
 const Main = () => {
   const [isClick, setIsClick] = useState<boolean>(false);
-  const [isNotLogin, setIsNotLogin] = useState<string>("");
+  const [isGuest, setIsGuest] = useState<string | undefined>("");
 
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    if (isNotLogin === "") {
-      setIsNotLogin(uuid());
+    if (isGuest === "") {
+      setIsGuest(uuid());
     }
 
     setIsClick(!isClick);
 
     navigate("/list");
   };
-
-  console.log(isNotLogin);
 
   return (
     <>

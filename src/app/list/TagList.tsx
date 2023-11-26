@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 interface TagListProps {
   key?: number;
@@ -11,7 +11,7 @@ const TagList = ({ title }: TagListProps) => {
     <div className="mb-16 pr-60">
       <h1 className="text-3xl pb-2 border-b mb-2">{title}</h1>
 
-      <div className="flex">
+      <Link to="/chat" className="flex">
         <div className="flex mr-2 w-60 h-52 flex-col rounded-2xl shadow-xl">
           <img
             className="aspect-video w-60 rounded-t-2xl object-cover object-center"
@@ -25,7 +25,7 @@ const TagList = ({ title }: TagListProps) => {
             </h1>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
