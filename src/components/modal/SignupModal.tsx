@@ -46,7 +46,7 @@ const SignupModal = () => {
   }, [loginModal, signupModal]);
 
   const bodyContent = (
-    <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <div onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
         id="email"
         label="Email"
@@ -70,7 +70,7 @@ const SignupModal = () => {
       />
       <Input
         id="password"
-        label="Password"
+        label="Password 8~20 letter + number"
         type="password"
         register={register}
         errors={errors}
@@ -78,13 +78,13 @@ const SignupModal = () => {
       />
       <Input
         id="matchPassword"
-        label="Matching Password"
+        label="Password Confirmation"
         type="password"
         register={register}
         errors={errors}
         required
       />
-    </article>
+    </div>
   );
 
   const footerContent = (

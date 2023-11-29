@@ -1,12 +1,19 @@
 import axios from "axios";
 
-export const create = async () => {
+type Create = {
+  user: string;
+  roomName: string;
+  tagName: string;
+  count: number;
+};
+
+export const create = async ({ user, roomName, tagName, count }: Create) => {
   try {
     await axios.post("localhost/create", {
-      user: "create room user/guest",
-      roomName: "room name",
-      tagName: "tag name",
-      count: "people counting",
+      user: user,
+      roomName: roomName,
+      tagName: tagName,
+      count: count,
     });
   } catch (error) {
     console.error(error);

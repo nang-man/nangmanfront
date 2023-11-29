@@ -42,7 +42,6 @@ const LoginModal = () => {
         errors={errors}
         required
       />
-
       <Input
         id="password"
         type="password"

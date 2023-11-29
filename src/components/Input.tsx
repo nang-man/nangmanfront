@@ -23,6 +23,8 @@ const Input = ({
 
   const isPhone = id === "phone";
 
+  const isPassword = id === "password";
+
   return (
     <div className="w-full relative">
       <input
@@ -40,6 +42,13 @@ const Input = ({
             pattern: {
               value: /^(01[0-9]{1})[0-9]{3,4}[0-9]{4}$/i,
               message: "Invalid phone number",
+            },
+          }),
+          ...(isPassword && {
+            pattern: {
+              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/,
+              message:
+                "Password must be 8-20 characters and include at least one letter and one number",
             },
           }),
         })}

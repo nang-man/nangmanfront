@@ -11,7 +11,7 @@ type userName = {
 
 export const users = async () => {
   try {
-    axios.get("index.json").then((res) => {
+    axios.get("/").then((res) => {
       return res.data;
     });
   } catch (error) {
