@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom css */
+@layer utilities {
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .padding-x-25 {
+    padding-right: 25%;
+    padding-left: 25%;
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid lightslategrey;
+  }
+
+  .grid-cols-3-7 {
+    grid-template-columns: 30% 70%;
+  }
+}

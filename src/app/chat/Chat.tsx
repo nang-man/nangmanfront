@@ -1,6 +1,8 @@
 // Chat page
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ChatVideo from "@/app/chat/ChatVideo";
+import ChatBubble from "@/app/chat/ChatBubble";
 
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaMicrophone, FaVideo } from "react-icons/fa";
