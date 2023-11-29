@@ -6,8 +6,8 @@ import Modal from "./Modal";
 import Input from "../Input";
 import Button from "../Button";
 
-import { useLoginModal } from "@/hooks/useLoginModal.ts";
-import { useSignupModal } from "@/hooks/useSignupModal.ts";
+import { useModal } from "@/hooks/useModal";
+import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
 
 const LoginModal = () => {
   const {
@@ -25,8 +25,8 @@ const LoginModal = () => {
     console.log(data);
   };
 
-  const loginModal = useLoginModal();
-  const signupModal = useSignupModal();
+  const loginModal = useModal(LOGIN_STATE);
+  const signupModal = useModal(SIGNUP_STATE);
 
   const toggle = useCallback(() => {
     loginModal.onClose();

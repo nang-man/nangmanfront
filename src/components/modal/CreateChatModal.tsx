@@ -1,11 +1,11 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-import { useCreateModal } from "@/hooks/useCreateModal.ts";
-
 import Input from "../Input";
 import Button from "../Button";
 
 import Modal from "./Modal";
+import { useModal } from "@/hooks/useModal";
+import { CREATE_STATE } from "@/hooks/modalType";
 
 const CreateChatModal = () => {
   const {
@@ -24,7 +24,7 @@ const CreateChatModal = () => {
     console.log(data);
   };
 
-  const { onClose } = useCreateModal();
+  const { onClose } = useModal(CREATE_STATE);
 
   const bodyContent = (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">

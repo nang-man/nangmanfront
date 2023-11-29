@@ -1,18 +1,17 @@
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
 
-import { useCreateModal } from "@/hooks/useCreateModal";
-import { useLoginModal } from "@/hooks/useLoginModal";
-import { useSignupModal } from "@/hooks/useSignupModal";
+import SignupModal from "@/components/modal/SignInModal";
+import LoginModal from "@/components/modal/LoginModal";
+import CreateChatModal from "@/components/modal/CreateChatModal";
 
-import SignupModal from "../modal/SignInModal";
-import LoginModal from "../modal/LoginModal";
-import CreateChatModal from "../modal/CreateChatModal";
+import { useModal } from "@/hooks/useModal";
+import { CREATE_STATE, LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
 
 const Navbar = () => {
-  const createModal = useCreateModal();
-  const loginModal = useLoginModal();
-  const signupModal = useSignupModal();
+  const createModal = useModal(CREATE_STATE);
+  const loginModal = useModal(LOGIN_STATE);
+  const signupModal = useModal(SIGNUP_STATE);
 
   return (
     <>
