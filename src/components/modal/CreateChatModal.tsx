@@ -2,10 +2,9 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import { useCreateModal } from "@/hooks/useCreateModal.ts";
 
-import Input from "../Input";
-import Button from "../Button";
-
 import Modal from "./Modal";
+
+import Input from "../Input";
 
 const CreateChatModal = () => {
   const {
@@ -24,10 +23,10 @@ const CreateChatModal = () => {
     console.log(data);
   };
 
-  const { onClose } = useCreateModal();
+  const createModal = useCreateModal();
 
   const bodyContent = (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
         id="roomName"
         label="Room Name"
@@ -50,14 +49,34 @@ const CreateChatModal = () => {
         errors={errors}
         required
       />
-      <div className="flex flex-row items-center gap-4 w-full">
-        <Button label="만들기" />
+    </article>
+  );
+
+  const footerContent = (
+    <article className="flex flex-row items-center gap-4 w-full">
+      <hr />
+      <div className="mt-4 text-center font-light text-neutral-500">
+        <div className="flex flex-row items-center justify-center gap-2">
+          <div>Welcome to Nang-man</div>
+          <div className="cursor-pointer text-neutral-800 hover:underline">
+            Create a room
+          </div>
+        </div>
       </div>
-    </form>
+    </article>
   );
 
   return (
-    <Modal onClose={onClose} title="Create Chatting Room" body={bodyContent} />
+    <Modal
+      isOpen={createModal.isOpen.isOpen}
+      title="Create Chatting Room"
+      actionLabel="방 만들기"
+      onSubmit={handleSubmit(onSubmit)}
+      body={bodyContent}
+      footer={footerContent}
+      onClose={createModal.onClose}
+      matchedPassword={true}
+    />
   );
 };
 

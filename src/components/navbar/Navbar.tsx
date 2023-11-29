@@ -5,7 +5,7 @@ import { useCreateModal } from "@/hooks/useCreateModal";
 import { useLoginModal } from "@/hooks/useLoginModal";
 import { useSignupModal } from "@/hooks/useSignupModal";
 
-import SignupModal from "../modal/SignInModal";
+import SignupModal from "../modal/SignupModal";
 import LoginModal from "../modal/LoginModal";
 import CreateChatModal from "../modal/CreateChatModal";
 

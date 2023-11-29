@@ -10,7 +10,7 @@ interface InputProps {
   errors: FieldErrors;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   id,
   label,
   type,
@@ -18,13 +18,40 @@ const Input: React.FC<InputProps> = ({
   required,
   register,
   errors,
-}) => {
+}: InputProps) => {
+  const isEmail = id === "email";
+
+  const isPhone = id === "phone";
+
+  const isPassword = id === "password";
+
   return (
     <div className="w-full relative">
       <input
         id={id}
         disabled={disabled}
-        {...register(id, { required })}
+        {...register(id, {
+          required: required ? "This field is required" : false,
+          ...(isEmail && {
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: "Invalid email address",
+            },
+          }),
+          ...(isPhone && {
+            pattern: {
+              value: /^(01[0-9]{1})[0-9]{3,4}[0-9]{4}$/i,
+              message: "Invalid phone number",
+            },
+          }),
+          ...(isPassword && {
+            pattern: {
+              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/,
+              message:
+                "Password must be 8-20 characters and include at least one letter and one number",
+            },
+          }),
+        })}
         placeholder=" "
         type={type}
         className={`

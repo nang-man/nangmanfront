@@ -1,4 +1,5 @@
-import React from "react";
+import Button from "@components/Button";
+import React, { useEffect, useState } from "react";
 
 import { IoMdClose } from "react-icons/io";
 
@@ -7,9 +8,29 @@ interface ModalProps {
   body?: React.ReactElement;
   footer?: React.ReactElement;
   onClose: () => void;
+  disabled?: boolean;
+  onSubmit: () => void;
+  isOpen?: boolean;
+  actionLabel: string;
+  matchedPassword?: boolean;
 }
 
-const Modal = ({ onClose, body, title, footer }: ModalProps) => {
+const Modal = ({
+  onClose,
+  body,
+  title,
+  footer,
+  isOpen,
+  onSubmit,
+  actionLabel,
+  matchedPassword,
+}: ModalProps) => {
+  const [showModal, setShowModal] = useState(isOpen);
+
+  useEffect(() => {
+    setShowModal(isOpen);
+  }, [isOpen]);
+
   return (
     <>
       <div
@@ -18,7 +39,12 @@ const Modal = ({ onClose, body, title, footer }: ModalProps) => {
       >
         <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto">
           {/* CONTENT */}
-          <div className="translate duration-300 h-full">
+          <div
+            className={`translate duration-300 h-full 
+            ${showModal ? `translate-y-0` : `translate-y-full`}
+            ${showModal ? `opacity-100` : `opacity-0`}
+            `}
+          >
             <div
               className="translate h-full lg:h-auto md:h-auto border-0 rounded-xl shadow-lg relative
                         flex flex-col w-full bg-white outline-none focus:outline-none"
@@ -36,7 +62,21 @@ const Modal = ({ onClose, body, title, footer }: ModalProps) => {
               {/* BODY */}
               <div className="relative p-6 flex-auto">{body}</div>
               {/* FOOTER */}
-              <div className="flex flex-col gap-2 p-6">{footer}</div>
+              <div className="flex flex-col gap-2 p-6">
+                <div className="flex w-full flex-row items-center gap-4">
+                  {matchedPassword ? (
+                    <Button label={actionLabel} onClick={onSubmit} />
+                  ) : (
+                    <>
+                      <Button
+                        label="비밀 번호가 일치하지 않습니다."
+                        disabled={false}
+                      />
+                    </>
+                  )}
+                </div>
+                {footer}
+              </div>
             </div>
           </div>
         </div>

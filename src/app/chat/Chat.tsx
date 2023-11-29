@@ -1,16 +1,17 @@
 // Chat page
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ChatVideo from "@/app/chat/ChatVideo";
 import ChatBubble from "@/app/chat/ChatBubble";
 
 import { IoSettingsOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import {
-  FaMicrophone,
-  FaMicrophoneSlash,
-  FaVideo,
-  FaVideoSlash,
-} from "react-icons/fa";
-import { FaPhoneSlash, FaPhone } from "react-icons/fa6";
+import { FaMicrophone, FaVideo } from "react-icons/fa";
+import { FaPhone } from "react-icons/fa6";
+
+import ChatVideo from "@components/ChatVideo";
+import ChatBubble from "@components/ChatBubble";
+import { socket } from "@/data/socket.ts";
+import { users } from "@/apis/user.ts";
 
 const dummyData = {
   name: "홍길동",
@@ -21,6 +22,31 @@ const dummyData = {
 };
 
 const Chat = () => {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [inputMessage, setInputMessage] = useState("");
+
+  const userlist = users();
+
+  console.log(userlist);
+
+  useEffect(() => {
+    // 서버로부터 메시지를 받았을 때의 이벤트 리스너
+    socket.on("message", (message: string) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    // 컴포넌트 언마운트 시 소켓 연결 해제
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    // 메시지를 서버로 보내는 이벤트
+    socket.emit("sendMessage", inputMessage);
+    setInputMessage("");
+  };
+
   const navigation = useNavigate();
   return (
     <div className="flex w-full">
