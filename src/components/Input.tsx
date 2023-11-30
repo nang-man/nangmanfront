@@ -8,6 +8,7 @@ interface InputProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  actionLabel?: string;
 }
 
 const Input = ({
@@ -18,6 +19,7 @@ const Input = ({
   required,
   register,
   errors,
+  actionLabel,
 }: InputProps) => {
   const isEmail = id === "email";
 
@@ -72,6 +74,7 @@ const Input = ({
         `}
       />
       <label
+        htmlFor={id}
         className={`absolute
                     text-md
                     duration-150
@@ -87,7 +90,7 @@ const Input = ({
                     peer-focus:-translate-y-4
                     ${errors[id] ? "text-rose-500" : "text-zinc-400"}`}
       >
-        {label}
+        {!errors[id] ? `${label}` : `${actionLabel}`}
       </label>
     </div>
   );

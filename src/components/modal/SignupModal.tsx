@@ -46,10 +46,11 @@ const SignupModal = () => {
   }, [loginModal, signupModal]);
 
   const bodyContent = (
-    <div onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
         id="email"
         label="Email"
+        actionLabel="이메일 형식"
         register={register}
         errors={errors}
         required
@@ -63,15 +64,17 @@ const SignupModal = () => {
       />
       <Input
         id="phone"
-        label="Phone (-) 없이 입력"
+        label="Phone"
+        actionLabel="01011112222"
         register={register}
         errors={errors}
         required
       />
       <Input
         id="password"
-        label="Password 8~20 letter + number"
+        label="Password"
         type="password"
+        actionLabel="8~20 letter + number"
         register={register}
         errors={errors}
         required
@@ -80,11 +83,12 @@ const SignupModal = () => {
         id="matchPassword"
         label="Password Confirmation"
         type="password"
+        actionLabel="비밀번호가 일치하지 않습니다."
         register={register}
         errors={errors}
         required
       />
-    </div>
+    </article>
   );
 
   const footerContent = (

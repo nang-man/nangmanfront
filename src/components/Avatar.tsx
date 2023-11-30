@@ -1,12 +1,14 @@
 interface AvatarProps {
   src: string | null | undefined;
+  width: string;
+  height: string;
 }
 
-const Avatar = ({ src }: AvatarProps) => {
+const Avatar = ({ src, width, height }: AvatarProps) => {
   return (
     <>
       <img
-        className="rounded-full h-[30px] w-[30px]"
+        className={`rounded-full w-${width} h-${height}`}
         alt="Avatar"
         src={src || ""}
       />
