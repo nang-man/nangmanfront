@@ -12,7 +12,6 @@ interface ModalProps {
   onSubmit: () => void;
   isOpen?: boolean;
   actionLabel: string;
-  matchedPassword?: boolean;
 }
 
 const Modal = ({
@@ -23,7 +22,6 @@ const Modal = ({
   isOpen,
   onSubmit,
   actionLabel,
-  matchedPassword,
 }: ModalProps) => {
   const [showModal, setShowModal] = useState(isOpen);
 
@@ -63,16 +61,7 @@ const Modal = ({
             {/* FOOTER */}
             <div className="flex flex-col gap-2 p-6">
               <div className="flex w-full flex-row items-center gap-4">
-                {matchedPassword ? (
-                  <Button label={actionLabel} onClick={onSubmit} />
-                ) : (
-                  <>
-                    <Button
-                      label="비밀 번호가 일치하지 않습니다."
-                      disabled={false}
-                    />
-                  </>
-                )}
+                <Button label={actionLabel} onClick={onSubmit} />
               </div>
               {footer}
             </div>

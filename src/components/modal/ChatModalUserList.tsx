@@ -13,12 +13,12 @@ const ChatModalUserList = React.memo(
   ({ users, onUserClick }: ChatModalUserListProps) => {
     return (
       <div>
-        <ul className="cursor-pointer">
+        <ul className="overflow-y-auto max-h-[400px]">
           {users.map((user, idx) => (
             <li
               key={`${user.id} + ${idx}`}
               onClick={() => onUserClick(user.id)}
-              className=" border-b"
+              className="cursor-pointer border-b"
             >
               <div className="bg-white w-auto h-20 flex flex-row px-4">
                 <div className="flex justify-center items-center w-auto h-auto">

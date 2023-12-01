@@ -9,6 +9,7 @@ interface InputProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
   actionLabel?: string;
+  password?: string;
 }
 
 const Input = ({
@@ -20,12 +21,15 @@ const Input = ({
   register,
   errors,
   actionLabel,
+  password,
 }: InputProps) => {
   const isEmail = id === "email";
 
   const isPhone = id === "phone";
 
   const isPassword = id === "password";
+
+  const isMatchPassword = id === "matchPassword";
 
   return (
     <div className="w-full relative">
@@ -52,6 +56,9 @@ const Input = ({
               message:
                 "Password must be 8-20 characters and include at least one letter and one number",
             },
+          }),
+          ...(isMatchPassword && {
+            validate: (value: string) => (password === value ? true : false),
           }),
         })}
         placeholder=" "

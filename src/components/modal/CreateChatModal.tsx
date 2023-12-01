@@ -87,7 +87,6 @@ const CreateChatModal = () => {
       body={bodyContent}
       footer={footerContent}
       onClose={createModal.onClose}
-      matchedPassword={true}
     />
   );
 };

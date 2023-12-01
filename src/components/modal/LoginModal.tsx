@@ -82,7 +82,6 @@ const LoginModal = () => {
       actionLabel="로그인"
       body={bodyContent}
       footer={footerContent}
-      matchedPassword={true}
     />
   );
 };

@@ -27,8 +27,6 @@ const SignupModal = () => {
   });
 
   const password = watch("password");
-  const matchPassword = watch("matchPassword");
-  const passwordMatched = password === matchPassword;
 
   const loginModal = useLoginModal();
   const signupModal = useSignupModal();
@@ -87,6 +85,7 @@ const SignupModal = () => {
         register={register}
         errors={errors}
         required
+        password={password}
       />
     </article>
   );
@@ -110,14 +109,13 @@ const SignupModal = () => {
 
   return (
     <Modal
-      isOpen={signupModal.isOpen.isOpen}
-      onClose={signupModal.onClose}
-      onSubmit={handleSubmit(onSubmit)}
       title="Sign In"
       actionLabel="회원가입"
       body={bodyContent}
       footer={footerContent}
-      matchedPassword={passwordMatched}
+      isOpen={signupModal.isOpen.isOpen}
+      onClose={signupModal.onClose}
+      onSubmit={handleSubmit(onSubmit)}
     />
   );
 };

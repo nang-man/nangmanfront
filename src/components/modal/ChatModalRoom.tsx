@@ -22,7 +22,7 @@ const ChatModalRoom = React.memo(({ users }: ChatModalRoomProps) => {
   return (
     <div>
       <div>
-        <ul className="">
+        <ul className="overflow-y-auto max-h-[400px]">
           {users.map((user) => (
             <ChatBubble
               name={user.name}

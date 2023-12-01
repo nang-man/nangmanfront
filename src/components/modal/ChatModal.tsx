@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { IoArrowBack, IoClose } from "react-icons/io5";
 
 import ChatModalUserList from "./ChatModalUserList";
@@ -6,11 +6,6 @@ import ChatModalRoom from "./ChatModalRoom";
 
 interface ChatModalProps {
   onToggle: () => void;
-  name?: string;
-  message?: string;
-  data?: string;
-  src?: string;
-  isUser?: boolean;
 }
 
 const testUser = [
@@ -23,6 +18,51 @@ const testUser = [
     id: 2,
     name: "손흥민",
     src: "https://cdn.sideview.co.kr/news/photo/202211/10746_9173_3737.jpg",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
   },
   {
     id: 3,
@@ -48,23 +88,24 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
     );
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      const newX = e.clientX - (offsetX || 0);
-      const newY = e.clientY - (offsetY || 0);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isDragging) {
+        const newX = e.clientX - (offsetX || 0);
+        const newY = e.clientY - (offsetY || 0);
 
-      if (modalRef.current) {
-        modalRef.current.style.left = `${newX}px`;
-        modalRef.current.style.top = `${newY}px`;
+        if (modalRef.current) {
+          modalRef.current.style.left = `${newX}px`;
+          modalRef.current.style.top = `${newY}px`;
+        }
       }
-    }
-  };
+    },
+    [isDragging, offsetX, offsetY, modalRef]
+  );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, [setIsDragging]);
 
   useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove as React.FC);
@@ -76,13 +117,17 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
     };
   }, [handleMouseMove, handleMouseUp]);
 
-  const handleUserClick = (userId: number) => {
-    setSelectUserId(userId);
-  };
+  const handleUserClick = useCallback(
+    (userId: number) => {
+      setSelectUserId(userId);
+    },
+    [setSelectUserId]
+  );
 
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     setSelectUserId(null);
-  };
+  }, [setSelectUserId]);
+
   return (
     <div
       ref={modalRef}
@@ -106,16 +151,18 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
           </button>
         </header>
         {/* 유저 목록 */}
-        {selectUserId === null ? (
-          <ChatModalUserList
-            users={testUser}
-            onUserClick={(userId: number) => handleUserClick(userId)}
-          />
-        ) : (
-          <ChatModalRoom
-            users={testUser.filter((user) => user.id === selectUserId)}
-          />
-        )}
+        <article className="">
+          {selectUserId === null ? (
+            <ChatModalUserList
+              users={testUser}
+              onUserClick={(userId: number) => handleUserClick(userId)}
+            />
+          ) : (
+            <ChatModalRoom
+              users={testUser.filter((user) => user.id === selectUserId)}
+            />
+          )}
+        </article>
       </div>
     </div>
   );
