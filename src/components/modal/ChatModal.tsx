@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
-
 import { IoArrowBack, IoClose } from "react-icons/io5";
 
-// import ChatBubble from "@/app/chat/ChatBubble";
+import ChatModalUserList from "./ChatModalUserList";
+import ChatModalRoom from "./ChatModalRoom";
 
 interface ChatModalProps {
   onToggle: () => void;
@@ -24,6 +24,7 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
   const [offsetY, setOffsetY] = useState<number | null>(null);
+  const [selectUserId, setSelectUserId] = useState<number | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -62,6 +63,14 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [handleMouseMove, handleMouseUp]);
+
+  const handleUserClick = (userId: number) => {
+    setSelectUserId(userId);
+  };
+
+  const handleGoBack = () => {
+    setSelectUserId(null);
+  };
   return (
     <div
       ref={modalRef}
@@ -69,9 +78,9 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
       className="flex overflow-x-hidden overflow-y-auto fixed outline-none focus:outline-none inset-0 z-50"
     >
       <div className="darggable w-80 h-[500px] ml-32 my-auto border rounded-2xl bg-gray-100">
-        <div className="flex items-center p-4 justify-center rounded-t-2xl relative border-b-[1px] border-gray-300 bg-emerald-400">
+        <header className="flex items-center p-4 justify-center rounded-t-2xl relative border-b-[1px] border-gray-300 bg-emerald-400">
           <button
-            onClick={() => {}}
+            onClick={handleGoBack}
             className="p-1 border-0 hover:opacity-70 transition absolute left-9"
           >
             <IoArrowBack size={25} />
@@ -83,61 +92,18 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
           >
             <IoClose size={25} />
           </button>
-        </div>
+        </header>
         {/* 유저 목록 */}
-        <div>
-          <ul className="cursor-pointer">
-            {testUser.map((user, idx) => (
-              <li key={`${user.id} + ${idx}`} className=" border-b">
-                <div className="bg-white w-auto h-20 flex flex-row px-4">
-                  <div className="flex justify-center items-center w-auto h-auto">
-                    <img
-                      src="https://i.pinimg.com/originals/d2/4f/89/d24f89d6afaec9d3a55d47fed799800e.jpg"
-                      alt="profile_image"
-                      className="w-12 h-12 rounded-full"
-                    />
-                  </div>
-                  <div className="flex flex-col overflow-hidden pl-4 justify-center w-60">
-                    <p className="h-6">{user.name}</p>
-                    <p className="overflow-ellipsis line-clamp-3 w-60 h-6">
-                      {user.id} 마지막에 나오는 미ㅏ러민아러ㅣㅁㄴ아러미낭러미낭
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* 
-        <div>
-        <ul className="">
-          {[1, 2, 3, 4].map(() => (
-            <ChatBubble
-              name={dummyData.name}
-              message={dummyData.message}
-              date={dummyData.date}
-              img={dummyData.img}
-              isUser={dummyData.isUser}
-            />
-          ))}
-          <ChatBubble
-            name={dummyData.name}
-            message={dummyData.message}
-            date={dummyData.date}
-            img={dummyData.img}
-            isUser={true}
+        {selectUserId === null ? (
+          <ChatModalUserList
+            users={testUser}
+            onUserClick={(userId: number) => handleUserClick(userId)}
           />
-        </ul>
-        </div>
-        <div className="join flex w-auto">
-          <input
-            className="input input-bordered join-item"
-            placeholder="Text..."
+        ) : (
+          <ChatModalRoom
+            users={testUser.filter((user) => user.id === selectUserId)}
           />
-          <button className="join-item px-3 bg-emerald-600 rounded-5">
-            전송
-          </button>
-        </div> */}
+        )}
       </div>
     </div>
   );
