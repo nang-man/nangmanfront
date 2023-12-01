@@ -11,7 +11,7 @@ interface IChatBubble {
 const ChatBubble = ({ name, message, date, img, isUser }: IChatBubble) => {
   return (
     <li className={`chat ${isUser ? "chat-end" : "chat-start"}`}>
-      {!img && (
+      {img && (
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img alt="User avatar" src={img} />

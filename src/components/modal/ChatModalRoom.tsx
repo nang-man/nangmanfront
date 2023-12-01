@@ -1,9 +1,12 @@
+import React from "react";
+
 import ChatBubble from "@/app/chat/ChatBubble";
 
 interface ChatModalRoomProps {
   users: {
     id: number;
     name: string;
+    src: string;
   }[];
 }
 
@@ -15,7 +18,7 @@ const dummyData = {
   isUser: false,
 };
 
-const ChatModalRoom = ({ users }: ChatModalRoomProps) => {
+const ChatModalRoom = React.memo(({ users }: ChatModalRoomProps) => {
   return (
     <div>
       <div>
@@ -25,7 +28,7 @@ const ChatModalRoom = ({ users }: ChatModalRoomProps) => {
               name={user.name}
               message={dummyData.message}
               date={dummyData.date}
-              img={dummyData.img}
+              img={user.src}
               isUser={dummyData.isUser}
             />
           ))}
@@ -49,6 +52,6 @@ const ChatModalRoom = ({ users }: ChatModalRoomProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default ChatModalRoom;

@@ -14,9 +14,21 @@ interface ChatModalProps {
 }
 
 const testUser = [
-  { id: 1, name: "차범근" },
-  { id: 2, name: "손흥민" },
-  { id: 3, name: "박지성" },
+  {
+    id: 1,
+    name: "차범근",
+    src: "https://mblogthumb-phinf.pstatic.net/20160509_223/new6791_1462780191348fftry_JPEG/image_kimhw85.jpg?type=w2",
+  },
+  {
+    id: 2,
+    name: "손흥민",
+    src: "https://cdn.sideview.co.kr/news/photo/202211/10746_9173_3737.jpg",
+  },
+  {
+    id: 3,
+    name: "박지성",
+    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
+  },
 ];
 
 const ChatModal = ({ onToggle }: ChatModalProps) => {
