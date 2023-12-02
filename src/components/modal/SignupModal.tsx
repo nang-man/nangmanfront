@@ -24,12 +24,10 @@ const SignupModal = () => {
   });
 
   const password = watch("password");
-  const matchPassword = watch("matchPassword");
-  const passwordMatched = password === matchPassword;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const { name, email, password, matchPassword, phone } = data;
-    signup({ name, email, password, matchPassword, phone });
+    const { name, email, password, phone } = data;
+    signup({ name, email, password, phone });
     console.log(data);
     signupModal.onClose();
   };
@@ -40,10 +38,11 @@ const SignupModal = () => {
   }, [loginModal, signupModal]);
 
   const bodyContent = (
-    <div onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
         id="email"
         label="Email"
+        actionLabel="이메일 형식"
         register={register}
         errors={errors}
         required
@@ -57,15 +56,17 @@ const SignupModal = () => {
       />
       <Input
         id="phone"
-        label="Phone (-) 없이 입력"
+        label="Phone"
+        actionLabel="01011112222"
         register={register}
         errors={errors}
         required
       />
       <Input
         id="password"
-        label="Password 8~20 letter + number"
+        label="Password"
         type="password"
+        actionLabel="8~20 letter + number"
         register={register}
         errors={errors}
         required
@@ -74,11 +75,13 @@ const SignupModal = () => {
         id="matchPassword"
         label="Password Confirmation"
         type="password"
+        actionLabel="비밀번호가 일치하지 않습니다."
         register={register}
         errors={errors}
         required
+        password={password}
       />
-    </div>
+    </article>
   );
 
   const footerContent = (
@@ -100,14 +103,13 @@ const SignupModal = () => {
 
   return (
     <Modal
-      isOpen={signupModal.isOpen.isOpen}
-      onClose={signupModal.onClose}
-      onSubmit={handleSubmit(onSubmit)}
       title="Sign In"
       actionLabel="회원가입"
       body={bodyContent}
       footer={footerContent}
-      matchedPassword={passwordMatched}
+      isOpen={signupModal.isOpen.isOpen}
+      onClose={signupModal.onClose}
+      onSubmit={handleSubmit(onSubmit)}
     />
   );
 };

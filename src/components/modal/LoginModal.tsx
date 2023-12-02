@@ -32,6 +32,7 @@ const LoginModal = () => {
       <Input
         id="email"
         label="Email"
+        actionLabel="이메일 형식"
         register={register}
         errors={errors}
         required
@@ -40,6 +41,7 @@ const LoginModal = () => {
         id="password"
         type="password"
         label="Password"
+        actionLabel="Password"
         register={register}
         errors={errors}
         required
@@ -74,7 +76,6 @@ const LoginModal = () => {
       actionLabel="로그인"
       body={bodyContent}
       footer={footerContent}
-      matchedPassword={true}
     />
   );
 };

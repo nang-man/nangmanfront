@@ -3,19 +3,32 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
 
 import Input from "../Input";
+import Counter from "../Counter";
 
 const CreateChatModal = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<FieldValues>({
     defaultValues: {
       roomName: "",
       tag: "",
-      count: 2,
+      guestCount: 2,
     },
   });
+
+  const guestCount = watch("guestCount");
+
+  const setCustomValue = (id: string, value: number) => {
+    setValue(id, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
@@ -25,25 +38,24 @@ const CreateChatModal = () => {
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
         id="roomName"
-        label="Room Name"
+        label="Room name"
+        actionLabel="이메일 형식을 지켜주세요"
         register={register}
         errors={errors}
         required
       />
       <Input
         id="tag"
-        label="Tag Name"
+        label="Tag name"
+        actionLabel="Tag name"
         register={register}
         errors={errors}
         required
       />
-      <Input
-        id="count"
-        type="number"
-        label="Count"
-        register={register}
-        errors={errors}
-        required
+      <Counter
+        title="Guests"
+        value={guestCount}
+        onChange={(value) => setCustomValue("guestCount", value)}
       />
     </article>
   );
@@ -71,7 +83,6 @@ const CreateChatModal = () => {
       body={bodyContent}
       footer={footerContent}
       onClose={createModal.onClose}
-      matchedPassword={true}
     />
   );
 };
