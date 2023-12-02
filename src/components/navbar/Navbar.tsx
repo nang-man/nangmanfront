@@ -1,19 +1,11 @@
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
 
-import { useCreateModal } from "@/hooks/useCreateModal";
-import { useLoginModal } from "@/hooks/useLoginModal";
-import { useSignupModal } from "@/hooks/useSignupModal";
-
 import SignupModal from "../modal/SignupModal";
 import LoginModal from "../modal/LoginModal";
 import CreateChatModal from "../modal/CreateChatModal";
 
 const Navbar = () => {
-  const createModal = useCreateModal();
-  const loginModal = useLoginModal();
-  const signupModal = useSignupModal();
-
   return (
     <>
       <div className="flex bg-gray-100 text-gray-900 fixed">

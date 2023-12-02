@@ -5,9 +5,6 @@ import Modal from "./Modal";
 
 import Input from "../Input";
 
-import { useLoginModal } from "@/hooks/useLoginModal.ts";
-import { useSignupModal } from "@/hooks/useSignupModal.ts";
-
 const LoginModal = () => {
   const {
     register,
@@ -19,9 +16,6 @@ const LoginModal = () => {
       password: "",
     },
   });
-
-  const loginModal = useLoginModal();
-  const signupModal = useSignupModal();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
