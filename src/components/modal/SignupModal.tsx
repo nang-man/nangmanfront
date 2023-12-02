@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 
 import Modal from "./Modal";
-
 import Input from "../Input";
 
 import { signup } from "@/apis/auth";
