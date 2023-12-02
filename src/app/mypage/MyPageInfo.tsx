@@ -3,10 +3,11 @@ import { useState } from "react";
 import MyFriendCard from "@/app/mypage/MyFriendCard";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { FaTrashAlt } from "react-icons/fa";
+import userAvatar from "@/assets/user.png";
 
 const dummyData = {
   name: "김낭만",
-  image: "",
+  image: userAvatar,
 };
 
 const MyPageInfo = () => {
@@ -16,8 +17,8 @@ const MyPageInfo = () => {
   return (
     <section className="m-auto w-auto h-full">
       <figure className="flex mt-12 justify-items-end items-end gap-5">
-        <div className="bg-gray-400 rounded-full border-2 w-32 h-32">
-          <img alt="avatar" src="" />
+        <div className="bg-gray-400 rounded-full border-2 w-32 h-32 overflow-hidden">
+          <img alt="avatar" src={userAvatar} />
         </div>
         <figcaption className="text-lg font-semibold">
           <h3>홍길동</h3>

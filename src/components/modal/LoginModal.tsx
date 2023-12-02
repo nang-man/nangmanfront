@@ -4,6 +4,10 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
 
 import Input from "../Input";
+import Button from "../Button";
+
+import { useModal } from "@/hooks/useModal";
+import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
 
 const LoginModal = () => {
   const {
@@ -21,6 +25,9 @@ const LoginModal = () => {
     console.log(data);
     loginModal.onClose();
   };
+
+  const loginModal = useModal(LOGIN_STATE);
+  const signupModal = useModal(SIGNUP_STATE);
 
   const toggle = useCallback(() => {
     loginModal.onClose();

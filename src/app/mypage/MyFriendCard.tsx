@@ -9,7 +9,7 @@ interface IMyFriendCard {
 const MyFriendCard = ({ name, image }: IMyFriendCard) => {
   return (
     <li className="w-32 h-32 flex flex-col items-center">
-      <div className="bg-gray-400 rounded-full border-2 w-20 h-20">
+      <div className="bg-gray-400 rounded-full border-2 w-20 h-20 overflow-hidden">
         <img alt="avatar" src={image} />
       </div>
       <div className="flex gap-2 mt-2">

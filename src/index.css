@@ -25,4 +25,7 @@
   .grid-cols-3-7 {
     grid-template-columns: 30% 70%;
   }
+  .grid-cols-7-3 {
+    grid-template-columns: 70% 25%;
+  }
 }
