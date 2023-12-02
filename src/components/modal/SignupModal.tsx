@@ -6,6 +6,9 @@ import Input from "../Input";
 
 import { signup } from "@/apis/auth";
 
+import { useModal } from "@/hooks/useModal";
+import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+
 const SignupModal = () => {
   const {
     register,
@@ -30,6 +33,9 @@ const SignupModal = () => {
     console.log(data);
     signupModal.onClose();
   };
+
+  const loginModal = useModal(LOGIN_STATE);
+  const signupModal = useModal(SIGNUP_STATE);
 
   const toggle = useCallback(() => {
     signupModal.onClose();

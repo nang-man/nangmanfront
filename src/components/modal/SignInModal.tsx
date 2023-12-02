@@ -70,12 +70,13 @@ const SignupModal = () => {
   );
 
   return (
-    <Modal
-      onClose={signupModal.onClose}
-      title="Sign In"
-      body={bodyContent}
-      footer={footerContent}
-    />
+    <></>
+    // <Modal
+    //   onClose={signupModal.onClose}
+    //   title="Sign In"
+    //   body={bodyContent}
+    //   footer={footerContent}
+    // />
   );
 };
 
