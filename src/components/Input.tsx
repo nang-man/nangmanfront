@@ -8,6 +8,8 @@ interface InputProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  actionLabel?: string;
+  password?: string;
 }
 
 const Input = ({
@@ -18,12 +20,16 @@ const Input = ({
   required,
   register,
   errors,
+  actionLabel,
+  password,
 }: InputProps) => {
   const isEmail = id === "email";
 
   const isPhone = id === "phone";
 
   const isPassword = id === "password";
+
+  const isMatchPassword = id === "matchPassword";
 
   return (
     <div className="w-full relative">
@@ -51,6 +57,9 @@ const Input = ({
                 "Password must be 8-20 characters and include at least one letter and one number",
             },
           }),
+          ...(isMatchPassword && {
+            validate: (value: string) => (password === value ? true : false),
+          }),
         })}
         placeholder=" "
         type={type}
@@ -72,6 +81,7 @@ const Input = ({
         `}
       />
       <label
+        htmlFor={id}
         className={`absolute
                     text-md
                     duration-150
@@ -87,7 +97,7 @@ const Input = ({
                     peer-focus:-translate-y-4
                     ${errors[id] ? "text-rose-500" : "text-zinc-400"}`}
       >
-        {label}
+        {!errors[id] ? `${label}` : `${actionLabel}`}
       </label>
     </div>
   );

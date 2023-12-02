@@ -4,7 +4,6 @@ type Signup = {
   email: string;
   name: string;
   password: string;
-  matchPassword: string;
   phone: string;
 };
 
@@ -17,7 +16,7 @@ export const signup = async ({
   email,
   name,
   password,
-  matchPassword,
+
   phone,
 }: Signup) => {
   try {
@@ -26,7 +25,6 @@ export const signup = async ({
         name: name,
         email: email,
         password: password,
-        matchPassword: matchPassword,
         phone: phone,
       })
       .then((res) => {

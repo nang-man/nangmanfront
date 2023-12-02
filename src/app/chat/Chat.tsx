@@ -8,8 +8,6 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaMicrophone, FaVideo } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
 
-import ChatVideo from "@components/ChatVideo";
-import ChatBubble from "@components/ChatBubble";
 import { socket } from "@/data/socket.ts";
 import { users } from "@/apis/user.ts";
 
