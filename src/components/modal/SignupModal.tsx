@@ -32,8 +32,8 @@ const SignupModal = () => {
   const signupModal = useSignupModal();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const { name, email, password, matchPassword, phone } = data;
-    signup({ name, email, password, matchPassword, phone });
+    const { name, email, password, phone } = data;
+    signup({ name, email, password, phone });
     console.log(data);
     signupModal.onClose();
   };
