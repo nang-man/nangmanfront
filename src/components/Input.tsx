@@ -8,9 +8,11 @@ interface InputProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  actionLabel?: string;
+  password?: string;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   id,
   label,
   type,
@@ -18,13 +20,47 @@ const Input: React.FC<InputProps> = ({
   required,
   register,
   errors,
-}) => {
+  actionLabel,
+  password,
+}: InputProps) => {
+  const isEmail = id === "email";
+
+  const isPhone = id === "phone";
+
+  const isPassword = id === "password";
+
+  const isMatchPassword = id === "matchPassword";
+
   return (
     <div className="w-full relative">
       <input
         id={id}
         disabled={disabled}
-        {...register(id, { required })}
+        {...register(id, {
+          required: required ? "This field is required" : false,
+          ...(isEmail && {
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: "Invalid email address",
+            },
+          }),
+          ...(isPhone && {
+            pattern: {
+              value: /^(01[0-9]{1})[0-9]{3,4}[0-9]{4}$/i,
+              message: "Invalid phone number",
+            },
+          }),
+          ...(isPassword && {
+            pattern: {
+              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/,
+              message:
+                "Password must be 8-20 characters and include at least one letter and one number",
+            },
+          }),
+          ...(isMatchPassword && {
+            validate: (value: string) => (password === value ? true : false),
+          }),
+        })}
         placeholder=" "
         type={type}
         className={`
@@ -45,6 +81,7 @@ const Input: React.FC<InputProps> = ({
         `}
       />
       <label
+        htmlFor={id}
         className={`absolute
                     text-md
                     duration-150
@@ -60,7 +97,7 @@ const Input: React.FC<InputProps> = ({
                     peer-focus:-translate-y-4
                     ${errors[id] ? "text-rose-500" : "text-zinc-400"}`}
       >
-        {label}
+        {!errors[id] ? `${label}` : `${actionLabel}`}
       </label>
     </div>
   );
