@@ -1,10 +1,8 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-import { useCreateModal } from "@/hooks/useCreateModal.ts";
-
 import Input from "../Input";
-import Button from "../Button";
 
+import Counter from "../Counter";
 import Modal from "./Modal";
 import { useModal } from "@/hooks/useModal";
 import { CREATE_STATE } from "@/hooks/modalType";
@@ -38,7 +36,7 @@ const CreateChatModal = () => {
     console.log(data);
   };
 
-  const { onClose } = useModal(CREATE_STATE);
+  const { onClose, isOpen } = useModal(CREATE_STATE);
 
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -82,13 +80,13 @@ const CreateChatModal = () => {
 
   return (
     <Modal
-      isOpen={createModal.isOpen.isOpen}
+      isOpen={isOpen.isOpen}
       title="Create Chatting Room"
       actionLabel="방 만들기"
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
-      onClose={createModal.onClose}
+      onClose={onClose}
     />
   );
 };
