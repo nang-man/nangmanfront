@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoChatboxEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
 
+
 import { useCreateModal } from "@/hooks/useCreateModal";
 import { useLoginModal } from "@/hooks/useLoginModal";
 import { useSignupModal } from "@/hooks/useSignupModal";
@@ -23,7 +24,6 @@ const Navbar = () => {
   const useChatModal = () => {
     setChatModal((prev) => !prev);
   };
-
   return (
     <>
       <div className="flex bg-gray-100 text-gray-900 fixed">

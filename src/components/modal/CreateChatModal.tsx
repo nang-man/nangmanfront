@@ -1,7 +1,5 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-import { useCreateModal } from "@/hooks/useCreateModal.ts";
-
 import Modal from "./Modal";
 
 import Input from "../Input";
@@ -35,8 +33,6 @@ const CreateChatModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
-
-  const createModal = useCreateModal();
 
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
