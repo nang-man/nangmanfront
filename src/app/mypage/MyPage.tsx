@@ -1,12 +1,23 @@
 // MyPage
-import React, { useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import MyPageInfo from "./MyPageInfo";
 import MyPageUpdate from "./MyPageUpdate";
+import PasswordModal from "@components/modal/PasswordModal";
 
 const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const navigation = useNavigate();
+
+  const data = useParams();
+
+  useEffect(() => {
+    if (data["*"] === "update" && !isEdit) {
+      setIsEdit(true);
+    } else if (data["*"] === "" && isEdit) {
+      setIsEdit(false);
+    }
+  }, [data]);
 
   const onToggleMenu = (path: string, bool: boolean) => {
     if (bool === isEdit) return;
@@ -38,6 +49,7 @@ const MyPage = () => {
         <Routes>
           <Route path="/" element={<MyPageInfo />} />
           <Route path="/update" element={<MyPageUpdate />} />
+          <Route path="/update/password" element={<PasswordModal />} />
         </Routes>
       </div>
     </div>

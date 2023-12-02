@@ -96,8 +96,9 @@ const Chat = () => {
       <div className="bg-gray-100 w-1/4 h-full mx-10">
         <h2 className="text-2xl">채팅하기</h2>
         <ul className="">
-          {[1, 2, 3, 4].map(() => (
+          {[1, 2, 3, 4].map((index) => (
             <ChatBubble
+              key={index}
               name={dummyData.name}
               message={dummyData.message}
               date={dummyData.date}
@@ -113,15 +114,18 @@ const Chat = () => {
             isUser={true}
           />
         </ul>
-        <div className="join flex">
+        <form className="join flex">
           <input
             className="input input-bordered join-item"
             placeholder="Text..."
           />
-          <button className="join-item  px-3 bg-emerald-600 rounded-5">
+          <button
+            type="submit"
+            className="join-item  px-3 bg-emerald-600 rounded-5"
+          >
             전송
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
