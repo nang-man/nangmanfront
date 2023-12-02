@@ -4,7 +4,6 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
 
 import Input from "../Input";
-import Button from "../Button";
 
 import { useModal } from "@/hooks/useModal";
 import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
