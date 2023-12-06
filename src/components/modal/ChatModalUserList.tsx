@@ -22,7 +22,7 @@ const ChatModalUserList = React.memo(
               className="cursor-pointer border-b"
             >
               <div className="bg-white w-auto h-20 flex flex-row px-4">
-                <div className="flex justify-center items-center w-auto h-auto">
+                <div className="flex justify-center items-center w-auto h-auto w-30 h-30">
                   <Avatar src={user.src} width="12" height="12" />
                 </div>
                 <div className="flex flex-col overflow-hidden pl-4 justify-center w-60">

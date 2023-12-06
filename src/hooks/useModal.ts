@@ -4,8 +4,15 @@ import {
   createModalState,
   loginModalState,
   signupModalState,
+  chattingModalState,
 } from "./modalState";
-import { CREATE_STATE, LOGIN_STATE, SIGNUP_STATE, Tmodal } from "./modalType";
+import {
+  CREATE_STATE,
+  LOGIN_STATE,
+  SIGNUP_STATE,
+  CHAT_STATE,
+  Tmodal,
+} from "./modalType";
 
 export const useModal = (type: Tmodal) => {
   let data = createModalState;
@@ -19,6 +26,9 @@ export const useModal = (type: Tmodal) => {
       break;
     case SIGNUP_STATE:
       data = signupModalState;
+      break;
+    case CHAT_STATE:
+      data = chattingModalState;
       break;
     default:
       throw new Error(`Modal error: ${type}`);

@@ -1,16 +1,13 @@
 import axios from "axios";
 
-type Signup = {
+type CurrentUserLogin = {
   email: string;
-  name: string;
   password: string;
-  phone: string;
 };
 
-type Login = {
-  email: string;
-  password: string;
-};
+type RegisterUser = CurrentUserLogin & { name: string; phone: string };
+
+const URL = import.meta.env.VITE_LOCAL_URL as string;
 
 export const signup = async ({
   email,
@@ -18,33 +15,32 @@ export const signup = async ({
   password,
 
   phone,
-}: Signup) => {
+}: RegisterUser) => {
   try {
-    await axios
-      .post("http://localhost:5174/signup", {
-        name: name,
-        email: email,
-        password: password,
-        phone: phone,
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
+    await axios.post(`${URL}/api/auth/signup`, {
+      name: name,
+      email: email,
+      password: password,
+      phone: phone,
+    });
   } catch (error) {
     console.error(error);
   }
 };
 
-export const login = async ({ email, password }: Login) => {
+export const login = async ({ email, password }: CurrentUserLogin) => {
   try {
-    await axios
-      .post("http://localhost:5174/login", {
-        email: email,
-        password: password,
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
+    const res = await axios.post(`${URL}/api/auth/login`, {
+      email: email,
+      password: password,
+    });
+
+    const { tokenAccess } = res.data;
+    axios.defaults.headers.common[tokenAccess];
+
+    // console.log(res.data, res.headers);
+
+    return res.data.user;
   } catch (error) {
     console.error(error);
   }

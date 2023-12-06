@@ -4,9 +4,8 @@ import { IoArrowBack, IoClose } from "react-icons/io5";
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
 
-interface ChatModalProps {
-  onToggle: () => void;
-}
+import { useModal } from "@/hooks/useModal";
+import { CHAT_STATE } from "@/hooks/modalType";
 
 const testUser = [
   {
@@ -24,59 +23,16 @@ const testUser = [
     name: "박지성",
     src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
   },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
-  {
-    id: 3,
-    name: "박지성",
-    src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
-  },
 ];
 
-const ChatModal = ({ onToggle }: ChatModalProps) => {
+const ChatModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
   const [offsetY, setOffsetY] = useState<number | null>(null);
   const [selectUserId, setSelectUserId] = useState<number | null>(null);
+
+  const chatModal = useModal(CHAT_STATE);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -144,7 +100,7 @@ const ChatModal = ({ onToggle }: ChatModalProps) => {
           </button>
           <h2 className="text-xl">채팅하기</h2>
           <button
-            onClick={onToggle}
+            onClick={chatModal.onClose}
             className="p-1 border-0 hover:opacity-70 transition absolute right-9"
           >
             <IoClose size={25} />

@@ -7,6 +7,7 @@ import Input from "../Input";
 
 import { useModal } from "@/hooks/useModal";
 import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+import { login } from "@/apis/auth";
 
 const LoginModal = () => {
   const {
@@ -20,8 +21,10 @@ const LoginModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { email, password } = data;
+    const res = await login({ email, password });
+    console.log(res);
     loginModal.onClose();
   };
 
