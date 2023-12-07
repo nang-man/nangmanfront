@@ -7,7 +7,7 @@ const List = () => {
   ];
 
   return (
-    <section className="w-screen h-screen">
+    <section className="w-full h-auto">
       {list.map((item, idx) => (
         <TagList key={idx} title={item.tag} count={item.count} />
       ))}

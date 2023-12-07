@@ -6,6 +6,8 @@ import Modal from "./Modal";
 import Input from "../Input";
 
 import { signup } from "@/apis/auth";
+import { useModal } from "@/hooks/useModal";
+import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
 
 const SignupModal = () => {
   const {
@@ -24,6 +26,9 @@ const SignupModal = () => {
   });
 
   const password = watch("password");
+
+  const signupModal = useModal(SIGNUP_STATE);
+  const loginModal = useModal(LOGIN_STATE);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { name, email, password, phone } = data;

@@ -26,8 +26,8 @@ const MyPage = () => {
   };
 
   return (
-    <div className="w-4/5 h-4/5">
-      <div className="flex p-5">
+    <div className="w-[93vw] h-[95vh] max-w-[1440px] m-auto">
+      <div className="flex w-[100%] h-20 p-5">
         <button
           onClick={() => onToggleMenu("/mypage/", false)}
           className={`text-2xl border-r-2 pr-5 font-semibold ${
@@ -45,7 +45,7 @@ const MyPage = () => {
           정보 수정
         </button>
       </div>
-      <div className="card bg-gray-100 w-full h-full p-5">
+      <div className="card bg-gray-100 w-auto h-[85%] p-5">
         <Routes>
           <Route path="/" element={<MyPageInfo />} />
           <Route path="/update" element={<MyPageUpdate />} />

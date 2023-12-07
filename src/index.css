@@ -28,4 +28,10 @@
   .grid-cols-7-3 {
     grid-template-columns: 70% 25%;
   }
+  .grid-cols-chat {
+    grid-template-columns: 65% 25%;
+  }
+  .grid-cols-8-2 {
+    grid-template-columns: 80% 20%;
+  }
 }

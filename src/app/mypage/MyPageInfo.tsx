@@ -15,7 +15,7 @@ const MyPageInfo = () => {
 
   const onToggleMore = () => setMore((prev) => !prev);
   return (
-    <section className="m-auto w-auto h-full">
+    <section className="m-auto w-auto h-auto">
       <figure className="flex mt-12 justify-items-end items-end gap-5">
         <div className="bg-gray-400 rounded-full border-2 w-32 h-32 overflow-hidden">
           <img alt="avatar" src={userAvatar} />
@@ -25,7 +25,7 @@ const MyPageInfo = () => {
           <h3>user123@naver.com</h3>
         </figcaption>
       </figure>
-      <div className="mt-32 h-full">
+      <div className="mt-32 h-auto">
         <h3 className="text-lg font-semibold">친구 목록</h3>
         <ul className="flex gap-5 mt-5 w-full h-auto items-center justify-center">
           <MyFriendCard name={dummyData.name} image={dummyData.image} />
