@@ -21,13 +21,25 @@ interface IMessage {
   isUser: boolean;
 }
 
-const ChatRoom = () => {
+interface IChatRoomProps {
+  roomId: string;
+  userData: IChatRoomUser[];
+}
+
+interface IChatRoomUser {
+  id: string;
+  name: string;
+  videoSrc: string;
+  soundSrc: string;
+  img: string;
+}
+
+const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   // input data
   const [messages, setMessages] = useState<IMessage | any>([]);
   const [inputMessage, setInputMessage] = useState("");
 
-  const [ChatRoomMessage, setChatRoomMessage] = useState("");
-
+  // const [ChatRoomMessage, setChatRoomMessage] = useState("");
   const [joinChat, setJoinChat] = useState(false);
 
   // socket data
@@ -37,19 +49,20 @@ const ChatRoom = () => {
   const dayJs = dayjs();
 
   const socketMessage = (data: any) => {
-    setChatRoomMessage(data.message);
-    console.log(data);
+    console.log(data.message);
   };
 
   const updateReceiveMessage = (data: any) => {
+    const getUserInfo = userData.find((user) => user.id === data.id);
+
     const messageData = {
       // isUser: getData.id === dummyData.id ? true : false,
       isUser: false,
-      name: "김낭만",
+      name: getUserInfo?.name,
       id: data.id,
       message: data.message,
       time: data.time,
-      img: "",
+      img: getUserInfo?.img,
     };
     setMessages((prev: any) => [...prev, messageData]);
   };
@@ -57,10 +70,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const socket = io("http://localhost:3000");
 
-    socket.on("handshake", () => {
-      socketInstance.emit("handshake", "Hello this is client");
-      setChatRoomMessage("Connected to server");
-    });
+    socket.on("handshake", socketMessage);
     socket.on("joinChatRoom", socketMessage);
     socket.on("leaveChatRoom", socketMessage);
     socket.on("sendMessage", updateReceiveMessage);
@@ -91,7 +101,7 @@ const ChatRoom = () => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (inputMessage === "") return;
     if (socketInstance) {
       const data = {
         id: socketInstance.id,
@@ -119,20 +129,21 @@ const ChatRoom = () => {
         "sendMessage",
         {
           name: data.id,
-          roomId: "Test",
+          roomId: roomId,
           message: data.message,
           time: data.time,
         },
         (getData: any) => {
           // 서버에서 받은 콜백 메시지 처리
+          const getUserInfo = userData.find((user) => user.id === getData.id);
+
           const messageData = {
-            // isUser: getData.id === userData.id ? true : false,
-            isUser: true,
-            name: "이낭만",
+            isUser: getData.id === data.id ? true : false,
+            name: getUserInfo?.name,
             id: getData.id,
             message: getData.message,
             time: getData.time,
-            img: "",
+            img: getUserInfo?.img,
           };
           setMessages((prev: any) => [...prev, messageData]);
         }
@@ -141,18 +152,17 @@ const ChatRoom = () => {
   };
 
   const joinChatRoom = () => {
-    socketInstance.emit("handshake", "Hello this is client");
-
     socketInstance.emit("joinChatRoom", {
       name: socketInstance.id,
-      roomId: "Test",
+      roomId: roomId,
     });
+    setJoinChat(true);
   };
 
   const leaveRoom = () => {
     socketInstance.emit("leaveChatRoom", {
       name: dummyData.id,
-      roomId: "Test",
+      roomId: roomId,
     });
   };
 
@@ -168,8 +178,10 @@ const ChatRoom = () => {
         ref={scrollRef}
         className="h-[85%] w-full overflow-scroll scrollbar-hidden"
       >
-        {ChatRoomMessage.length > 0 && (
-          <li>-------채팅방에 입장하였습니다.-------</li>
+        {joinChat && (
+          <li className="text-gray-500">
+            -------채팅방에 입장하였습니다.-------
+          </li>
         )}
         {messages &&
           messages.map((item: any, index: number) => (

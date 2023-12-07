@@ -4,14 +4,15 @@ interface TagListProps {
   key?: number;
   title: string;
   count?: number;
+  roomId: string;
 }
 
-const TagList = ({ title }: TagListProps) => {
+const TagList = ({ title, roomId }: TagListProps) => {
   return (
     <div className="mb-16 pr-60">
       <h1 className="text-3xl pb-2 border-b mb-2">{title}</h1>
 
-      <Link to="/chat" className="flex">
+      <Link to={`/chat/${roomId}`} className="flex">
         <div className="flex mr-2 w-60 h-52 flex-col rounded-2xl shadow-xl">
           <img
             className="aspect-video w-60 rounded-t-2xl object-cover object-center"

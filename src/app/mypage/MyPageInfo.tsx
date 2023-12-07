@@ -4,6 +4,7 @@ import MyFriendCard from "@/app/mypage/MyFriendCard";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { FaTrashAlt } from "react-icons/fa";
 import userAvatar from "@/assets/user.png";
+import { user } from "@/apis/user";
 
 const dummyData = {
   name: "김낭만",
@@ -12,6 +13,7 @@ const dummyData = {
 
 const MyPageInfo = () => {
   const [more, setMore] = useState(false);
+  //  const userData = user({ name: "test" });
 
   const onToggleMore = () => setMore((prev) => !prev);
   return (

@@ -10,6 +10,7 @@ interface IChatBubble {
 }
 
 const ChatBubble = ({ name, message, date, img, isUser }: IChatBubble) => {
+  const time = date.slice(11);
   return (
     <li className={`chat ${isUser ? "chat-end" : "chat-start"}`}>
       {img && (
@@ -21,7 +22,7 @@ const ChatBubble = ({ name, message, date, img, isUser }: IChatBubble) => {
       )}
       <div className="chat-header">
         {!isUser && name}
-        <time className="text-xs opacity-50">{date}</time>
+        <time className="text-xs opacity-50">{time}</time>
       </div>
       <div className="chat-bubble">{message}</div>
     </li>

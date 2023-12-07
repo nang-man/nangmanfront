@@ -15,10 +15,15 @@ interface IChatVideoProps {
   isMain?: boolean;
   userName: string;
   videoSrc?: string;
-  soundScr?: string;
+  soundSrc?: string;
 }
 
-const ChatVideo = ({ isMain, userName }: IChatVideoProps) => {
+const ChatVideo = ({
+  isMain,
+  userName,
+  videoSrc,
+  soundSrc,
+}: IChatVideoProps) => {
   const [muteBtn, setMuteBtn] = useState(false);
   const [expandBtn, setExpandBtn] = useState(false);
   const [playVideoBtn, setPlayVideoBtn] = useState(false);

@@ -1,6 +1,6 @@
 // Chat page
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ChatVideo from "@/app/chat/ChatVideo";
 
 import { IoSettingsOutline } from "react-icons/io5";
@@ -9,18 +9,81 @@ import { users } from "@/apis/user.ts";
 import ChatRoom from "./ChatRoom";
 import { useModal } from "@/hooks/useModal";
 import { CREATE_STATE } from "@/hooks/modalType";
+import { getChatRoomData } from "@/apis/chat";
+
+const dummyRoomData = {
+  roomId: "test1",
+  tag: "test",
+  admin: "user1",
+  userData: [
+    {
+      id: "user1",
+      name: "김낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+    {
+      id: "user2",
+      name: "이낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+    {
+      id: "user3",
+      name: "박낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+    {
+      id: "user4",
+      name: "정낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+  ],
+};
+
+const dummyUserData = {
+  name: "김낭만",
+  id: "user1",
+  img: "",
+};
 
 const Chat = () => {
   const [mainVideoData, setMainVideoData] = useState([]);
+  const [otherUserData, setOtherUserData] = useState<any>(null);
 
-  const userlist = users();
+  const pageData = useParams();
+  console.log(pageData);
+
+  useEffect(() => {
+    const otherUsers = dummyRoomData.userData.filter(
+      (user) => user.id !== dummyUserData.id
+    );
+    setOtherUserData(otherUsers);
+
+    //const chatRoomData = getChatRoomData(pageData.roomId)
+  }, []);
+  //const userlist = users();
+
   const toggleMainVideo = (data: any) => {
     // 클릭한 비디오의 데이터를 저장 -> 큰 화면에 전달
     setMainVideoData(data);
   };
 
   const { onOpen } = useModal(CREATE_STATE);
-  console.log(userlist);
+
+  // Update Chat room data
+  const onEditRoomData = () => {
+    if (dummyRoomData.admin === dummyUserData.id) {
+      onOpen();
+    }
+  };
+  // console.log(userlist);
 
   const navigation = useNavigate();
   return (
@@ -38,7 +101,7 @@ const Chat = () => {
         </div>
         <div>
           <span>참여자 수 2명</span>
-          <button onClick={() => onOpen()}>
+          <button onClick={onEditRoomData}>
             <IoSettingsOutline />
           </button>
         </div>
@@ -47,13 +110,22 @@ const Chat = () => {
         {/* other video wrap */}
         <div className="flex flex-col w-full h-[90%]">
           <div className="flex gap-4 h-[28%]">
-            <ChatVideo userName="김낭만" />
-            <ChatVideo userName="이낭만" />
-            <ChatVideo userName="박낭만" />
+            {otherUserData &&
+              otherUserData.map((user: any, index: string) => (
+                <ChatVideo
+                  key={index}
+                  userName={user.name}
+                  videoSrc={user.videoSrc}
+                  soundSrc={user.soundSrc}
+                />
+              ))}
           </div>
           <ChatVideo userName="정낭만" isMain={true} />
         </div>
-        <ChatRoom />
+        <ChatRoom
+          roomId={dummyRoomData.roomId}
+          userData={dummyRoomData.userData}
+        />
       </div>
     </section>
   );
