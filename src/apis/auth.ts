@@ -1,6 +1,6 @@
 import axios from "axios";
 
-type CurrentUserLogin = {
+export type CurrentUserLogin = {
   email: string;
   password: string;
 };
@@ -13,7 +13,6 @@ export const signup = async ({
   email,
   name,
   password,
-
   phone,
 }: RegisterUser) => {
   try {
@@ -35,12 +34,7 @@ export const login = async ({ email, password }: CurrentUserLogin) => {
       password: password,
     });
 
-    const { tokenAccess } = res.data;
-    axios.defaults.headers.common[tokenAccess];
-
-    // console.log(res.data, res.headers);
-
-    return res.data.user;
+    return res.data;
   } catch (error) {
     console.error(error);
   }

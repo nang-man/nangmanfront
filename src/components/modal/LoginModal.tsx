@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useCookies } from "react-cookie";
+import { useModal } from "@/hooks/useModal";
+import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+import { login } from "@/apis/auth";
 
 import Modal from "./Modal";
 
 import Input from "../Input";
-
-import { useModal } from "@/hooks/useModal";
-import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
-import { login } from "@/apis/auth";
 
 const LoginModal = () => {
   const {
@@ -21,11 +21,19 @@ const LoginModal = () => {
     },
   });
 
+  const [cookies, setCookie] = useCookies(["token"]);
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { email, password } = data;
-    const res = await login({ email, password });
-    console.log(res);
-    loginModal.onClose();
+    try {
+      const res = await login({ email, password });
+      // console.log(res);
+      setCookie("token", res.accessToken);
+      console.log(cookies);
+      loginModal.onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loginModal = useModal(LOGIN_STATE);

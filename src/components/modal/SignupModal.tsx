@@ -30,7 +30,6 @@ const SignupModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { name, email, password, phone } = data;
     signup({ name, email, password, phone });
-    console.log(data);
     signupModal.onClose();
   };
 

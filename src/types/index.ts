@@ -10,4 +10,6 @@ export type CurrentUserData = {
   userId: string;
   followers: [];
   followings: [];
+  __v: number;
+  _id: string;
 };
