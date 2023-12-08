@@ -14,8 +14,16 @@ import SignupModal from "@components/modal/SignupModal";
 import LoginModal from "@components/modal/LoginModal";
 import CreateChatModal from "@components/modal/CreateChatModal";
 import ChatModal from "@components/modal/ChatModal";
+import { useAppSelector } from "@/store/hooks";
+import { useEffect } from "react";
 
 const Navbar = () => {
+  const selector = useAppSelector((state) => state.currentUser);
+
+  useEffect(() => {
+    console.log(selector);
+  }, [selector]);
+
   const createModal = useModal(CREATE_STATE);
   const loginModal = useModal(LOGIN_STATE);
   const signupModal = useModal(SIGNUP_STATE);

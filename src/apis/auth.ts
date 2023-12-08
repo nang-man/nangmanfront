@@ -34,6 +34,8 @@ export const login = async ({ email, password }: CurrentUserLogin) => {
       password: password,
     });
 
+    // sessionStorage.setItem("curUser", email);
+
     return res.data;
   } catch (error) {
     console.error(error);
