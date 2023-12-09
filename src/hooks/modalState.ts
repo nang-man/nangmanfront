@@ -21,6 +21,12 @@ export const signupModalState = atom<IType>({
     isOpen: false,
   },
 });
+export const chattingModalState = atom<IType>({
+  key: "chattingModalState",
+  default: {
+    isOpen: false,
+  },
+});
 
 export const passwordModalState = atom<{ phoneCheck: boolean }>({
   key: "passwordModalState",
