@@ -1,10 +1,5 @@
 import axios from "axios";
 
-// type User = {
-//   name: string;
-//   avatar: string;
-// };
-
 type userName = {
   name: string;
 };

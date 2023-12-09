@@ -1,26 +1,34 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoChatboxEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
 
 import { useModal } from "@/hooks/useModal";
-import { CREATE_STATE, LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+import {
+  CHAT_STATE,
+  CREATE_STATE,
+  LOGIN_STATE,
+  SIGNUP_STATE,
+} from "@/hooks/modalType";
 import Avatar from "@components/Avatar";
 import SignupModal from "@components/modal/SignupModal";
 import LoginModal from "@components/modal/LoginModal";
 import CreateChatModal from "@components/modal/CreateChatModal";
 import ChatModal from "@components/modal/ChatModal";
+import { useAppSelector } from "@/store/hooks";
+import { useEffect } from "react";
 
 const Navbar = () => {
+  const selector = useAppSelector((state) => state.currentUser);
+
+  useEffect(() => {
+    console.log(selector);
+  }, [selector]);
+
   const createModal = useModal(CREATE_STATE);
   const loginModal = useModal(LOGIN_STATE);
   const signupModal = useModal(SIGNUP_STATE);
+  const chatModal = useModal(CHAT_STATE);
 
-  const [chatModal, setChatModal] = useState(false);
-
-  const useChatModal = () => {
-    setChatModal((prev) => !prev);
-  };
   return (
     <>
       <div className="flex bg-gray-100 text-gray-900 fixed">
@@ -61,7 +69,7 @@ const Navbar = () => {
               </div>
             </button>
             <button
-              onClick={useChatModal}
+              onClick={chatModal.onOpen}
               className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
             >
               <IoChatboxEllipsesOutline size={30} />
@@ -116,7 +124,7 @@ const Navbar = () => {
       {loginModal.isOpen.isOpen && <LoginModal />}
       {signupModal.isOpen.isOpen && <SignupModal />}
       {createModal.isOpen.isOpen && <CreateChatModal />}
-      {chatModal && <ChatModal onToggle={useChatModal} />}
+      {chatModal.isOpen.isOpen && <ChatModal />}
     </>
   );
 };

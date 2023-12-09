@@ -1,14 +1,21 @@
 import { useCallback } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useCookies } from "react-cookie";
+
+import { useModal } from "@/hooks/useModal";
+import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+import { login } from "@/apis/auth";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
+import { fetchCurrentUser, setUser } from "@/store/getCurrentUserSlice";
 
 import Modal from "./Modal";
 
 import Input from "../Input";
 
-import { useModal } from "@/hooks/useModal";
-import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
-
 const LoginModal = () => {
+  const selector = useAppSelector((state) => state.currentUser);
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -20,9 +27,26 @@ const LoginModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-    loginModal.onClose();
+  const [cookies, setCookie] = useCookies(["token"]);
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { email, password } = data;
+    try {
+      // const res = await login({ email, password });
+      // const { accessToken } = res;
+      const res = await dispatch(fetchCurrentUser({ email, password }));
+
+      // const { accessToken } = res;
+      // setCookie("token", accessToken, {
+      //   path: "/",
+      //   secure: false,
+      //   httpOnly: true,
+      // });
+      setUser(res.payload);
+      loginModal.onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loginModal = useModal(LOGIN_STATE);
