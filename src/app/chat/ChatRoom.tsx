@@ -43,11 +43,14 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   const [joinChat, setJoinChat] = useState(false);
 
   // socket data
-  const [socketInstance, setSocketInstance] = useState<any>(null);
+  const [socketInstance, setSocketInstance] = useState<any>({
+    connected: false,
+  });
   const scrollRef = useRef<any>(null);
 
   const dayJs = dayjs();
 
+  // Get socket message
   const socketMessage = (data: any) => {
     console.log(data.message);
   };
@@ -77,13 +80,24 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
     socket.on("disconnect", socketMessage);
 
     setSocketInstance(socket);
+    setJoinChat(true);
 
     return () => {
       socket.disconnect();
     };
   }, []);
 
-  // scroll
+  // Join chat room immediately
+  useEffect(() => {
+    if (socketInstance && joinChat) {
+      socketInstance.emit("joinChatRoom", {
+        name: socketInstance.id,
+        roomId: roomId,
+      });
+    }
+  }, [joinChat]);
+
+  // Chat scroll Motion
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -102,7 +116,11 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputMessage === "") return;
-    if (socketInstance) {
+
+    if (!socketInstance.connected) {
+      setInputMessage("");
+      return window.alert("연결에 실패하였습니다.");
+    } else {
       const data = {
         id: socketInstance.id,
         message: inputMessage,
@@ -120,43 +138,36 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
 
     // Join chat room
     if (!joinChat) {
-      joinChatRoom();
+      socketInstance.emit("joinChatRoom", {
+        name: socketInstance.id,
+        roomId: roomId,
+      });
       setJoinChat(true);
     }
 
-    if (socketInstance) {
-      socketInstance.emit(
-        "sendMessage",
-        {
-          name: data.id,
-          roomId: roomId,
-          message: data.message,
-          time: data.time,
-        },
-        (getData: any) => {
-          // 서버에서 받은 콜백 메시지 처리
-          const getUserInfo = userData.find((user) => user.id === getData.id);
+    socketInstance.emit(
+      "sendMessage",
+      {
+        name: data.id,
+        roomId: roomId,
+        message: data.message,
+        time: data.time,
+      },
+      (getData: any) => {
+        // 서버에서 받은 콜백 메시지 처리
+        const getUserInfo = userData.find((user) => user.id === getData.id);
 
-          const messageData = {
-            isUser: getData.id === data.id ? true : false,
-            name: getUserInfo?.name,
-            id: getData.id,
-            message: getData.message,
-            time: getData.time,
-            img: getUserInfo?.img,
-          };
-          setMessages((prev: any) => [...prev, messageData]);
-        }
-      );
-    }
-  };
-
-  const joinChatRoom = () => {
-    socketInstance.emit("joinChatRoom", {
-      name: socketInstance.id,
-      roomId: roomId,
-    });
-    setJoinChat(true);
+        const messageData = {
+          isUser: getData.id === data.id ? true : false,
+          name: getUserInfo?.name,
+          id: getData.id,
+          message: getData.message,
+          time: getData.time,
+          img: getUserInfo?.img,
+        };
+        setMessages((prev: any) => [...prev, messageData]);
+      }
+    );
   };
 
   const leaveRoom = () => {
@@ -178,8 +189,8 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
         ref={scrollRef}
         className="h-[85%] w-full overflow-scroll scrollbar-hidden"
       >
-        {joinChat && (
-          <li className="text-gray-500">
+        {socketInstance.connected && joinChat && (
+          <li className="text-gray-500 text-sm">
             -------채팅방에 입장하였습니다.-------
           </li>
         )}

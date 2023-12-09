@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 import { useState } from "react";
-import video_url from "@/assets/test.mp4";
 
 interface IChatVideoProps {
   isMain?: boolean;
@@ -33,7 +32,6 @@ const ChatVideo = ({
   const mainStyle =
     "relative rounded-xl w-full h-[76%] mt-[2%] bg-black overflow-hidden";
 
-  //
   const onToggleVideoBtn = () => {
     // 비디오 연결/해제
     setPlayVideoBtn((prev) => !prev);
@@ -105,9 +103,9 @@ const ChatVideo = ({
         </span>
         {!isMain && otherVideoBtns}
       </div>
-      <video className="h-full w-auto m-auto flex justify-between" controls>
-        <source src={video_url} type="video/mp4" />
-      </video>
+      {/* <video className="h-full w-auto m-auto flex justify-between" controls>
+        <source src={videoSrc} type="video/mp4" />
+      </video> */}
       {isMain && mainBtns}
     </div>
   );

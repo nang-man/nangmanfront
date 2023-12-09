@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ChatVideo from "@/app/chat/ChatVideo";
 
 import { IoSettingsOutline } from "react-icons/io5";
-
-import { users } from "@/apis/user.ts";
+import { HiOutlineXMark } from "react-icons/hi2";
 import ChatRoom from "./ChatRoom";
 import { useModal } from "@/hooks/useModal";
 import { CREATE_STATE } from "@/hooks/modalType";
@@ -15,6 +14,7 @@ const dummyRoomData = {
   roomId: "test1",
   tag: "test",
   admin: "user1",
+  title: "Title",
   userData: [
     {
       id: "user1",
@@ -57,8 +57,8 @@ const Chat = () => {
   const [mainVideoData, setMainVideoData] = useState([]);
   const [otherUserData, setOtherUserData] = useState<any>(null);
 
+  // Get room data
   const pageData = useParams();
-  console.log(pageData);
 
   useEffect(() => {
     const otherUsers = dummyRoomData.userData.filter(
@@ -68,7 +68,6 @@ const Chat = () => {
 
     //const chatRoomData = getChatRoomData(pageData.roomId)
   }, []);
-  //const userlist = users();
 
   const toggleMainVideo = (data: any) => {
     // 클릭한 비디오의 데이터를 저장 -> 큰 화면에 전달
@@ -86,22 +85,31 @@ const Chat = () => {
   // console.log(userlist);
 
   const navigation = useNavigate();
+
+  const onGoList = () => {
+    if (window.confirm("채팅을 종료하시겠습니까?")) {
+      navigation("/list");
+    }
+  };
+
   return (
     <section className="flex flex-col w-[85vw] h-[95vh] m-auto">
-      <header>
+      <header className="relative">
         <div>
-          <h1>방제</h1>
-          <h3>태그</h3>
-          <button
-            className="bg-emerald-600"
-            onClick={() => navigation("/list")}
-          >
-            나가기
+          <h1 className="text-3xl font-bold">{dummyRoomData.title}</h1>
+          <h3 className="text-gray-600 font-semibold text-xl mt-3">
+            Tag: #{dummyRoomData.tag}
+          </h3>
+          <button className="absolute top-0 right-0" onClick={onGoList}>
+            <HiOutlineXMark className="text-gray-600 text-3xl hover:text-red-600" />
           </button>
         </div>
-        <div>
-          <span>참여자 수 2명</span>
-          <button onClick={onEditRoomData}>
+        <div className="flex justify-end mr-[5%] mb-5">
+          <span className="font-semibold mr-3">참여자 수 2명</span>
+          <button
+            onClick={onEditRoomData}
+            className="text-2xl text-gray-600 hover:text-gray-800"
+          >
             <IoSettingsOutline />
           </button>
         </div>
