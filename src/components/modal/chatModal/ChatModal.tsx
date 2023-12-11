@@ -6,6 +6,15 @@ import ChatModalRoom from "./ChatModalRoom";
 
 import { useModal } from "@/hooks/useModal";
 import { CHAT_STATE } from "@/hooks/modalType";
+// import {
+//   newSocket,
+//   handshake,
+//   joinChatRoom,
+//   leaveRoom,
+//   updateMessage,
+//   sendMessage,
+//   disconnect,
+// } from "@/data/socket.ts";
 
 const testUser = [
   {
@@ -26,11 +35,15 @@ const testUser = [
 ];
 
 const ChatModal = () => {
+  const session = sessionStorage.getItem("user") as string;
+  const currentUser = JSON.parse(session);
+
+  const [selectUserId, setSelectUserId] = useState<number | null>(null);
+
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
   const [offsetY, setOffsetY] = useState<number | null>(null);
-  const [selectUserId, setSelectUserId] = useState<number | null>(null);
 
   const chatModal = useModal(CHAT_STATE);
 
@@ -107,18 +120,24 @@ const ChatModal = () => {
           </button>
         </header>
         {/* 유저 목록 */}
-        <article className="">
-          {selectUserId === null ? (
-            <ChatModalUserList
-              users={testUser}
-              onUserClick={(userId: number) => handleUserClick(userId)}
-            />
-          ) : (
-            <ChatModalRoom
-              users={testUser.filter((user) => user.id === selectUserId)}
-            />
-          )}
-        </article>
+        {!currentUser ? (
+          <article className="flex justify-center items-center h-4/5">
+            현재 팔로워 중인 유저가 없습니다.
+          </article>
+        ) : (
+          <article>
+            {selectUserId === null ? (
+              <ChatModalUserList
+                fllowers={testUser}
+                onUserClick={(userId: number) => handleUserClick(userId)}
+              />
+            ) : (
+              <ChatModalRoom
+                fllowers={testUser.filter((user) => user.id === selectUserId)}
+              />
+            )}
+          </article>
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaMicrophone, FaVideo } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
 
-import { socket } from "@/data/socket.ts";
+import { newSocket } from "@/data/socket.ts";
 import { users } from "@/apis/user.ts";
 
 const dummyData = {
@@ -29,19 +29,19 @@ const Chat = () => {
 
   useEffect(() => {
     // 서버로부터 메시지를 받았을 때의 이벤트 리스너
-    socket.on("message", (message: string) => {
+    newSocket.on("message", (message: string) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
     // 컴포넌트 언마운트 시 소켓 연결 해제
     return () => {
-      socket.disconnect();
+      newSocket.disconnect();
     };
   }, []);
 
   const sendMessage = () => {
     // 메시지를 서버로 보내는 이벤트
-    socket.emit("sendMessage", inputMessage);
+    newSocket.emit("sendMessage", inputMessage);
     setInputMessage("");
   };
 

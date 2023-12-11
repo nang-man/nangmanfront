@@ -3,7 +3,7 @@ import React from "react";
 import ChatBubble from "@/app/chat/ChatBubble";
 
 interface ChatModalRoomProps {
-  users: {
+  fllowers: {
     id: number;
     name: string;
     src: string;
@@ -18,17 +18,17 @@ const dummyData = {
   isUser: false,
 };
 
-const ChatModalRoom = React.memo(({ users }: ChatModalRoomProps) => {
+const ChatModalRoom = React.memo(({ fllowers }: ChatModalRoomProps) => {
   return (
     <div>
       <div>
         <ul className="overflow-y-auto max-h-[400px]">
-          {users.map((user) => (
+          {fllowers.map((fllower) => (
             <ChatBubble
-              name={user.name}
+              name={fllower.name}
               message={dummyData.message}
               date={dummyData.date}
-              img={user.src}
+              img={fllower.src}
               isUser={dummyData.isUser}
             />
           ))}

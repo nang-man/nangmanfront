@@ -16,16 +16,18 @@ const initialState: CurrentUserData = {
   userId: "",
   followers: [],
   followings: [],
-  __v: 0,
-  _id: "",
 };
 
 export const fetchCurrentUser = createAsyncThunk(
   "currentUser",
   async ({ email, password }: { email: string; password: string }) => {
     const data = await login({ email, password });
-    console.log(data.user);
-    return data.user;
+    try {
+      console.log(data.user);
+      return data.user;
+    } catch (error) {
+      console.error(error);
+    }
   }
 );
 

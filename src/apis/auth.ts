@@ -34,10 +34,51 @@ export const login = async ({ email, password }: CurrentUserLogin) => {
       password: password,
     });
 
-    // sessionStorage.setItem("curUser", email);
+    const {
+      accessToken,
+      refreshToken,
+    }: { accessToken: string; refreshToken: string } = res.data;
+
+    const {
+      name,
+      phone,
+      profileImg,
+      userId,
+      followers,
+      followings,
+    }: {
+      name: string;
+      phone: string;
+      profileImg: string;
+      userId: string;
+      followers: [];
+      followings: [];
+    } = res.data.user;
+
+    const curUser = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      curEmail: email,
+      curName: name,
+      adminState: true,
+      phone: phone,
+      profileImg: profileImg,
+      userId: userId,
+      followers: followers,
+      followings: followings,
+    };
+
+    sessionStorage.setItem("user", JSON.stringify(curUser));
 
     return res.data;
   } catch (error) {
     console.error(error);
   }
+};
+
+export const logout = async () => {
+  await axios.post(`${URL}/api/auth/logout`);
+
+  sessionStorage.removeItem("user");
+  window.location.reload();
 };
