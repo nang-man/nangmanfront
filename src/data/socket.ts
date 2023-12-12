@@ -1,7 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { useState } from "react";
-
-const URL = import.meta.env.VITE_LOCAL_URL as string;
+import { URL } from "./url";
 
 export const newSocket: Socket = io(URL);
 

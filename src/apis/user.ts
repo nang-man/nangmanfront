@@ -1,8 +1,5 @@
 import axios from "axios";
-
-type userName = {
-  name: string;
-};
+import { URL } from "@/data/url";
 
 export const users = async () => {
   try {
@@ -14,9 +11,9 @@ export const users = async () => {
   }
 };
 
-export const user = async ({ name }: userName) => {
+export const user = async ({ name }: { name: string }) => {
   try {
-    axios.get(`localhost/user/${name}`).then((res) => {
+    axios.get(`${URL}/user/${name}`).then((res) => {
       return res.data;
     });
   } catch (error) {

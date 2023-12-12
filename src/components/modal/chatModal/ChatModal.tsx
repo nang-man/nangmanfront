@@ -6,6 +6,7 @@ import ChatModalRoom from "./ChatModalRoom";
 
 import { useModal } from "@/hooks/useModal";
 import { CHAT_STATE } from "@/hooks/modalType";
+import { getStorage } from "@/data/storage";
 // import {
 //   newSocket,
 //   handshake,
@@ -35,8 +36,7 @@ const testUser = [
 ];
 
 const ChatModal = () => {
-  const session = sessionStorage.getItem("user") as string;
-  const currentUser = JSON.parse(session);
+  const currentUser = getStorage();
 
   const [selectUserId, setSelectUserId] = useState<number | null>(null);
 

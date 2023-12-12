@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+// import { useCallback } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 // import { login } from "@/apis/auth";
-import { useModal } from "@/hooks/useModal";
-import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+// import { useModal } from "@/hooks/useModal";
+// import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
 
 import Modal from "./Modal";
 
@@ -17,7 +17,7 @@ const LoginModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       email: "",
-      password: "",
+      authorization: "",
     },
   });
 
@@ -54,20 +54,8 @@ const LoginModal = () => {
   const footerContent = (
     <article className="flex items-center w-full">
       <div className="text-center font-light text-neutral-500 w-full">
-        <div className="flex justify-between gap-2">
-          <div>Fisrt time using Nang-man?</div>
-          <div
-            onClick={() => {}}
-            className="cursor-pointer text-neutral-800 hover:underline"
-          >
-            Create an account
-          </div>
-          <div
-            onClick={() => {}}
-            className="cursor-pointer text-neutral-400 hover:underline hover:text-neutral-900"
-          >
-            Find an account
-          </div>
+        <div className="flex justify-center gap-2">
+          <div>Enjoy Nang-man</div>
         </div>
       </div>
     </article>

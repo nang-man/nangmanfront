@@ -1,15 +1,16 @@
 import axios from "axios";
 
-type Create = {
-  email: string;
-  roomName: string;
-  tagName: string;
-  count: number;
-};
+import { URL } from "@/data/url";
+import { CreateType } from "@/types";
 
-export const create = async ({ email, roomName, tagName, count }: Create) => {
+export const create = async ({
+  email,
+  roomName,
+  tagName,
+  count,
+}: CreateType) => {
   try {
-    await axios.post("localhost/create", {
+    await axios.post(`${URL}/create`, {
       user: email,
       roomName: roomName,
       tagName: tagName,
