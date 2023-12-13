@@ -7,17 +7,18 @@ import Avatar from "@components/Avatar";
 import SignupModal from "@components/modal/SignupModal";
 import LoginModal from "@components/modal/LoginModal";
 import CreateChatModal from "@components/modal/CreateChatModal";
-import ChatModal from "@components/modal/ChatModal";
+import ChatModal from "@components/modal/chatModal/ChatModal";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
 import {
   TModalType,
   TYPE_CHAT,
-  TYPE_CREATE,
+  TYPE_CREATE_CHAT,
   TYPE_LOGIN,
   TYPE_SIGNUP,
 } from "@/store/types";
+import { logout } from "@/apis/auth";
 
 const Navbar = React.memo(() => {
   const selector = useAppSelector((state) => state.currentUser);
@@ -45,7 +46,7 @@ const Navbar = React.memo(() => {
           </div>
           <nav className="flex flex-1 flex-col gap-y-4 pt-10">
             <button
-              onClick={() => onOpenModal(TYPE_CREATE)}
+              onClick={() => onOpenModal(TYPE_CREATE_CHAT)}
               className="group relative rounded-xl bg-gray-100 p-2 hover:text-blue-600 hover:bg-gray-50"
             >
               <CgAddR size={30} />
@@ -168,7 +169,7 @@ const Navbar = React.memo(() => {
       </div>
       {modalState.login && <LoginModal />}
       {modalState.signup && <SignupModal />}
-      {modalState.create && <CreateChatModal />}
+      {modalState.createChat && <CreateChatModal />}
       {modalState.chat && <ChatModal />}
     </>
   );

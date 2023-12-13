@@ -5,7 +5,7 @@ import { IModal, IModalPayload } from "./types";
 const initialState: IModal = {
   login: false,
   signup: false,
-  create: false,
+  createChat: false,
   chat: false,
   isPhoneCheck: false,
 };

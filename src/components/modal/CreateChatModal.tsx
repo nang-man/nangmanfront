@@ -6,7 +6,7 @@ import Counter from "../Counter";
 import Modal from "./Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
-import { TYPE_CREATE } from "@/store/types";
+import { TYPE_CREATE_CHAT } from "@/store/types";
 import { getStorage } from "@/data/storage";
 
 const CreateChatModal = () => {
@@ -27,12 +27,12 @@ const CreateChatModal = () => {
   });
 
   const guestCount = watch("guestCount");
-  const modalState = useAppSelector((state) => state.modalState.create);
+  const modalState = useAppSelector((state) => state.modalState.createChat);
 
   const dispatch = useAppDispatch();
 
   const onCloseModal = () =>
-    dispatch(toggleModal({ type: TYPE_CREATE, isOpen: false }));
+    dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false }));
 
   const setCustomValue = (id: string, value: number) => {
     setValue(id, value, {
