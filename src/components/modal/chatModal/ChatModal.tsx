@@ -3,19 +3,9 @@ import { IoArrowBack, IoClose } from "react-icons/io5";
 
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
-
-import { useModal } from "@/hooks/useModal";
-import { CHAT_STATE } from "@/hooks/modalType";
-import { getStorage } from "@/data/storage";
-// import {
-//   newSocket,
-//   handshake,
-//   joinChatRoom,
-//   leaveRoom,
-//   updateMessage,
-//   sendMessage,
-//   disconnect,
-// } from "@/data/socket.ts";
+import { useAppDispatch } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_CHAT } from "@/store/types";
 
 const testUser = [
   {
@@ -36,16 +26,16 @@ const testUser = [
 ];
 
 const ChatModal = () => {
-  const currentUser = getStorage();
-
-  const [selectUserId, setSelectUserId] = useState<number | null>(null);
-
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
   const [offsetY, setOffsetY] = useState<number | null>(null);
+  const [selectUserId, setSelectUserId] = useState<number | null>(null);
 
-  const chatModal = useModal(CHAT_STATE);
+  const dispatch = useAppDispatch();
+
+  const onCloseModal = () =>
+    dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false }));
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -113,31 +103,25 @@ const ChatModal = () => {
           </button>
           <h2 className="text-xl">채팅하기</h2>
           <button
-            onClick={chatModal.onClose}
+            onClick={onCloseModal}
             className="p-1 border-0 hover:opacity-70 transition absolute right-9"
           >
             <IoClose size={25} />
           </button>
         </header>
         {/* 유저 목록 */}
-        {!currentUser ? (
-          <article className="flex justify-center items-center h-4/5">
-            현재 팔로워 중인 유저가 없습니다.
-          </article>
-        ) : (
-          <article>
-            {selectUserId === null ? (
-              <ChatModalUserList
-                fllowers={testUser}
-                onUserClick={(userId: number) => handleUserClick(userId)}
-              />
-            ) : (
-              <ChatModalRoom
-                fllowers={testUser.filter((user) => user.id === selectUserId)}
-              />
-            )}
-          </article>
-        )}
+        <article className="">
+          {selectUserId === null ? (
+            <ChatModalUserList
+              fllowers={testUser}
+              onUserClick={(userId: number) => handleUserClick(userId)}
+            />
+          ) : (
+            <ChatModalRoom
+              fllowers={testUser.filter((user) => user.id === selectUserId)}
+            />
+          )}
+        </article>
       </div>
     </div>
   );

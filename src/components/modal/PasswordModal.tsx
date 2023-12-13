@@ -8,11 +8,16 @@ import { useNavigate } from "react-router-dom";
 const PasswordModal = () => {
   const [isChecked, setIsChecked] = useRecoilState(passwordModalState);
   const [phoneNum, setPhoneNum] = useState("");
+  const [isSend, setIsSend] = useState(true);
   const [submitCode, setSubmitCode] = useState("");
 
   const navigate = useNavigate();
 
-  const onSendCode = () => {};
+  const onSendCode = () => {
+    //Send
+
+    setIsSend(true);
+  };
   const onCencel = () => navigate("/mypage/update", { replace: true });
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +30,8 @@ const PasswordModal = () => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsChecked((prev) => ({
       ...prev,
       phoneCheck: true,
@@ -38,7 +44,7 @@ const PasswordModal = () => {
     "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
 
   const bodyContent = (
-    <form onSubmit={onSubmit} id="passwordForm" className="flex flex-col gap-4">
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <h2 className="font-semibold text-lg">전화번호를 입력해주세요.</h2>
       <div className="grid grid-cols-7-3 gap-5">
         <input
@@ -50,7 +56,6 @@ const PasswordModal = () => {
           onChange={onChangeInput}
           className={style}
           placeholder="Please enter your phone number."
-          form="passwordForm"
         />
         <button
           onClick={onSendCode}
@@ -64,11 +69,11 @@ const PasswordModal = () => {
           type="text"
           minLength={5}
           required
+          disabled={!isSend}
           value={submitCode}
           onChange={onChangeInput}
           className={style}
           placeholder="Please enter your code."
-          form="passwordForm"
         />
       </div>
       <div className="grid grid-cols-2 gap-[3%] font-semibold">
@@ -89,7 +94,12 @@ const PasswordModal = () => {
   );
 
   return (
-    <Modal onClose={onCencel} title="Change Password" body={bodyContent} />
+    <Modal
+      isOpen={true}
+      onClose={onCencel}
+      title="Change Password"
+      body={bodyContent}
+    />
   );
 };
 
