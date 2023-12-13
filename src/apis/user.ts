@@ -16,7 +16,7 @@ export const users = async () => {
 
 export const user = async ({ name }: userName) => {
   try {
-    axios.get(`localhost/user/${name}`).then((res) => {
+    axios.get(`localhost/api/user/${name}`).then((res) => {
       return res.data;
     });
   } catch (error) {
