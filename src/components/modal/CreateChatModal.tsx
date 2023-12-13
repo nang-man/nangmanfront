@@ -6,8 +6,11 @@ import Counter from "../Counter";
 import Modal from "./Modal";
 import { useModal } from "@/hooks/useModal";
 import { CREATE_STATE } from "@/hooks/modalType";
+import { getStorage } from "@/data/storage.ts";
 
 const CreateChatModal = () => {
+  const session = getStorage();
+
   const {
     register,
     handleSubmit,

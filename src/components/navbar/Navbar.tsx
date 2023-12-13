@@ -13,21 +13,17 @@ import Avatar from "@components/Avatar";
 import SignupModal from "@components/modal/SignupModal";
 import LoginModal from "@components/modal/LoginModal";
 import CreateChatModal from "@components/modal/CreateChatModal";
-import ChatModal from "@components/modal/ChatModal";
-import { useAppSelector } from "@/store/hooks";
-import { useEffect } from "react";
+import ChatModal from "@components/modal/chatModal/ChatModal";
+import { logout } from "@/apis/auth";
 
 const Navbar = () => {
-  const selector = useAppSelector((state) => state.currentUser);
-
-  useEffect(() => {
-    console.log(selector);
-  }, [selector]);
-
   const createModal = useModal(CREATE_STATE);
   const loginModal = useModal(LOGIN_STATE);
   const signupModal = useModal(SIGNUP_STATE);
   const chatModal = useModal(CHAT_STATE);
+
+  const session = sessionStorage.getItem("user") as string;
+  const currentUser = JSON.parse(session);
 
   return (
     <>
@@ -53,21 +49,40 @@ const Navbar = () => {
                 </div>
               </div>
             </button>
-            <button
-              onClick={loginModal.onOpen}
-              className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
-            >
-              <CgUser size={30} />
+            {!currentUser ? (
+              <button
+                onClick={loginModal.onOpen}
+                className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
+              >
+                <CgUser size={30} />
 
-              <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
-                <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
-                  <div className="absolute inset-0 -left-1 flex items-center">
-                    <div className="h-2 w-2 rotate-45 bg-white"></div>
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    Please Login
                   </div>
-                  User
                 </div>
-              </div>
-            </button>
+              </button>
+            ) : (
+              <Link
+                to={`/user/${currentUser.curName}`}
+                className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
+              >
+                <CgUser size={30} />
+
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    User
+                  </div>
+                </div>
+              </Link>
+            )}
+
             <button
               onClick={chatModal.onOpen}
               className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
@@ -101,23 +116,45 @@ const Navbar = () => {
           </nav>
 
           <div className="flex flex-col items-center gap-y-4 py-10">
-            <button
-              onClick={signupModal.onOpen}
-              className="mt-2 rounded-full bg-gray-100 relative group"
-            >
-              <Avatar src="" height="[30px]" width="[30px]" />
-              <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
-                <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
-                  <div className="absolute inset-0 -left-1 flex items-center">
-                    <div className="h-2 w-2 rotate-45 bg-white"></div>
+            {!currentUser ? (
+              <button
+                onClick={signupModal.onOpen}
+                className="mt-2 rounded-full bg-gray-100 relative group"
+              >
+                <Avatar src="" height="[30px]" width="[30px]" />
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    <p className="text-sm font-semibold text-gray-900 border-b">
+                      비회원
+                    </p>
                   </div>
-                  <p className="text-sm font-semibold text-gray-900 border-b">
-                    Username
-                  </p>
-                  <p className="text-sm font-semibold text-gray-900">email</p>
                 </div>
-              </div>
-            </button>
+              </button>
+            ) : (
+              <button
+                onClick={() => logout()}
+                className="mt-2 rounded-full bg-gray-100 relative group"
+              >
+                <Avatar
+                  src={`${currentUser.profileImg}`}
+                  height="[30px]"
+                  width="[30px]"
+                />
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    <p className="text-sm font-semibold text-gray-900 border-b">
+                      Logout
+                    </p>
+                  </div>
+                </div>
+              </button>
+            )}
           </div>
         </aside>
       </div>

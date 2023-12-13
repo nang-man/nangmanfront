@@ -1,20 +1,20 @@
 import axios from "axios";
-
-export type CurrentUserLogin = {
-  email: string;
-  password: string;
-};
-
-type RegisterUser = CurrentUserLogin & { name: string; phone: string };
-
-const URL = import.meta.env.VITE_LOCAL_URL as string;
+import { setStorage, removeStorage } from "@/data/storage";
+import {
+  LoginType,
+  RegisterType,
+  TokenType,
+  GetUserDataType,
+  UserType,
+} from "@/types";
+import { URL } from "@/data/url";
 
 export const signup = async ({
   email,
   name,
   password,
   phone,
-}: RegisterUser) => {
+}: RegisterType) => {
   try {
     await axios.post(`${URL}/api/auth/signup`, {
       name: name,
@@ -27,17 +27,48 @@ export const signup = async ({
   }
 };
 
-export const login = async ({ email, password }: CurrentUserLogin) => {
+export const login = async ({ email, password }: LoginType) => {
   try {
     const res = await axios.post(`${URL}/api/auth/login`, {
       email: email,
       password: password,
     });
 
-    // sessionStorage.setItem("curUser", email);
+    const { accessToken, refreshToken }: TokenType = res.data;
+
+    const {
+      name,
+      phone,
+      profileImg,
+      userId,
+      followers,
+      followings,
+    }: GetUserDataType = res.data.user;
+
+    const curUser: UserType = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      curEmail: email,
+      curName: name,
+      adminState: true,
+      phone: phone,
+      profileImg: profileImg,
+      userId: userId,
+      followers: followers,
+      followings: followings,
+    };
+
+    setStorage(curUser);
 
     return res.data;
   } catch (error) {
     console.error(error);
   }
+};
+
+export const logout = async () => {
+  await axios.post(`${URL}/api/auth/logout`);
+
+  removeStorage();
+  window.location.reload();
 };

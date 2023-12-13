@@ -17,7 +17,7 @@ const MyPage = () => {
     } else if (data["*"] === "" && isEdit) {
       setIsEdit(false);
     }
-  }, [data]);
+  }, [data, isEdit]);
 
   const onToggleMenu = (path: string, bool: boolean) => {
     if (bool === isEdit) return;
