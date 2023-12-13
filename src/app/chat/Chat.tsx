@@ -10,6 +10,7 @@ import { useModal } from "@/hooks/useModal";
 import { CREATE_STATE } from "@/hooks/modalType";
 import { getChatRoomData } from "@/apis/chat";
 
+
 const dummyRoomData = {
   roomId: "test1",
   tag: "test",

@@ -7,8 +7,11 @@ import Modal from "./Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
 import { TYPE_CREATE } from "@/store/types";
+import { getStorage } from "@/data/storage";
 
 const CreateChatModal = () => {
+  const session = getStorage();
+
   const {
     register,
     handleSubmit,

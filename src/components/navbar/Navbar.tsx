@@ -31,6 +31,9 @@ const Navbar = React.memo(() => {
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
 
+  const session = sessionStorage.getItem("user") as string;
+  const currentUser = JSON.parse(session);
+
   return (
     <>
       <div className="flex bg-gray-100 text-gray-900 fixed">
@@ -55,21 +58,39 @@ const Navbar = React.memo(() => {
                 </div>
               </div>
             </button>
-            <button
-              onClick={() => onOpenModal(TYPE_LOGIN)}
-              className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
-            >
-              <CgUser size={30} />
-
-              <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
-                <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
-                  <div className="absolute inset-0 -left-1 flex items-center">
-                    <div className="h-2 w-2 rotate-45 bg-white"></div>
+            {!currentUser ? (
+              <button
+                onClick={() => onOpenModal(TYPE_LOGIN)}
+                className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
+              >
+                <CgUser size={30} />
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    Please Login
                   </div>
-                  User
                 </div>
-              </div>
-            </button>
+              </button>
+            ) : (
+              <Link
+                to={`/user/${currentUser.curName}`}
+                className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
+              >
+                <CgUser size={30} />
+
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    User
+                  </div>
+                </div>
+              </Link>
+            )}
+
             <button
               onClick={() => onOpenModal(TYPE_CHAT)}
               className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
@@ -103,23 +124,45 @@ const Navbar = React.memo(() => {
           </nav>
 
           <div className="flex flex-col items-center gap-y-4 py-10">
-            <button
-              onClick={() => onOpenModal(TYPE_SIGNUP)}
-              className="mt-2 rounded-full bg-gray-100 relative group"
-            >
-              <Avatar src="" height="[30px]" width="[30px]" />
-              <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
-                <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
-                  <div className="absolute inset-0 -left-1 flex items-center">
-                    <div className="h-2 w-2 rotate-45 bg-white"></div>
+            {!currentUser ? (
+              <button
+                onClick={() => onOpenModal(TYPE_SIGNUP)}
+                className="mt-2 rounded-full bg-gray-100 relative group"
+              >
+                <Avatar src="" height="[30px]" width="[30px]" />
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    <p className="text-sm font-semibold text-gray-900 border-b">
+                      비회원
+                    </p>
                   </div>
-                  <p className="text-sm font-semibold text-gray-900 border-b">
-                    Username
-                  </p>
-                  <p className="text-sm font-semibold text-gray-900">email</p>
                 </div>
-              </div>
-            </button>
+              </button>
+            ) : (
+              <button
+                onClick={() => logout()}
+                className="mt-2 rounded-full bg-gray-100 relative group"
+              >
+                <Avatar
+                  src={`${currentUser.profileImg}`}
+                  height="[30px]"
+                  width="[30px]"
+                />
+                <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                  <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
+                    <div className="absolute inset-0 -left-1 flex items-center">
+                      <div className="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    <p className="text-sm font-semibold text-gray-900 border-b">
+                      Logout
+                    </p>
+                  </div>
+                </div>
+              </button>
+            )}
           </div>
         </aside>
       </div>

@@ -4,9 +4,8 @@ import { IoArrowBack, IoClose } from "react-icons/io5";
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
 
-import { useAppDispatch } from "@/store/hooks";
-import { toggleModal } from "@/store/modalSlice";
-import { TYPE_CHAT } from "@/store/types";
+import { useModal } from "@/hooks/useModal";
+import { CHAT_STATE } from "@/hooks/modalType";
 
 const testUser = [
   {
@@ -33,10 +32,7 @@ const ChatModal = () => {
   const [offsetY, setOffsetY] = useState<number | null>(null);
   const [selectUserId, setSelectUserId] = useState<number | null>(null);
 
-  const dispatch = useAppDispatch();
-
-  const onCloseModal = () =>
-    dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false }));
+  const chatModal = useModal(CHAT_STATE);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -104,7 +100,7 @@ const ChatModal = () => {
           </button>
           <h2 className="text-xl">채팅하기</h2>
           <button
-            onClick={onCloseModal}
+            onClick={chatModal.onClose}
             className="p-1 border-0 hover:opacity-70 transition absolute right-9"
           >
             <IoClose size={25} />

@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { useCookies } from "react-cookie";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { fetchCurrentUser, setUser } from "@/store/getCurrentUserSlice";
@@ -27,8 +26,6 @@ const LoginModal = () => {
     },
   });
 
-  const [cookies, setCookie] = useCookies(["token"]);
-
   const onToggle = () => {
     dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: false }));
     dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: true }));
@@ -43,12 +40,6 @@ const LoginModal = () => {
       // const { accessToken } = res;
       const res = await dispatch(fetchCurrentUser({ email, password }));
 
-      // const { accessToken } = res;
-      // setCookie("token", accessToken, {
-      //   path: "/",
-      //   secure: false,
-      //   httpOnly: true,
-      // });
       setUser(res.payload);
       onClose();
     } catch (error) {
@@ -79,10 +70,9 @@ const LoginModal = () => {
   );
 
   const footerContent = (
-    <article className="flex flex-row items-center gap-4 w-full">
-      <hr />
-      <div className="mt-4 text-center font-light text-neutral-500">
-        <div className="flex flex-row items-center justify-center gap-2">
+    <article className="flex items-center w-full">
+      <div className="text-center font-light text-neutral-500 w-full">
+        <div className="flex justify-between gap-2">
           <div>Fisrt time using Nang-man?</div>
           <div
             onClick={onToggle}
@@ -90,7 +80,12 @@ const LoginModal = () => {
           >
             Create an account
           </div>
-          <div className=" right-0">Find an account</div>
+          <div
+            onClick={onClose}
+            className="cursor-pointer text-neutral-400 hover:underline hover:text-neutral-900"
+          >
+            Find an account
+          </div>
         </div>
       </div>
     </article>
