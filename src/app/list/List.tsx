@@ -43,7 +43,7 @@ const List = () => {
       title: "50만원으로 로아풀옵션 가능?",
       count: 3,
       users: ["다나와", "쿠팡", "컴퓨존"],
-      roomId: "test5",
+      roomId: "test",
     },
   ];
 

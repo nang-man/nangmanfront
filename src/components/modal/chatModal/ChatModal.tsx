@@ -101,9 +101,9 @@ const ChatModal = () => {
     <div
       ref={modalRef}
       onMouseDown={handleMouseDown}
-      className="flex overflow-x-hidden overflow-y-auto fixed outline-none focus:outline-none inset-0 z-50"
+      className="flex overflow-x-hidden overflow-y-auto fixed outline-none focus:outline-none inset-0 z-50 w-80 h-[500px]"
     >
-      <div className="darggable w-80 h-[500px] ml-32 my-auto border rounded-2xl bg-gray-100">
+      <div className="darggable w-80 h-[500px] my-auto border rounded-2xl bg-gray-100">
         <header className="flex items-center p-4 justify-center rounded-t-2xl relative border-b-[1px] border-gray-300 bg-emerald-400">
           <button
             onClick={handleGoBack}
