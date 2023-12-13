@@ -1,133 +1,142 @@
 // Chat page
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ChatVideo from "@/app/chat/ChatVideo";
-import ChatBubble from "@/app/chat/ChatBubble";
 
 import { IoSettingsOutline } from "react-icons/io5";
-import { FaMicrophone, FaVideo } from "react-icons/fa";
-import { FaPhone } from "react-icons/fa6";
+import { HiOutlineXMark } from "react-icons/hi2";
+import ChatRoom from "./ChatRoom";
+import { useModal } from "@/hooks/useModal";
+import { CREATE_STATE } from "@/hooks/modalType";
+import { getChatRoomData } from "@/apis/chat";
 
-import { newSocket } from "@/data/socket.ts";
-import { users } from "@/apis/user.ts";
 
-const dummyData = {
-  name: "홍길동",
-  message: "안녕하세요",
-  date: "오전 12:35",
+const dummyRoomData = {
+  roomId: "test1",
+  tag: "test",
+  admin: "user1",
+  title: "Title",
+  userData: [
+    {
+      id: "user1",
+      name: "김낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+    {
+      id: "user2",
+      name: "이낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+    {
+      id: "user3",
+      name: "박낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+    {
+      id: "user4",
+      name: "정낭만",
+      videoSrc: "",
+      soundSrc: "",
+      img: "",
+    },
+  ],
+};
+
+const dummyUserData = {
+  name: "김낭만",
+  id: "user1",
   img: "",
-  isUser: false,
 };
 
 const Chat = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [inputMessage, setInputMessage] = useState("");
+  const [mainVideoData, setMainVideoData] = useState([]);
+  const [otherUserData, setOtherUserData] = useState<any>(null);
 
-  const userlist = users();
-
-  console.log(userlist);
+  // Get room data
+  const pageData = useParams();
 
   useEffect(() => {
-    // 서버로부터 메시지를 받았을 때의 이벤트 리스너
-    newSocket.on("message", (message: string) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
+    const otherUsers = dummyRoomData.userData.filter(
+      (user) => user.id !== dummyUserData.id
+    );
+    setOtherUserData(otherUsers);
 
-    // 컴포넌트 언마운트 시 소켓 연결 해제
-    return () => {
-      newSocket.disconnect();
-    };
+    //const chatRoomData = getChatRoomData(pageData.roomId)
   }, []);
 
-  const sendMessage = () => {
-    // 메시지를 서버로 보내는 이벤트
-    newSocket.emit("sendMessage", inputMessage);
-    setInputMessage("");
+  const toggleMainVideo = (data: any) => {
+    // 클릭한 비디오의 데이터를 저장 -> 큰 화면에 전달
+    setMainVideoData(data);
   };
 
+  const { onOpen } = useModal(CREATE_STATE);
+
+  // Update Chat room data
+  const onEditRoomData = () => {
+    if (dummyRoomData.admin === dummyUserData.id) {
+      onOpen();
+    }
+  };
+  // console.log(userlist);
+
   const navigation = useNavigate();
+
+  const onGoList = () => {
+    if (window.confirm("채팅을 종료하시겠습니까?")) {
+      navigation("/list");
+    }
+  };
+
   return (
-    <div className="flex w-full">
-      <div className=" w-8/12">
+    <section className="flex flex-col w-[85vw] h-[95vh] m-auto">
+      <header className="relative">
         <div>
-          <h1>방제</h1>
-          <h3>태그</h3>
-          <button
-            className="bg-emerald-600"
-            onClick={() => navigation("/list")}
-          >
-            나가기
+          <h1 className="text-3xl font-bold">{dummyRoomData.title}</h1>
+          <h3 className="text-gray-600 font-semibold text-xl mt-3">
+            Tag: #{dummyRoomData.tag}
+          </h3>
+          <button className="absolute top-0 right-0" onClick={onGoList}>
+            <HiOutlineXMark className="text-gray-600 text-3xl hover:text-red-600" />
           </button>
         </div>
-        <div>
-          <span>참여자 수 2명</span>
-          <button>
+        <div className="flex justify-end mr-[5%] mb-5">
+          <span className="font-semibold mr-3">참여자 수 2명</span>
+          <button
+            onClick={onEditRoomData}
+            className="text-2xl text-gray-600 hover:text-gray-800"
+          >
             <IoSettingsOutline />
           </button>
         </div>
+      </header>
+      <div className="w-full h-[80%] grid grid-cols-chat gap-[3%]">
         {/* other video wrap */}
-        <div className="w-full h-full">
-          <div className="flex gap-4 h-1/5">
-            <ChatVideo />
-            <ChatVideo />
-            <ChatVideo />
+        <div className="flex flex-col w-full h-[90%]">
+          <div className="flex gap-4 h-[28%]">
+            {otherUserData &&
+              otherUserData.map((user: any, index: string) => (
+                <ChatVideo
+                  key={index}
+                  userName={user.name}
+                  videoSrc={user.videoSrc}
+                  soundSrc={user.soundSrc}
+                />
+              ))}
           </div>
-          <div className="rounded-xl p-3 w-full h-3/5 my-5 bg-slate-500">
-            <span className="rounded-xl bg-black/40 text-white px-3 py-1">
-              userId
-            </span>
-            <div>
-              <button>
-                <FaVideo className="w-6 h-6" />
-                {/* <FaVideoSlash  className="w-6 h-6" /> */}
-              </button>
-              <button>
-                <FaPhone className="w-6 h-6" />
-                {/* <FaPhoneSlash className="w-6 h-6" /> */}
-              </button>
-              <button>
-                <FaMicrophone className="w-6 h-6" />
-                {/* <FaMicrophoneSlash className="w-6 h-6" /> */}
-              </button>
-            </div>
-          </div>
+          <ChatVideo userName="정낭만" isMain={true} />
         </div>
+        <ChatRoom
+          roomId={dummyRoomData.roomId}
+          userData={dummyRoomData.userData}
+        />
       </div>
-      <div className="bg-gray-100 w-1/4 h-full mx-10">
-        <h2 className="text-2xl">채팅하기</h2>
-        <ul className="">
-          {[1, 2, 3, 4].map((index) => (
-            <ChatBubble
-              key={index}
-              name={dummyData.name}
-              message={dummyData.message}
-              date={dummyData.date}
-              img={dummyData.img}
-              isUser={dummyData.isUser}
-            />
-          ))}
-          <ChatBubble
-            name={dummyData.name}
-            message={dummyData.message}
-            date={dummyData.date}
-            img={dummyData.img}
-            isUser={true}
-          />
-        </ul>
-        <form className="join flex">
-          <input
-            className="input input-bordered join-item"
-            placeholder="Text..."
-          />
-          <button
-            type="submit"
-            className="join-item  px-3 bg-emerald-600 rounded-5"
-          >
-            전송
-          </button>
-        </form>
-      </div>
-    </div>
+    </section>
   );
 };
 

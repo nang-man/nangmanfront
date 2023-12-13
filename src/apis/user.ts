@@ -13,7 +13,7 @@ export const users = async () => {
 
 export const user = async ({ name }: { name: string }) => {
   try {
-    axios.get(`${URL}/user/${name}`).then((res) => {
+    axios.get(`${URL}/api/user/${name}`).then((res) => {
       return res.data;
     });
   } catch (error) {
