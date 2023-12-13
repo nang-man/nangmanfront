@@ -10,7 +10,7 @@ export const create = async ({
   count,
 }: CreateType) => {
   try {
-    await axios.post(`${URL}/create`, {
+    await axios.post(`${URL}/api/create`, {
       user: email,
       roomName: roomName,
       tagName: tagName,
