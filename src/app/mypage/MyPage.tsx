@@ -26,7 +26,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="w-[93vw] h-[95vh] max-w-[1440px] m-auto">
+    <section className="w-[93vw] h-[95vh] max-w-[1440px] m-auto">
       <div className="flex w-[100%] h-20 p-5">
         <button
           onClick={() => onToggleMenu("/mypage/", false)}
@@ -52,7 +52,7 @@ const MyPage = () => {
           <Route path="/update/password" element={<PasswordModal />} />
         </Routes>
       </div>
-    </div>
+    </section>
   );
 };
 

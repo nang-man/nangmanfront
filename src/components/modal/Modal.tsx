@@ -9,9 +9,9 @@ interface ModalProps {
   footer?: React.ReactElement;
   onClose: () => void;
   disabled?: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   isOpen?: boolean;
-  actionLabel: string;
+  actionLabel?: string;
 }
 
 const Modal = ({
@@ -60,9 +60,11 @@ const Modal = ({
             <div className="relative p-6 flex-auto">{body}</div>
             {/* FOOTER */}
             <div className="flex flex-col gap-2 p-6">
-              <div className="flex w-full flex-row items-center gap-4">
-                <Button label={actionLabel} onClick={onSubmit} />
-              </div>
+              {actionLabel && (
+                <div className="flex w-full flex-row items-center gap-4">
+                  <Button label={actionLabel || ""} onClick={onSubmit} />
+                </div>
+              )}
               {footer}
             </div>
           </div>

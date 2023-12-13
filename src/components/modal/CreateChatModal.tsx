@@ -4,8 +4,9 @@ import Input from "../Input";
 
 import Counter from "../Counter";
 import Modal from "./Modal";
-import { useModal } from "@/hooks/useModal";
-import { CREATE_STATE } from "@/hooks/modalType";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_CREATE } from "@/store/types";
 
 const CreateChatModal = () => {
   const {
@@ -23,6 +24,12 @@ const CreateChatModal = () => {
   });
 
   const guestCount = watch("guestCount");
+  const modalState = useAppSelector((state) => state.modalState.create);
+
+  const dispatch = useAppDispatch();
+
+  const onCloseModal = () =>
+    dispatch(toggleModal({ type: TYPE_CREATE, isOpen: false }));
 
   const setCustomValue = (id: string, value: number) => {
     setValue(id, value, {
@@ -35,8 +42,6 @@ const CreateChatModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
-
-  const { onClose, isOpen } = useModal(CREATE_STATE);
 
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -80,13 +85,13 @@ const CreateChatModal = () => {
 
   return (
     <Modal
-      isOpen={isOpen.isOpen}
+      isOpen={modalState}
       title="Create Chatting Room"
       actionLabel="방 만들기"
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
-      onClose={onClose}
+      onClose={onCloseModal}
     />
   );
 };

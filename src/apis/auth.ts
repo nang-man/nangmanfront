@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CgSlack } from "react-icons/cg";
 
 export type CurrentUserLogin = {
   email: string;
@@ -33,7 +34,7 @@ export const login = async ({ email, password }: CurrentUserLogin) => {
       email: email,
       password: password,
     });
-
+    console.log(res.data);
     // sessionStorage.setItem("curUser", email);
 
     return res.data;
