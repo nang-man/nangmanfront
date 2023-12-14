@@ -4,9 +4,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { IoSettingsOutline } from "react-icons/io5";
 
-import { useRecoilState } from "recoil";
-import { passwordModalState } from "@/hooks/modalState";
-
 type FormData = {
   image: string;
   name: string;
@@ -16,8 +13,7 @@ type FormData = {
 
 const MyPageUpdate = () => {
   const { register, handleSubmit, setValue } = useForm<FormData>();
-  const [isPhoneChecked, setIsPhoneChecked] =
-    useRecoilState(passwordModalState);
+
   const [isUserWithdrawal, setIsUserWithdrawal] = useState(false);
 
   const navigate = useNavigate();

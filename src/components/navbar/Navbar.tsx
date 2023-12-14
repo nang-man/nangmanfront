@@ -2,13 +2,16 @@ import { Link } from "react-router-dom";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoChatboxEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
 
-import { useModal } from "@/hooks/useModal";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
 import {
-  CHAT_STATE,
-  CREATE_STATE,
-  LOGIN_STATE,
-  SIGNUP_STATE,
-} from "@/hooks/modalType";
+  TModalType,
+  TYPE_CHAT,
+  TYPE_CREATE_CHAT,
+  TYPE_LOGIN,
+  TYPE_SIGNUP,
+} from "@/store/types";
+
 import Avatar from "@components/Avatar";
 import SignupModal from "@components/modal/SignupModal";
 import LoginModal from "@components/modal/LoginModal";
@@ -17,13 +20,14 @@ import ChatModal from "@components/modal/chatModal/ChatModal";
 import { logout } from "@/apis/auth";
 
 const Navbar = () => {
-  const createModal = useModal(CREATE_STATE);
-  const loginModal = useModal(LOGIN_STATE);
-  const signupModal = useModal(SIGNUP_STATE);
-  const chatModal = useModal(CHAT_STATE);
-
   const session = sessionStorage.getItem("user") as string;
   const currentUser = JSON.parse(session);
+
+  const modalState = useAppSelector((state) => state.modalState);
+  const dispatch = useAppDispatch();
+
+  const onOpenModal = (type: TModalType) =>
+    dispatch(toggleModal({ type, isOpen: true }));
 
   return (
     <>
@@ -36,7 +40,7 @@ const Navbar = () => {
           </div>
           <nav className="flex flex-1 flex-col gap-y-4 pt-10">
             <button
-              onClick={createModal.onOpen}
+              onClick={() => onOpenModal(TYPE_CREATE_CHAT)}
               className="group relative rounded-xl bg-gray-100 p-2 hover:text-blue-600 hover:bg-gray-50"
             >
               <CgAddR size={30} />
@@ -51,7 +55,7 @@ const Navbar = () => {
             </button>
             {!currentUser ? (
               <button
-                onClick={loginModal.onOpen}
+                onClick={() => onOpenModal(TYPE_LOGIN)}
                 className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
               >
                 <CgUser size={30} />
@@ -84,7 +88,7 @@ const Navbar = () => {
             )}
 
             <button
-              onClick={chatModal.onOpen}
+              onClick={() => onOpenModal(TYPE_CHAT)}
               className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
             >
               <IoChatboxEllipsesOutline size={30} />
@@ -118,7 +122,7 @@ const Navbar = () => {
           <div className="flex flex-col items-center gap-y-4 py-10">
             {!currentUser ? (
               <button
-                onClick={signupModal.onOpen}
+                onClick={() => onOpenModal(TYPE_SIGNUP)}
                 className="mt-2 rounded-full bg-gray-100 relative group"
               >
                 <Avatar src="" height="[30px]" width="[30px]" />
@@ -158,10 +162,10 @@ const Navbar = () => {
           </div>
         </aside>
       </div>
-      {loginModal.isOpen.isOpen && <LoginModal />}
-      {signupModal.isOpen.isOpen && <SignupModal />}
-      {createModal.isOpen.isOpen && <CreateChatModal />}
-      {chatModal.isOpen.isOpen && <ChatModal />}
+      {modalState.login && <LoginModal />}
+      {modalState.signup && <SignupModal />}
+      {modalState.createChat && <CreateChatModal />}
+      {modalState.chat && <ChatModal />}
     </>
   );
 };

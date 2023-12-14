@@ -24,7 +24,7 @@ const dummyData = {
 const ChatModalRoom = React.memo(
   ({ fllowers, socket, userId }: ChatModalRoomProps) => {
     const messageRef = useRef<HTMLInputElement | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState<string>("");
 
     const filterUser = fllowers.filter((user) => user.id === userId);
 
@@ -60,6 +60,8 @@ const ChatModalRoom = React.memo(
         </div>
         <div className="join flex w-auto">
           <input
+            ref={messageRef}
+            value={message}
             className="input input-bordered join-item"
             placeholder="Text..."
           />

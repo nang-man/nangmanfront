@@ -29,9 +29,12 @@ const testUser = [
 ];
 
 const ChatModal = () => {
-  /* 
-    Drag Modal
-  */
+  const dispatch = useAppDispatch();
+  const onCloseModal = useCallback(
+    () => dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false })),
+    [dispatch]
+  );
+  /* Drag Modal */
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
@@ -76,36 +79,26 @@ const ChatModal = () => {
     };
   }, [handleMouseMove, handleMouseUp]);
 
-  /* 
-    socket.io client
-    @params
-  */
+  /* socket.io client
+     @params */
   const currentUser = getStorage();
   const [selectUserId, setSelectUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    socket.on();
+  });
 
   const handleUserClick = useCallback(
     (userId: string) => {
       setSelectUserId(userId);
-      socket.emit("joinRoom", userId);
+      socket.emit("joinRoom", selectUserId);
     },
-    [setSelectUserId]
+    [setSelectUserId, selectUserId]
   );
 
   const handleGoBack = useCallback(() => {
     setSelectUserId(null);
-    socket.emit("disconnet");
   }, [setSelectUserId]);
-
-  /*
-    modal state
-  */
-
-  const dispatch = useAppDispatch();
-
-  const onCloseModal = useCallback(
-    () => dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false })),
-    [dispatch]
-  );
 
   return (
     <div
