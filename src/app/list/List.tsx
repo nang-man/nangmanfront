@@ -43,7 +43,14 @@ const List = () => {
       title: "50만원으로 로아풀옵션 가능?",
       count: 3,
       users: ["다나와", "쿠팡", "컴퓨존"],
-      roomId: "test",
+      roomId: "test5",
+    },
+    {
+      tag: "요리",
+      title: "유튜브 같이 하실분?",
+      count: 4,
+      users: ["낭만"],
+      roomId: "test3",
     },
   ];
 
@@ -82,7 +89,7 @@ const List = () => {
             >
               {list.tag}
             </h1>
-            <div className="flex gap-4 mb-10">
+            <div className="flex gap-4 mb-10 overflow-x-auto overflow-y-hidden">
               {list.list.map((item) => (
                 <>
                   <TagList

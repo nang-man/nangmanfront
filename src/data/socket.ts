@@ -1,10 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { URL } from "./url";
 
-export const newSocket: Socket = io(URL);
-
-// const [socket, setSocket] = useState<string | null>(null);
-// const [message, setMessage] = useState("");
+export const socket: Socket = io(URL);
 
 // useEffect(() => {
 //   newSocket.on("handshake", updateMessage);

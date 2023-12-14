@@ -1,51 +1,41 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { IoArrowBack, IoClose } from "react-icons/io5";
 
+import { getStorage } from "@/data/storage";
+import { socket } from "@/data/socket.ts";
+import { useAppDispatch } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_CHAT } from "@/store/types";
+
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
 
-import { useModal } from "@/hooks/useModal";
-import { CHAT_STATE } from "@/hooks/modalType";
-import { getStorage } from "@/data/storage";
-// import {
-//   newSocket,
-//   handshake,
-//   joinChatRoom,
-//   leaveRoom,
-//   updateMessage,
-//   sendMessage,
-//   disconnect,
-// } from "@/data/socket.ts";
-
 const testUser = [
   {
-    id: 1,
+    id: "test1",
     name: "차범근",
     src: "https://mblogthumb-phinf.pstatic.net/20160509_223/new6791_1462780191348fftry_JPEG/image_kimhw85.jpg?type=w2",
   },
   {
-    id: 2,
+    id: "test2",
     name: "손흥민",
     src: "https://cdn.sideview.co.kr/news/photo/202211/10746_9173_3737.jpg",
   },
   {
-    id: 3,
+    id: "test3",
     name: "박지성",
     src: "https://t1.daumcdn.net/cfile/tistory/1845D64C4EF8EE4C01",
   },
 ];
 
 const ChatModal = () => {
-  const currentUser = getStorage();
-
-  const [selectUserId, setSelectUserId] = useState<number | null>(null);
-
+  /* 
+    Drag Modal
+  */
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
   const [offsetY, setOffsetY] = useState<number | null>(null);
-
-  const chatModal = useModal(CHAT_STATE);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -86,16 +76,36 @@ const ChatModal = () => {
     };
   }, [handleMouseMove, handleMouseUp]);
 
+  /* 
+    socket.io client
+    @params
+  */
+  const currentUser = getStorage();
+  const [selectUserId, setSelectUserId] = useState<string | null>(null);
+
   const handleUserClick = useCallback(
-    (userId: number) => {
+    (userId: string) => {
       setSelectUserId(userId);
+      socket.emit("joinRoom", userId);
     },
     [setSelectUserId]
   );
 
   const handleGoBack = useCallback(() => {
     setSelectUserId(null);
+    socket.emit("disconnet");
   }, [setSelectUserId]);
+
+  /*
+    modal state
+  */
+
+  const dispatch = useAppDispatch();
+
+  const onCloseModal = useCallback(
+    () => dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false })),
+    [dispatch]
+  );
 
   return (
     <div
@@ -113,7 +123,7 @@ const ChatModal = () => {
           </button>
           <h2 className="text-xl">채팅하기</h2>
           <button
-            onClick={chatModal.onClose}
+            onClick={onCloseModal}
             className="p-1 border-0 hover:opacity-70 transition absolute right-9"
           >
             <IoClose size={25} />
@@ -129,11 +139,13 @@ const ChatModal = () => {
             {selectUserId === null ? (
               <ChatModalUserList
                 fllowers={testUser}
-                onUserClick={(userId: number) => handleUserClick(userId)}
+                onUserClick={(userId: string) => handleUserClick(userId)}
               />
             ) : (
               <ChatModalRoom
                 fllowers={testUser.filter((user) => user.id === selectUserId)}
+                userId={selectUserId}
+                socket={socket}
               />
             )}
           </article>

@@ -29,7 +29,6 @@ const Main = () => {
             낭만 가득한 사람들과의 만남
           </p>
         </div>
-
         <button
           onClick={handleButtonClick}
           className="flex mx-auto mt-16 text-white bg-emerald-500 border-0 py-2 px-8 focus:outline-none hover:bg-emerald-600 rounded text-lg"

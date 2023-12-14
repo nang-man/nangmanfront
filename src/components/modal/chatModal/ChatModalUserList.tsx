@@ -3,11 +3,11 @@ import React from "react";
 
 interface ChatModalUserListProps {
   fllowers: {
-    id: number;
+    id: string;
     name: string;
     src: string;
   }[];
-  onUserClick: (props: number) => void;
+  onUserClick: (props: string) => void;
 }
 
 const ChatModalUserList = React.memo(

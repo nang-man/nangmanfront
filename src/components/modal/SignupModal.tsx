@@ -5,8 +5,9 @@ import Modal from "./Modal";
 import Input from "../Input";
 
 import { signup } from "@/apis/auth";
-import { useModal } from "@/hooks/useModal";
-import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_LOGIN, TYPE_SIGNUP } from "@/store/types";
 
 const SignupModal = () => {
   const {
@@ -26,19 +27,24 @@ const SignupModal = () => {
 
   const password = watch("password");
 
-  const signupModal = useModal(SIGNUP_STATE);
-  const loginModal = useModal(LOGIN_STATE);
+  const modalState = useAppSelector((state) => state.modalState.signup);
+  const dispatch = useAppDispatch();
+
+  const onCloseModal = useCallback(
+    () => dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: false })),
+    [dispatch]
+  );
+
+  const onToggle = useCallback(() => {
+    dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: true }));
+    dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: false }));
+  }, [dispatch]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { name, email, password, phone } = data;
     signup({ name, email, password, phone });
-    signupModal.onClose();
+    onCloseModal();
   };
-
-  const toggle = useCallback(() => {
-    signupModal.onClose();
-    loginModal.onOpen();
-  }, [loginModal, signupModal]);
 
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -94,7 +100,7 @@ const SignupModal = () => {
         <div className="flex flex-row items-center justify-center gap-2">
           <div>Already have an account?</div>
           <div
-            onClick={toggle}
+            onClick={onToggle}
             className="cursor-pointer text-neutral-800 hover:underline"
           >
             Log in
@@ -110,8 +116,8 @@ const SignupModal = () => {
       actionLabel="회원가입"
       body={bodyContent}
       footer={footerContent}
-      isOpen={signupModal.isOpen.isOpen}
-      onClose={signupModal.onClose}
+      isOpen={modalState}
+      onClose={onCloseModal}
       onSubmit={handleSubmit(onSubmit)}
     />
   );

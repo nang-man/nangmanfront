@@ -2,9 +2,9 @@ import { useCallback } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 // import { login } from "@/apis/auth";
-import { useModal } from "@/hooks/useModal";
-import { LOGIN_STATE, SIGNUP_STATE } from "@/hooks/modalType";
-import { useAppDispatch } from "@/store/hooks.ts";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_LOGIN, TYPE_SIGNUP } from "@/store/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { fetchCurrentUser, setUser } from "@/store/getCurrentUserSlice";
 
 import Modal from "./Modal";
@@ -12,6 +12,8 @@ import Modal from "./Modal";
 import Input from "../Input";
 
 const LoginModal = () => {
+  const selector = useAppSelector((state) => state.currentUser);
+  const modalState = useAppSelector((state) => state.modalState.login);
   const dispatch = useAppDispatch();
 
   const {
@@ -25,6 +27,16 @@ const LoginModal = () => {
     },
   });
 
+  const onToggle = useCallback(() => {
+    dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: false }));
+    dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: true }));
+  }, [dispatch]);
+
+  const onClose = useCallback(
+    () => dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: false })),
+    [dispatch]
+  );
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { email, password } = data;
     try {
@@ -33,23 +45,12 @@ const LoginModal = () => {
       const res = await dispatch(fetchCurrentUser({ email, password }));
 
       setUser(res.payload);
-      loginModal.onClose();
+      console.log(selector);
+      onClose();
     } catch (error) {
       console.error(error);
     }
   };
-
-  const loginModal = useModal(LOGIN_STATE);
-  const signupModal = useModal(SIGNUP_STATE);
-
-  const signupToggle = useCallback(() => {
-    loginModal.onClose();
-    signupModal.onOpen();
-  }, [loginModal, signupModal]);
-
-  const RegisterToggle = useCallback(() => {
-    loginModal.onClose();
-  }, [loginModal]);
 
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -79,13 +80,13 @@ const LoginModal = () => {
         <div className="flex justify-between gap-2">
           <div>Fisrt time using Nang-man?</div>
           <div
-            onClick={signupToggle}
+            onClick={onToggle}
             className="cursor-pointer text-neutral-800 hover:underline"
           >
             Create an account
           </div>
           <div
-            onClick={RegisterToggle}
+            onClick={onClose}
             className="cursor-pointer text-neutral-400 hover:underline hover:text-neutral-900"
           >
             Find an account
@@ -97,8 +98,8 @@ const LoginModal = () => {
 
   return (
     <Modal
-      isOpen={loginModal.isOpen.isOpen}
-      onClose={loginModal.onClose}
+      isOpen={modalState}
+      onClose={onClose}
       onSubmit={handleSubmit(onSubmit)}
       title="Login"
       actionLabel="로그인"
