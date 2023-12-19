@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoChatboxEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
 
@@ -19,18 +19,32 @@ import {
   TYPE_SIGNUP,
 } from "@/store/types";
 import { logout } from "@/apis/auth";
+import { setUser } from "@/store/getCurrentUserSlice";
+import { getStorage } from "@/data/storage";
 
 const Navbar = React.memo(() => {
   const selector = useAppSelector((state) => state.currentUser);
   const modalState = useAppSelector((state) => state.modalState);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const userInfo = getStorage();
 
   useEffect(() => {
-    console.log(selector);
-  }, [selector]);
+    if (userInfo) {
+      dispatch(setUser(userInfo));
+    }
+  }, [modalState]);
 
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
+
+  const onLogout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      navigate("/list", { replace: true });
+      logout();
+    }
+  };
 
   const session = sessionStorage.getItem("user") as string;
   const currentUser = JSON.parse(session);
@@ -76,7 +90,7 @@ const Navbar = React.memo(() => {
               </button>
             ) : (
               <Link
-                to={`/user/${currentUser.curName}`}
+                to={`/mypage`}
                 className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
               >
                 <CgUser size={30} />
@@ -144,7 +158,7 @@ const Navbar = React.memo(() => {
               </button>
             ) : (
               <button
-                onClick={() => logout()}
+                onClick={onLogout}
                 className="mt-2 rounded-full bg-gray-100 relative group"
               >
                 <Avatar

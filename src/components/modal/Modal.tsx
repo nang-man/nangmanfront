@@ -44,7 +44,7 @@ const Modal = ({
         >
           <div
             className="translate h-full lg:h-auto md:h-auto border-0 rounded-xl shadow-lg relative
-                        flex flex-col w-full bg-white outline-none focus:outline-none"
+                        flex flex-col w-full max-w-[550px] m-auto bg-white outline-none focus:outline-none"
           >
             {/* HEADER */}
             <div className="flex items-center p-6 rounded-t-xl justify-center relative border-b-[1px] bg-emerald-400">

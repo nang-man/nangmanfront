@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import Modal from "@/components/modal/Modal";
 
-import { passwordModalState } from "@/hooks/modalState";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { checkUserPhone } from "@/store/modalSlice";
 
 const PasswordModal = () => {
-  const [isChecked, setIsChecked] = useRecoilState(passwordModalState);
+  const isPhoneChecked = useAppSelector(
+    (state) => state.modalState.isPhoneCheck
+  );
   const [phoneNum, setPhoneNum] = useState("");
-  const [isSend, setIsSend] = useState(true);
+  const [isSend, setIsSend] = useState(false);
   const [submitCode, setSubmitCode] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onSendCode = () => {
     //Send
@@ -32,16 +35,13 @@ const PasswordModal = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsChecked((prev) => ({
-      ...prev,
-      phoneCheck: true,
-    }));
+    dispatch(checkUserPhone({ isCheck: true }));
 
     navigate("/mypage/update", { replace: true });
   };
 
   const style =
-    "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
+    "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:bg-gray-200 disabled:cursor-not-allowed";
 
   const bodyContent = (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">

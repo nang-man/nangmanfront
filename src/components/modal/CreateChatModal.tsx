@@ -44,6 +44,7 @@ const CreateChatModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
+    onCloseModal();
   };
 
   const bodyContent = (
