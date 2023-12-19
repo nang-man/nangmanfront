@@ -6,6 +6,7 @@ import { socket } from "@/data/socket.ts";
 import { useAppDispatch } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
 import { TYPE_CHAT } from "@/store/types";
+import { SocketMessage, SocketData, Messages } from "@/types/index";
 
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
@@ -81,12 +82,42 @@ const ChatModal = () => {
 
   /* socket.io client
      @params */
+
   const currentUser = getStorage();
   const [selectUserId, setSelectUserId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Messages[]>([]);
+  const [joinChat, setJoinChat] = useState(false);
+
+  const socketMessage = (data: SocketMessage) => {
+    console.log(data.message);
+  };
+
+  const updateReceiveMessage = useCallback(
+    (data: Messages) => {
+      const { curName, userId, profileImg } = currentUser;
+
+      const messageData: Messages = {
+        isUser: false,
+        name: curName,
+        id: userId,
+        message: data.message,
+        time: data.time,
+        img: profileImg,
+      };
+
+      setMessages((prev) => [...prev, messageData]);
+    },
+    [currentUser]
+  );
 
   useEffect(() => {
-    socket.on();
-  });
+    // socket.on("handshake", socketMessage);
+    socket.on("joinChatRoom", socketMessage);
+    socket.on("leaveChatRoom", socketMessage);
+    socket.on("sendMessage", updateReceiveMessage);
+
+    setJoinChat(true);
+  }, [updateReceiveMessage]);
 
   const handleUserClick = useCallback(
     (userId: string) => {
@@ -139,6 +170,7 @@ const ChatModal = () => {
                 fllowers={testUser.filter((user) => user.id === selectUserId)}
                 userId={selectUserId}
                 socket={socket}
+                messages={messages}
               />
             )}
           </article>

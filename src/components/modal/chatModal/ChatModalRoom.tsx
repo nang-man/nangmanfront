@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 
 import ChatBubble from "@/app/chat/ChatBubble";
+import { Messages } from "@/types/index";
 
 interface ChatModalRoomProps {
   fllowers: {
@@ -11,6 +12,7 @@ interface ChatModalRoomProps {
   }[];
   socket: Socket;
   userId: string;
+  messages: Messages[];
 }
 
 const dummyData = {
@@ -22,7 +24,7 @@ const dummyData = {
 };
 
 const ChatModalRoom = React.memo(
-  ({ fllowers, socket, userId }: ChatModalRoomProps) => {
+  ({ fllowers, socket, userId, messages }: ChatModalRoomProps) => {
     const messageRef = useRef<HTMLInputElement | null>(null);
     const [message, setMessage] = useState<string>("");
 
