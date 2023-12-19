@@ -39,9 +39,9 @@ export type RegisterType = LoginType & { name: string; phone: string };
 
 // create api
 export type CreateType = {
-  email: string;
+  userId: string;
   roomName: string;
-  tagName: string;
+  tags: string[];
   count: number;
 };
 

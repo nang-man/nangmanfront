@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 
 import ChatBubble from "@/app/chat/ChatBubble";
@@ -12,7 +12,9 @@ interface ChatModalRoomProps {
   }[];
   socket: Socket;
   userId: string;
+  joinChat: boolean;
   messages: Messages[];
+  updateReceiveMessage: (props: Messages) => void;
 }
 
 const dummyData = {
@@ -24,11 +26,22 @@ const dummyData = {
 };
 
 const ChatModalRoom = React.memo(
-  ({ fllowers, socket, userId, messages }: ChatModalRoomProps) => {
+  ({
+    fllowers,
+    socket,
+    userId,
+    messages,
+    joinChat,
+    updateReceiveMessage,
+  }: ChatModalRoomProps) => {
     const messageRef = useRef<HTMLInputElement | null>(null);
     const [message, setMessage] = useState<string>("");
 
-    const filterUser = fllowers.filter((user) => user.id === userId);
+    const findUser = fllowers.find((user) => user.id === userId);
+
+    useEffect(() => {
+      socket.on("sendMessage", updateReceiveMessage);
+    });
 
     const sendMessage = (userId: string, message: string) => {
       socket.emit("sendMessage", userId, message);
@@ -37,6 +50,11 @@ const ChatModalRoom = React.memo(
     socket.on("receiveMessage", (message: string) => {
       console.log("Received message:", message);
     });
+
+    const onChangeData = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
+      setMessage(value);
+    };
 
     return (
       <div>

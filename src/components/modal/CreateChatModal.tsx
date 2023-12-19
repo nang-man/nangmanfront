@@ -1,4 +1,5 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import { getStorage } from "@/data/storage.ts";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -10,13 +11,14 @@ import Counter from "../Counter";
 
 import Modal from "./Modal";
 import { useCallback } from "react";
+import { create } from "@/apis/create";
 
 const CreateChatModal = () => {
   const session = getStorage();
   const modalState = useAppSelector((state) => state.modalState.createChat);
   const dispatch = useAppDispatch();
 
-  console.log(session);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -28,11 +30,11 @@ const CreateChatModal = () => {
     defaultValues: {
       roomName: "",
       tag: "",
-      guestCount: 2,
+      count: 2,
     },
   });
 
-  const guestCount = watch("guestCount");
+  const count = watch("guestCount");
 
   const setCustomValue = (id: string, value: number) => {
     setValue(id, value, {
@@ -42,8 +44,15 @@ const CreateChatModal = () => {
     });
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { roomName, tag, count } = data;
+    const userId = session.userId;
+
+    const tags = tag.split(" ");
+
+    await create({ userId, roomName, tags, count });
+
+    navigate(`/chat/${userId}`);
   };
 
   const onCloseModal = useCallback(
@@ -71,7 +80,7 @@ const CreateChatModal = () => {
       />
       <Counter
         title="Guests"
-        value={guestCount}
+        value={count}
         onChange={(value) => setCustomValue("guestCount", value)}
       />
     </article>

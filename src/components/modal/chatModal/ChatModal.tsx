@@ -111,10 +111,8 @@ const ChatModal = () => {
   );
 
   useEffect(() => {
-    // socket.on("handshake", socketMessage);
     socket.on("joinChatRoom", socketMessage);
     socket.on("leaveChatRoom", socketMessage);
-    socket.on("sendMessage", updateReceiveMessage);
 
     setJoinChat(true);
   }, [updateReceiveMessage]);
@@ -127,8 +125,16 @@ const ChatModal = () => {
     [setSelectUserId, selectUserId]
   );
 
+  const leaveRoom = () => {
+    socket.emit("leaveChatRoom", {
+      name: getStorage().curName,
+      userId: getStorage().userId,
+    });
+  };
+
   const handleGoBack = useCallback(() => {
     setSelectUserId(null);
+    leaveRoom();
   }, [setSelectUserId]);
 
   return (
@@ -171,6 +177,8 @@ const ChatModal = () => {
                 userId={selectUserId}
                 socket={socket}
                 messages={messages}
+                joinChat={joinChat}
+                updateReceiveMessage={updateReceiveMessage}
               />
             )}
           </article>
