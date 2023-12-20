@@ -12,4 +12,3 @@ export const getChatRoomData = async ({ roomId }: IChat) => {
     console.error(error);
   }
 };
-

@@ -1,7 +1,7 @@
 interface AvatarProps {
   src: string | null | undefined;
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
 }
 
 const Avatar = ({ src, width, height }: AvatarProps) => {

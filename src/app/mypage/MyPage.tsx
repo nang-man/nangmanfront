@@ -45,7 +45,7 @@ const MyPage = () => {
           정보 수정
         </button>
       </div>
-      <div className="card bg-gray-100 w-auto h-[85%] p-5">
+      <div className="card border-2 bg-gray-50 shadow-lg w-auto h-[85%] p-5">
         <Routes>
           <Route path="/" element={<MyPageInfo />} />
           <Route path="/update" element={<MyPageUpdate />} />

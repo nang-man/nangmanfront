@@ -95,7 +95,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
         roomId: roomId,
       });
     }
-  }, [joinChat]);
+  }, [joinChat, socketInstance]);
 
   // Chat scroll Motion
   useEffect(() => {
