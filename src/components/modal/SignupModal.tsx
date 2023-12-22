@@ -26,7 +26,6 @@ const SignupModal = () => {
   });
 
   const password = watch("password");
-
   const modalState = useAppSelector((state) => state.modalState.signup);
   const dispatch = useAppDispatch();
 
@@ -112,7 +111,7 @@ const SignupModal = () => {
 
   return (
     <Modal
-      title="Sign In"
+      title="Sign Up"
       actionLabel="회원가입"
       body={bodyContent}
       footer={footerContent}

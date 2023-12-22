@@ -1,6 +1,13 @@
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoChatboxEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
+
+import Avatar from "@components/Avatar";
+import SignupModal from "@components/modal/SignupModal";
+import LoginModal from "@components/modal/LoginModal";
+import CreateChatModal from "@components/modal/CreateChatModal";
+import ChatModal from "@components/modal/chatModal/ChatModal";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
@@ -11,15 +18,20 @@ import {
   TYPE_LOGIN,
   TYPE_SIGNUP,
 } from "@/store/types";
-
-import Avatar from "@components/Avatar";
-import SignupModal from "@components/modal/SignupModal";
-import LoginModal from "@components/modal/LoginModal";
-import CreateChatModal from "@components/modal/CreateChatModal";
-import ChatModal from "@components/modal/chatModal/ChatModal";
 import { logout } from "@/apis/auth";
 
-const Navbar = () => {
+
+const Navbar = React.memo(() => {
+  const selector = useAppSelector((state) => state.currentUser);
+  const modalState = useAppSelector((state) => state.modalState);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(selector);
+  }, [selector]);
+  
+  const onOpenModal = (type: TModalType) =>
+    dispatch(toggleModal({ type, isOpen: true }));
   const session = sessionStorage.getItem("user") as string;
   const currentUser = JSON.parse(session);
 
@@ -59,7 +71,6 @@ const Navbar = () => {
                 className="text-gary-400 group relative rounded-xl p-2 hover:text-blue-600 hover:bg-gray-50"
               >
                 <CgUser size={30} />
-
                 <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                   <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                     <div className="absolute inset-0 -left-1 flex items-center">
@@ -168,6 +179,6 @@ const Navbar = () => {
       {modalState.chat && <ChatModal />}
     </>
   );
-};
+});
 
 export default Navbar;

@@ -10,8 +10,14 @@ import Input from "../Input";
 import Counter from "../Counter";
 
 import Modal from "./Modal";
+
 import { useCallback } from "react";
 import { create } from "@/apis/create";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_CREATE_CHAT } from "@/store/types";
+import { getStorage } from "@/data/storage";
+
 
 const CreateChatModal = () => {
   const session = getStorage();
@@ -34,7 +40,17 @@ const CreateChatModal = () => {
     },
   });
 
+
   const count = watch("guestCount");
+
+  const guestCount = watch("guestCount");
+  const modalState = useAppSelector((state) => state.modalState.createChat);
+
+  const dispatch = useAppDispatch();
+
+  const onCloseModal = () =>
+    dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false }));
+
 
   const setCustomValue = (id: string, value: number) => {
     setValue(id, value, {
@@ -54,6 +70,7 @@ const CreateChatModal = () => {
 
     navigate(`/chat/${userId}`);
   };
+
 
   const onCloseModal = useCallback(
     () => dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false })),
