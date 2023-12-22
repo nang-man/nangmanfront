@@ -76,12 +76,10 @@ const List = () => {
     list: tagMap[tag],
   }));
 
-  console.log(tagList);
-
   return (
     <section className="w-full h-auto">
       <div className="mb-16 pr-60">
-        {tagList.map((list, idx) => (
+        {tagList.map((list, idx: number) => (
           <>
             <h1
               className="text-3xl pb-2 border-b mb-2"
@@ -90,16 +88,14 @@ const List = () => {
               {list.tag}
             </h1>
             <div className="flex gap-4 mb-10 overflow-x-auto overflow-y-hidden">
-              {list.list.map((item) => (
-                <>
-                  <TagList
-                    key={`${item.roomId}`}
-                    count={item.count}
-                    title={item.title}
-                    roomId={item.roomId}
-                    users={item.users}
-                  />
-                </>
+              {list.list.map((item, idx: number) => (
+                <TagList
+                  key={`${item.roomId}_${idx}`}
+                  count={item.count}
+                  title={item.title}
+                  roomId={item.roomId}
+                  users={item.users}
+                />
               ))}
             </div>
           </>

@@ -12,7 +12,6 @@ import Modal from "./Modal";
 import Input from "../Input";
 
 const LoginModal = () => {
-  const selector = useAppSelector((state) => state.currentUser);
   const modalState = useAppSelector((state) => state.modalState.login);
   const dispatch = useAppDispatch();
 
@@ -45,7 +44,6 @@ const LoginModal = () => {
       const res = await dispatch(fetchCurrentUser({ email, password }));
 
       setUser(res.payload);
-      console.log(selector);
       onClose();
     } catch (error) {
       console.error(error);

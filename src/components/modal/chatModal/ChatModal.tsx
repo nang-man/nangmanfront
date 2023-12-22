@@ -6,7 +6,7 @@ import { socket } from "@/data/socket.ts";
 import { useAppDispatch } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
 import { TYPE_CHAT } from "@/store/types";
-import { SocketMessage, SocketData, Messages } from "@/types/index";
+import { SocketMessage, Messages } from "@/types/index";
 
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
@@ -35,6 +35,7 @@ const ChatModal = () => {
     () => dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false })),
     [dispatch]
   );
+
   /* Drag Modal */
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -80,8 +81,11 @@ const ChatModal = () => {
     };
   }, [handleMouseMove, handleMouseUp]);
 
-  /* socket.io client
-     @params */
+  /*  socket.io client
+   *  @params
+   *
+   *
+   */
 
   const currentUser = getStorage();
   const [selectUserId, setSelectUserId] = useState<string | null>(null);
@@ -97,7 +101,7 @@ const ChatModal = () => {
       const { curName, userId, profileImg } = currentUser;
 
       const messageData: Messages = {
-        isUser: false,
+        isUser: true,
         name: curName,
         id: userId,
         message: data.message,
@@ -115,7 +119,7 @@ const ChatModal = () => {
     socket.on("leaveChatRoom", socketMessage);
 
     setJoinChat(true);
-  }, [updateReceiveMessage]);
+  }, []);
 
   const handleUserClick = useCallback(
     (userId: string) => {
@@ -125,17 +129,17 @@ const ChatModal = () => {
     [setSelectUserId, selectUserId]
   );
 
-  const leaveRoom = () => {
+  const leaveRoom = useCallback(() => {
     socket.emit("leaveChatRoom", {
-      name: getStorage().curName,
-      userId: getStorage().userId,
+      name: currentUser.curName,
+      userId: currentUser.userId,
     });
-  };
+  }, [currentUser]);
 
   const handleGoBack = useCallback(() => {
     setSelectUserId(null);
     leaveRoom();
-  }, [setSelectUserId]);
+  }, [setSelectUserId, leaveRoom]);
 
   return (
     <div
