@@ -10,10 +10,6 @@ import { SocketMessage, Messages } from "@/types/index";
 
 import ChatModalUserList from "./ChatModalUserList";
 import ChatModalRoom from "./ChatModalRoom";
-import { useAppDispatch } from "@/store/hooks";
-import { toggleModal } from "@/store/modalSlice";
-import { TYPE_CHAT } from "@/store/types";
-
 
 const testUser = [
   {
@@ -34,20 +30,12 @@ const testUser = [
 ];
 
 const ChatModal = () => {
-
-  const dispatch = useAppDispatch();
-  const onCloseModal = useCallback(
-    () => dispatch(toggleModal({ type: TYPE_CHAT, isOpen: false })),
-    [dispatch]
-  );
-
   /* Drag Modal */
 
   const modalRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [offsetX, setOffsetX] = useState<number | null>(null);
   const [offsetY, setOffsetY] = useState<number | null>(null);
-  const [selectUserId, setSelectUserId] = useState<number | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -199,7 +187,6 @@ const ChatModal = () => {
             )}
           </article>
         )}
-
       </div>
     </div>
   );

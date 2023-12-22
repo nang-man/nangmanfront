@@ -3,7 +3,7 @@ import { URL } from "@/data/url";
 
 export const users = async () => {
   try {
-    axios.get("/").then((res) => {
+    axios.get(`${URL}/api/user`).then((res) => {
       return res.data;
     });
   } catch (error) {

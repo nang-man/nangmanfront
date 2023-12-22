@@ -1,10 +1,7 @@
 import { useCallback } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-
 // import { login } from "@/apis/auth";
-import { toggleModal } from "@/store/modalSlice";
-import { TYPE_LOGIN, TYPE_SIGNUP } from "@/store/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { fetchCurrentUser, setUser } from "@/store/getCurrentUserSlice";
 
@@ -15,8 +12,6 @@ import { toggleModal } from "@/store/modalSlice";
 import { TYPE_LOGIN, TYPE_SIGNUP } from "@/store/types";
 
 const LoginModal = () => {
-  const selector = useAppSelector((state) => state.currentUser);
-
   const modalState = useAppSelector((state) => state.modalState.login);
   const dispatch = useAppDispatch();
 
@@ -31,7 +26,6 @@ const LoginModal = () => {
     },
   });
 
-
   const onToggle = useCallback(() => {
     dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: false }));
     dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: true }));
@@ -41,7 +35,6 @@ const LoginModal = () => {
     () => dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: false })),
     [dispatch]
   );
-
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { email, password } = data;

@@ -16,14 +16,12 @@ const PasswordModal = () => {
 
   const navigate = useNavigate();
 
-
   const onSendCode = () => {
     //Send
 
     setIsSend(true);
   };
-  const onCencel = () => navigate("/mypage/update", { replace: true });
-
+  const onCancel = () => navigate("/mypage/update", { replace: true });
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.currentTarget;
@@ -34,7 +32,6 @@ const PasswordModal = () => {
       setSubmitCode(value);
     }
   };
-
 
   const onSubmit = () => {
     dispatch(toggleModal({ type: TYPE_PHONE, isOpen: false }));
@@ -49,11 +46,7 @@ const PasswordModal = () => {
     "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
 
   const bodyContent = (
-
-    <form id="passwordForm" className="flex flex-col gap-4">
-
-  //  <form onSubmit={onSubmit} className="flex flex-col gap-4">
-
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <h2 className="font-semibold text-lg">전화번호를 입력해주세요.</h2>
       <div className="grid grid-cols-7-3 gap-5">
         <input
