@@ -1,17 +1,21 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
-import Modal from "@/components/modal/Modal";
-
-import { passwordModalState } from "@/hooks/modalState";
 import { useNavigate } from "react-router-dom";
 
+import Modal from "@/components/modal/Modal";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_PHONE } from "@/store/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
 const PasswordModal = () => {
-  const [isChecked, setIsChecked] = useRecoilState(passwordModalState);
   const [phoneNum, setPhoneNum] = useState("");
   const [isSend, setIsSend] = useState(true);
   const [submitCode, setSubmitCode] = useState("");
 
+  const modalState = useAppSelector((state) => state.modalState.isPhoneCheck);
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
+
 
   const onSendCode = () => {
     //Send
@@ -19,6 +23,7 @@ const PasswordModal = () => {
     setIsSend(true);
   };
   const onCencel = () => navigate("/mypage/update", { replace: true });
+
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.currentTarget;
@@ -30,13 +35,13 @@ const PasswordModal = () => {
     }
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsChecked((prev) => ({
-      ...prev,
-      phoneCheck: true,
-    }));
 
+  const onSubmit = () => {
+    dispatch(toggleModal({ type: TYPE_PHONE, isOpen: false }));
+    // setIsChecked((prev) => ({
+    //   ...prev,
+    //   phoneCheck: true,
+    // }));
     navigate("/mypage/update", { replace: true });
   };
 
@@ -44,7 +49,11 @@ const PasswordModal = () => {
     "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
 
   const bodyContent = (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+
+    <form id="passwordForm" className="flex flex-col gap-4">
+
+  //  <form onSubmit={onSubmit} className="flex flex-col gap-4">
+
       <h2 className="font-semibold text-lg">전화번호를 입력해주세요.</h2>
       <div className="grid grid-cols-7-3 gap-5">
         <input
@@ -84,7 +93,7 @@ const PasswordModal = () => {
           확인
         </button>
         <button
-          onClick={onCencel}
+          onClick={onCancel}
           className="bg-gray-200 p-4 pt-6 rounded-md hover:bg-gray-300"
         >
           취소
@@ -95,10 +104,12 @@ const PasswordModal = () => {
 
   return (
     <Modal
-      isOpen={true}
-      onClose={onCencel}
+      isOpen={modalState}
+      onClose={onCancel}
       title="Change Password"
       body={bodyContent}
+      onSubmit={onSubmit}
+      actionLabel=""
     />
   );
 };

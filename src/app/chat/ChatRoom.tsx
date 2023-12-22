@@ -46,6 +46,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   const [socketInstance, setSocketInstance] = useState<any>({
     connected: false,
   });
+
   const scrollRef = useRef<any>(null);
 
   const dayJs = dayjs();
@@ -95,7 +96,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
         roomId: roomId,
       });
     }
-  }, [joinChat]);
+  }, [joinChat, socketInstance, roomId]);
 
   // Chat scroll Motion
   useEffect(() => {

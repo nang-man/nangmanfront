@@ -20,6 +20,7 @@ import {
 } from "@/store/types";
 import { logout } from "@/apis/auth";
 
+
 const Navbar = React.memo(() => {
   const selector = useAppSelector((state) => state.currentUser);
   const modalState = useAppSelector((state) => state.modalState);
@@ -28,12 +29,17 @@ const Navbar = React.memo(() => {
   useEffect(() => {
     console.log(selector);
   }, [selector]);
+  
+  const onOpenModal = (type: TModalType) =>
+    dispatch(toggleModal({ type, isOpen: true }));
+  const session = sessionStorage.getItem("user") as string;
+  const currentUser = JSON.parse(session);
+
+  const modalState = useAppSelector((state) => state.modalState);
+  const dispatch = useAppDispatch();
 
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
-
-  const session = sessionStorage.getItem("user") as string;
-  const currentUser = JSON.parse(session);
 
   return (
     <>

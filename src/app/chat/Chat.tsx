@@ -6,10 +6,8 @@ import ChatVideo from "@/app/chat/ChatVideo";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineXMark } from "react-icons/hi2";
 import ChatRoom from "./ChatRoom";
-import { useModal } from "@/hooks/useModal";
-import { CREATE_STATE } from "@/hooks/modalType";
-import { getChatRoomData } from "@/apis/chat";
 
+import { getChatRoomData } from "@/apis/chat";
 
 const dummyRoomData = {
   roomId: "test1",
