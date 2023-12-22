@@ -1,9 +1,13 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import Input from "../Input";
-
 import Counter from "../Counter";
+
 import Modal from "./Modal";
+
+import { useCallback } from "react";
+import { create } from "@/apis/create";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
 import { TYPE_CREATE_CHAT } from "@/store/types";
@@ -11,6 +15,8 @@ import { getStorage } from "@/data/storage";
 
 const CreateChatModal = () => {
   const session = getStorage();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -22,17 +28,15 @@ const CreateChatModal = () => {
     defaultValues: {
       roomName: "",
       tag: "",
-      guestCount: 2,
+      count: 2,
     },
   });
 
-  const guestCount = watch("guestCount");
+  const count = watch("guestCount");
+
   const modalState = useAppSelector((state) => state.modalState.createChat);
 
   const dispatch = useAppDispatch();
-
-  const onCloseModal = () =>
-    dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false }));
 
   const setCustomValue = (id: string, value: number) => {
     setValue(id, value, {
@@ -42,10 +46,27 @@ const CreateChatModal = () => {
     });
   };
 
+<<<<<<< HEAD
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
     onCloseModal();
+=======
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { roomName, tag, count } = data;
+    const userId = session.userId;
+
+    const tags = tag.split(" ");
+
+    await create({ userId, roomName, tags, count });
+
+    navigate(`/chat/${userId}`);
+>>>>>>> dev
   };
+
+  const onCloseModal = useCallback(
+    () => dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false })),
+    [dispatch]
+  );
 
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -67,7 +88,7 @@ const CreateChatModal = () => {
       />
       <Counter
         title="Guests"
-        value={guestCount}
+        value={count}
         onChange={(value) => setCustomValue("guestCount", value)}
       />
     </article>

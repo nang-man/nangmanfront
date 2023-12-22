@@ -7,9 +7,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineXMark } from "react-icons/hi2";
 import ChatRoom from "./ChatRoom";
 
-import { useAppDispatch } from "@/store/hooks";
-import { toggleModal } from "@/store/modalSlice";
-import { TYPE_CREATE_CHAT } from "@/store/types";
+import { getChatRoomData } from "@/apis/chat";
 
 const dummyRoomData = {
   roomId: "test1",

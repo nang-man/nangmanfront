@@ -1,17 +1,31 @@
 import { useState } from "react";
+<<<<<<< HEAD
 import Modal from "@/components/modal/Modal";
 
+=======
+>>>>>>> dev
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { checkUserPhone } from "@/store/modalSlice";
 
+import Modal from "@/components/modal/Modal";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_PHONE } from "@/store/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
 const PasswordModal = () => {
+<<<<<<< HEAD
   const isPhoneChecked = useAppSelector(
     (state) => state.modalState.isPhoneCheck
   );
+=======
+>>>>>>> dev
   const [phoneNum, setPhoneNum] = useState("");
   const [isSend, setIsSend] = useState(false);
   const [submitCode, setSubmitCode] = useState("");
+
+  const modalState = useAppSelector((state) => state.modalState.isPhoneCheck);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -21,7 +35,7 @@ const PasswordModal = () => {
 
     setIsSend(true);
   };
-  const onCencel = () => navigate("/mypage/update", { replace: true });
+  const onCancel = () => navigate("/mypage/update", { replace: true });
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.currentTarget;
@@ -33,10 +47,19 @@ const PasswordModal = () => {
     }
   };
 
+<<<<<<< HEAD
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(checkUserPhone({ isCheck: true }));
 
+=======
+  const onSubmit = () => {
+    dispatch(toggleModal({ type: TYPE_PHONE, isOpen: false }));
+    // setIsChecked((prev) => ({
+    //   ...prev,
+    //   phoneCheck: true,
+    // }));
+>>>>>>> dev
     navigate("/mypage/update", { replace: true });
   };
 
@@ -84,7 +107,7 @@ const PasswordModal = () => {
           확인
         </button>
         <button
-          onClick={onCencel}
+          onClick={onCancel}
           className="bg-gray-200 p-4 pt-6 rounded-md hover:bg-gray-300"
         >
           취소
@@ -95,10 +118,12 @@ const PasswordModal = () => {
 
   return (
     <Modal
-      isOpen={true}
-      onClose={onCencel}
+      isOpen={modalState}
+      onClose={onCancel}
       title="Change Password"
       body={bodyContent}
+      onSubmit={onSubmit}
+      actionLabel=""
     />
   );
 };

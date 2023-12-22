@@ -38,6 +38,7 @@ const Navbar = React.memo(() => {
 
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
+<<<<<<< HEAD
 
   const onLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
@@ -46,6 +47,8 @@ const Navbar = React.memo(() => {
     }
   };
 
+=======
+>>>>>>> dev
   const session = sessionStorage.getItem("user") as string;
   const currentUser = JSON.parse(session);
 

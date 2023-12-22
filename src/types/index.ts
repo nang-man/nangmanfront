@@ -39,9 +39,9 @@ export type RegisterType = LoginType & { name: string; phone: string };
 
 // create api
 export type CreateType = {
-  email: string;
+  userId: string;
   roomName: string;
-  tagName: string;
+  tags: string[];
   count: number;
 };
 
@@ -60,4 +60,22 @@ export type GetUserDataType = {
   userId: string;
   followers: [];
   followings: [];
+};
+
+// socket
+export type SocketMessage = {
+  roomId: string;
+  name: string;
+  message: string;
+};
+
+export type SocketData = Omit<SocketMessage, "message">;
+
+export type Messages = {
+  isUser: boolean;
+  name: string;
+  id: string;
+  message: string[];
+  time: string;
+  img: string;
 };
