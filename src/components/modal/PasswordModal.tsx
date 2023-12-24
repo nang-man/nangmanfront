@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import Modal from "@/components/modal/Modal";
+
+import { useNavigate } from "react-router-dom";
 import { toggleModal } from "@/store/modalSlice";
 import { TYPE_PHONE } from "@/store/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -11,6 +11,7 @@ const PasswordModal = () => {
   const isPhoneChecked = useAppSelector(
     (state) => state.modalState.isPhoneCheck
   );
+
   const [phoneNum, setPhoneNum] = useState("");
   const [isSend, setIsSend] = useState(false);
   const [submitCode, setSubmitCode] = useState("");

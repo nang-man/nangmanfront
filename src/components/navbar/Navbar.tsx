@@ -38,6 +38,7 @@ const Navbar = React.memo(() => {
 
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
+<<<<<<<<< Temporary merge branch 1
 
   const onLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
@@ -46,6 +47,8 @@ const Navbar = React.memo(() => {
     }
   };
 
+=========
+>>>>>>>>> Temporary merge branch 2
   const session = sessionStorage.getItem("user") as string;
   const currentUser = JSON.parse(session);
 
