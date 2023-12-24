@@ -43,7 +43,7 @@ const MyFriendCard = ({ name, image, userId, email }: IMyFriendCard) => {
       <div className="flex justify-center items-center">
         <button
           onClick={onGoChat}
-          className="h-8 w-12 flex  justify-center items-center border-gray-300 border-2 rounded-md text-lg transition-transform hover:bg-gray-100 mr-2"
+          className="h-8 w-12 flex  justify-center items-center border-gray-300 border-2 rounded-md text-lg transition-transform hover:bg-gray-100 mr-2 hover:text-emerald-600"
         >
           <IoChatboxEllipsesOutline />
         </button>

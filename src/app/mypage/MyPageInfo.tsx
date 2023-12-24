@@ -37,7 +37,7 @@ const MyPageInfo = () => {
             <FaAngleDown className="ml-1" />
           )}
         </button>
-        <ul className="flex flex-col gap-3 mt-5 w-full h-[35vh]">
+        <ul className="flex flex-col gap-3 mt-5 w-full h-auto">
           {/* {userInfo.followers.slice(0,3).map(friend=><MyFriendCard name={friend.name} image={friend.image} />)} */}
           {userInfo.followers ? (
             <>

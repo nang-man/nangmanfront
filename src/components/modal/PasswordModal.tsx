@@ -1,7 +1,9 @@
-import { useState } from "react";
-import Modal from "@/components/modal/Modal";
-
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import Modal from "@/components/modal/Modal";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_PHONE } from "@/store/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { checkUserPhone } from "@/store/modalSlice";
 
@@ -13,15 +15,15 @@ const PasswordModal = () => {
   const [isSend, setIsSend] = useState(false);
   const [submitCode, setSubmitCode] = useState("");
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSendCode = () => {
     //Send
 
     setIsSend(true);
   };
-  const onCencel = () => navigate("/mypage/update", { replace: true });
+  const onCancel = () => navigate("/mypage/update", { replace: true });
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.currentTarget;
@@ -36,7 +38,7 @@ const PasswordModal = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(checkUserPhone({ isCheck: true }));
-
+    dispatch(toggleModal({ type: TYPE_PHONE, isOpen: false }));
     navigate("/mypage/update", { replace: true });
   };
 
@@ -84,7 +86,7 @@ const PasswordModal = () => {
           확인
         </button>
         <button
-          onClick={onCencel}
+          onClick={onCancel}
           className="bg-gray-200 p-4 pt-6 rounded-md hover:bg-gray-300"
         >
           취소
@@ -95,10 +97,11 @@ const PasswordModal = () => {
 
   return (
     <Modal
-      isOpen={true}
-      onClose={onCencel}
+      isOpen={isPhoneChecked}
+      onClose={onCancel}
       title="Change Password"
       body={bodyContent}
+      actionLabel=""
     />
   );
 };

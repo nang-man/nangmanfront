@@ -29,13 +29,15 @@ const SignupModal = () => {
   const modalState = useAppSelector((state) => state.modalState.signup);
   const dispatch = useAppDispatch();
 
-  const onCloseModal = () =>
-    dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: false }));
+  const onCloseModal = useCallback(
+    () => dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: false })),
+    [dispatch]
+  );
 
-  const onToggle = () => {
+  const onToggle = useCallback(() => {
     dispatch(toggleModal({ type: TYPE_LOGIN, isOpen: true }));
     dispatch(toggleModal({ type: TYPE_SIGNUP, isOpen: false }));
-  };
+  }, [dispatch]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { name, email, password, phone } = data;
