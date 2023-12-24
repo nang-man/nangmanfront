@@ -2,16 +2,10 @@ import React, { useState } from "react";
 import Modal from "@/components/modal/Modal";
 
 import { useNavigate } from "react-router-dom";
-import { toggleModal } from "@/store/modalSlice";
-import { TYPE_PHONE } from "@/store/types";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { checkUserPhone } from "@/store/modalSlice";
 
 const PasswordModal = () => {
-  const isPhoneChecked = useAppSelector(
-    (state) => state.modalState.isPhoneCheck
-  );
-
   const [phoneNum, setPhoneNum] = useState("");
   const [isSend, setIsSend] = useState(false);
   const [submitCode, setSubmitCode] = useState("");
@@ -39,7 +33,6 @@ const PasswordModal = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(checkUserPhone({ isCheck: true }));
-    dispatch(toggleModal({ type: TYPE_PHONE, isOpen: false }));
     navigate("/mypage/update", { replace: true });
   };
 
@@ -98,7 +91,7 @@ const PasswordModal = () => {
 
   return (
     <Modal
-      isOpen={isPhoneChecked}
+      isOpen={true}
       onClose={onCancel}
       title="Change Password"
       body={bodyContent}

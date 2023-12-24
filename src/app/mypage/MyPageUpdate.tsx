@@ -39,7 +39,6 @@ const MyPageUpdate = React.memo(() => {
 
   const [isUserWithdrawal, setIsUserWithdrawal] = useState(false);
 
-  // 수정 이전의 데이터를 form에 넣기
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
