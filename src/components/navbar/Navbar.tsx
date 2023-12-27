@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { CgAddR, CgUser } from "react-icons/cg";
 import { IoChatboxEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
@@ -21,13 +21,8 @@ import {
 import { logout } from "@/apis/auth";
 
 const Navbar = React.memo(() => {
-  const selector = useAppSelector((state) => state.currentUser);
   const modalState = useAppSelector((state) => state.modalState);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    console.log(selector);
-  }, [selector]);
 
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
