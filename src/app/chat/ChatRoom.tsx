@@ -46,8 +46,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   const [socketInstance, setSocketInstance] = useState<any>({
     connected: false,
   });
-
-  const scrollRef = useRef<any>(null);
+  const scrollRef = useRef<HTMLUListElement>(null);
 
   const dayJs = dayjs();
 
@@ -58,7 +57,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
 
   const updateReceiveMessage = (data: any) => {
     const getUserInfo = userData.find((user) => user.id === data.id);
-
+    console.log(data);
     const messageData = {
       // isUser: getData.id === dummyData.id ? true : false,
       isUser: false,
@@ -96,7 +95,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
         roomId: roomId,
       });
     }
-  }, [joinChat, socketInstance, roomId]);
+  }, [joinChat, socketInstance]);
 
   // Chat scroll Motion
   useEffect(() => {
@@ -201,7 +200,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
               key={item + index}
               name={item.name}
               message={item.message}
-              date={item.time}
+              date={dummyData.time}
               img={item.img}
               isUser={item.isUser}
             />

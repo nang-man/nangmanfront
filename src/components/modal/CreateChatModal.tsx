@@ -61,7 +61,6 @@ const CreateChatModal = () => {
     () => dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false })),
     [dispatch]
   );
-
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input

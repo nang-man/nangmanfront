@@ -1,7 +1,7 @@
 import axios from "axios";
 import { URL } from "@/data/url";
 
-export const list = async () => {
+export const getChatRoomList = async () => {
   try {
     axios.get(`${URL}/api/list`).then((res) => {
       return res.data;
