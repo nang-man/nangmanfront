@@ -2,13 +2,17 @@ import axios from "axios";
 import { URL } from "@/data/url";
 
 export interface IUpdateUser {
+  userId: string;
   name: string;
-  email: string;
+  profileImg: FileList;
+  phone: string;
+}
+export interface IUpdateUserPassword {
+  userId: string;
   password: string;
-  phone: number;
 }
 
-export const users = async () => {
+export const getAllUsers = async () => {
   try {
     await axios.get(`${URL}/api/user`).then((res) => {
       return res.data;
@@ -18,7 +22,7 @@ export const users = async () => {
   }
 };
 
-export const user = async ({ name }: { name: string }) => {
+export const getUser = async ({ name }: { name: string }) => {
   try {
     await axios.get(`${URL}/api/user/${name}`).then((res) => {
       return res.data;
@@ -28,19 +32,31 @@ export const user = async ({ name }: { name: string }) => {
   }
 };
 
-// patch??
+// Update user data
 export const updateUsers = async ({
-  email,
+  userId,
+  profileImg,
   name,
-  password,
   phone,
 }: IUpdateUser) => {
   try {
-    await axios.post(`${URL}/api/user`, {
+    await axios.patch(`${URL}/api/user/${userId}`, {
       name: name,
-      email: email,
-      password: password,
       phone: phone,
+      profileImg: profileImg,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateUsersPassword = async ({
+  userId,
+  password,
+}: IUpdateUserPassword) => {
+  try {
+    await axios.patch(`${URL}/api/user${userId}/password`, {
+      password: password,
     });
   } catch (error) {
     console.error(error);

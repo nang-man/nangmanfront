@@ -8,9 +8,10 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { checkUserPhone } from "@/store/modalSlice";
 import { logout } from "@/apis/auth";
 import { FaArrowRight } from "react-icons/fa";
+import { updateUsers } from "@/apis/user";
 
 interface IFormData {
-  image: string;
+  image: FileList;
   name: string;
   phone: number;
   password: string;
@@ -38,16 +39,20 @@ const MyPageUpdate = React.memo(() => {
   );
 
   const [isUserWithdrawal, setIsUserWithdrawal] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const avatarImg = watch("image");
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  if (!userInfo) {
-    navigate("/list");
-  }
-
   const onSubmit: SubmitHandler<IFormData> = (data) => {
-    console.log(data);
+    updateUsers({
+      userId: userInfo.userId,
+      name: data.name,
+      profileImg: data.image,
+      phone: String(data.phone),
+    });
+
     navigate("/mypage", { replace: true });
   };
 
@@ -80,7 +85,10 @@ const MyPageUpdate = React.memo(() => {
               htmlFor="image"
               className="bg-gray-400 rounded-full border-2 w-32 h-32 overflow-hidden cursor-pointer transition hover:border-spacing-10 hover:border-emerald-500"
             >
-              <img alt="avatar" src={userInfo.profileImg} />
+              <img
+                alt="avatar"
+                src={avatarPreview ? avatarPreview : userInfo.profileImg}
+              />
             </label>
             <input
               id="image"
@@ -88,7 +96,6 @@ const MyPageUpdate = React.memo(() => {
               {...register("image")}
               // defaultValue={userInfo.profileImg}
               className="hidden"
-              form="updateForm"
             />
           </li>
           <li className={listStyle}>
@@ -106,7 +113,6 @@ const MyPageUpdate = React.memo(() => {
                   required: "Please enter your name.",
                 })}
                 className={`${inputStyle} ${errors.name ? errorStyle : ""}`}
-                form="updateForm"
               />
               <p className="text-red-600 font-normal text-sm">
                 {errors.name?.message}
@@ -128,64 +134,12 @@ const MyPageUpdate = React.memo(() => {
                   required: "Please enter your phone.",
                 })}
                 className={`${inputStyle} ${errors.phone ? errorStyle : ""}`}
-                form="updateForm"
               />
               <p className="text-red-600 font-normal text-sm">
                 {errors.phone?.message}
               </p>
             </div>
           </li>
-          {isPhoneChecked && (
-            <>
-              <li className={listStyle}>
-                <label htmlFor="password">비밀번호</label>
-                <div>
-                  <input
-                    id="password"
-                    type="password"
-                    {...register("password", {
-                      required: "Please enter your phone number.",
-                      pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                        message:
-                          "Password must be at least 8 characters and include both letters and numbers.",
-                      },
-                    })}
-                    placeholder="password"
-                    className={`${inputStyle} ${
-                      errors.password ? errorStyle : ""
-                    }`}
-                    form="updateForm"
-                  />
-                  <p className="text-red-600 font-normal text-sm">
-                    {errors.password?.message}
-                  </p>
-                </div>
-              </li>
-              <li className={listStyle}>
-                <label htmlFor="password">비밀번호 확인</label>
-                <div>
-                  <input
-                    id="passwordConfirm"
-                    type="password"
-                    {...register("passwordConfirm", {
-                      required: "Please confirm your password",
-                      validate: (value) =>
-                        value === watch("password") || "Passwords do not match",
-                    })}
-                    placeholder="password confirmation"
-                    className={`${inputStyle} ${
-                      errors.passwordConfirm && errorStyle
-                    }`}
-                    form="updateForm"
-                  />
-                  <p className="text-red-600 font-normal text-sm">
-                    {errors.passwordConfirm?.message}
-                  </p>
-                </div>
-              </li>
-            </>
-          )}
         </ul>
 
         {/* Updata password */}
