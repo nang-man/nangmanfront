@@ -1,19 +1,16 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import React, { useState } from "react";
 import Modal from "@/components/modal/Modal";
-import { toggleModal } from "@/store/modalSlice";
-import { TYPE_PHONE } from "@/store/types";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks";
+import { checkUserPhone } from "@/store/modalSlice";
 
 const PasswordModal = () => {
   const [phoneNum, setPhoneNum] = useState("");
-  const [isSend, setIsSend] = useState(true);
+  const [isSend, setIsSend] = useState(false);
   const [submitCode, setSubmitCode] = useState("");
 
-  const modalState = useAppSelector((state) => state.modalState.isPhoneCheck);
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
 
   const onSendCode = () => {
@@ -33,17 +30,14 @@ const PasswordModal = () => {
     }
   };
 
-  const onSubmit = () => {
-    dispatch(toggleModal({ type: TYPE_PHONE, isOpen: false }));
-    // setIsChecked((prev) => ({
-    //   ...prev,
-    //   phoneCheck: true,
-    // }));
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(checkUserPhone({ isCheck: true }));
     navigate("/mypage/update", { replace: true });
   };
 
   const style =
-    "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
+    "peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:bg-gray-200 disabled:cursor-not-allowed";
 
   const bodyContent = (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
@@ -97,11 +91,10 @@ const PasswordModal = () => {
 
   return (
     <Modal
-      isOpen={modalState}
+      isOpen={true}
       onClose={onCancel}
       title="Change Password"
       body={bodyContent}
-      onSubmit={onSubmit}
       actionLabel=""
     />
   );

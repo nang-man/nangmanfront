@@ -1,10 +1,10 @@
 import React from "react";
-import { Provider } from "react-redux";
-import { CookiesProvider } from "react-cookie";
 import ReactDOM from "react-dom/client";
-import { store } from "@/store/store.ts";
-
 import App from "./App.tsx";
+import { CookiesProvider } from "react-cookie";
+import { store } from "@/store/store.ts";
+import { Provider } from "react-redux";
+
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { CurrentUserData } from "@/types/index";
+import { CurrentUserType } from "@/types/index";
 
 import { login } from "@/apis/auth";
 
-const initialState: CurrentUserData = {
+const initialState: CurrentUserType = {
   adminState: false,
   email: "",
   name: "",
@@ -35,14 +35,22 @@ export const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<CurrentUserData>) => {
-      state = action.payload;
+    setUser: (state, action: PayloadAction<any>) => {
+      state.adminState = true;
+      state.email = action.payload.curEmail;
+      state.name = action.payload.curName;
+      state.password = action.payload.password;
+      state.phone = action.payload.phone;
+      state.profileImg = action.payload.profileImg;
+      state.userId = action.payload.userId;
+      state.followers = action.payload.followers;
+      state.followings = action.payload.followings;
     },
   },
   extraReducers(builder) {
     builder.addCase(
       fetchCurrentUser.fulfilled,
-      (state, action: PayloadAction<CurrentUserData>) => {
+      (state, action: PayloadAction<CurrentUserType>) => {
         state.adminState = true;
         state.email = action.payload.email;
         state.name = action.payload.name;

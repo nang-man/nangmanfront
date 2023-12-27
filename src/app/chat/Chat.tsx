@@ -7,7 +7,9 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineXMark } from "react-icons/hi2";
 import ChatRoom from "./ChatRoom";
 
-import { getChatRoomData } from "@/apis/chat";
+import { useAppDispatch } from "@/store/hooks";
+import { toggleModal } from "@/store/modalSlice";
+import { TYPE_CREATE_CHAT } from "@/store/types";
 
 const dummyRoomData = {
   roomId: "test1",
@@ -58,6 +60,8 @@ const Chat = () => {
 
   // Get room data
   const pageData = useParams();
+  const dispatch = useAppDispatch();
+  const navigation = useNavigate();
 
   useEffect(() => {
     const otherUsers = dummyRoomData.userData.filter(
@@ -73,17 +77,14 @@ const Chat = () => {
     setMainVideoData(data);
   };
 
-  const { onOpen } = useModal(CREATE_STATE);
-
   // Update Chat room data
   const onEditRoomData = () => {
     if (dummyRoomData.admin === dummyUserData.id) {
-      onOpen();
+      return dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: true }));
+    } else {
+      return window.alert("권한이 없습니다!");
     }
   };
-  // console.log(userlist);
-
-  const navigation = useNavigate();
 
   const onGoList = () => {
     if (window.confirm("채팅을 종료하시겠습니까?")) {

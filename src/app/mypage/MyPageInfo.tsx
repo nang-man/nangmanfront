@@ -2,69 +2,67 @@
 import { useState } from "react";
 import MyFriendCard from "@/app/mypage/MyFriendCard";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import { FaTrashAlt } from "react-icons/fa";
 import userAvatar from "@/assets/user.png";
-import { user } from "@/apis/user";
-
-const dummyData = {
-  name: "김낭만",
-  image: userAvatar,
-};
+import { useAppSelector } from "@/store/hooks";
 
 const MyPageInfo = () => {
   const [more, setMore] = useState(false);
-  //  const userData = user({ name: "test" });
+  const userInfo = useAppSelector((state) => state.currentUser);
 
   const onToggleMore = () => setMore((prev) => !prev);
+
   return (
-    <section className="m-auto w-auto h-auto">
-      <figure className="flex mt-12 justify-items-end items-end gap-5">
-        <div className="bg-gray-400 rounded-full border-2 w-32 h-32 overflow-hidden">
+    <section className="h-auto w-[50%] mx-auto min-w-[400px] py-5 px-5 overflow-scroll scrollbar-hidden">
+      <figure className="flex gap-10 mt-10">
+        <div className="bg-gray-400 rounded-full border-2 w-[12em] h-[12em] overflow-hidden">
           <img alt="avatar" src={userAvatar} />
         </div>
-        <figcaption className="text-lg font-semibold">
-          <h3>홍길동</h3>
-          <h3>user123@naver.com</h3>
+        <figcaption>
+          <h2 className="text-2xl font-semibold">{userInfo.name}</h2>
+          <h3 className="text-xl font-semibold text-gray-600">
+            {userInfo.email}
+          </h3>
         </figcaption>
       </figure>
-      <div className="mt-32 h-auto">
-        <h3 className="text-lg font-semibold">친구 목록</h3>
-        <ul className="flex gap-5 mt-5 w-full h-auto items-center justify-center">
-          <MyFriendCard name={dummyData.name} image={dummyData.image} />
-          <MyFriendCard name={dummyData.name} image={dummyData.image} />
-          <MyFriendCard name={dummyData.name} image={dummyData.image} />
-          <button
-            className="flex items-center text-sm text-neutral-500"
-            onClick={onToggleMore}
-          >
-            {more ? (
-              <>
-                더보기 <FaAngleUp className="ml-1" />
-              </>
-            ) : (
-              <>
-                더보기 <FaAngleDown className="ml-1" />
-              </>
-            )}
-          </button>
-        </ul>
+      <div className="mt-20 h-auto relative">
+        <h3 className="text-[1.1em] font-semibold">친구 목록</h3>
+        <button
+          className="flex absolute top-0 right-0 items-center text-sm text-neutral-600"
+          onClick={onToggleMore}
+        >
+          더보기
+          {more ? (
+            <FaAngleUp className="ml-1" />
+          ) : (
+            <FaAngleDown className="ml-1" />
+          )}
+        </button>
+        <ul className="flex flex-col gap-3 mt-5 w-full h-auto">
+          {/* {userInfo.followers.slice(0,3).map(friend=><MyFriendCard name={friend.name} image={friend.image} />)} */}
+          {userInfo.followers ? (
+            <>
+              <MyFriendCard
+                name={"이름"}
+                image={"image"}
+                email="test@test.com"
+              />
+              <MyFriendCard
+                name={"김낭만"}
+                image={"image"}
+                email="test@test.com"
+              />
+              <MyFriendCard
+                name={"이름"}
+                image={"image"}
+                email="test@test.com"
+              />
+            </>
+          ) : (
+            "친구를 추가해주세요."
+          )}
 
-        {more && (
-          <ul className="w-full h-1/3 mt-5 overflow-scroll scrollbar-hidden">
-            <li className="flex gap-2 mb-3">
-              <h4 className="font-semibold">이낭만</h4>
-              <button>
-                <FaTrashAlt className="hover:text-blue-600" />
-              </button>
-            </li>
-            <li className="flex gap-2 mb-3">
-              <h4 className="font-semibold">이낭만</h4>
-              <button>
-                <FaTrashAlt className="hover:text-blue-600" />
-              </button>
-            </li>
-          </ul>
-        )}
+          {more && [1, 2, 3, 4].map(() => <MyFriendCard name={"이름"} />)}
+        </ul>
       </div>
     </section>
   );
