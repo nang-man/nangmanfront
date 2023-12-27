@@ -81,12 +81,6 @@ const ChatModal = () => {
     };
   }, [handleMouseMove, handleMouseUp]);
 
-  /*  socket.io client
-   *  @params
-   *
-   *
-   */
-
   const currentUser = getStorage();
   const [selectUserId, setSelectUserId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Messages[]>([]);
@@ -96,23 +90,20 @@ const ChatModal = () => {
     console.log(data.message);
   };
 
-  const updateReceiveMessage = useCallback(
-    (data: Messages) => {
-      const { curName, userId, profileImg } = currentUser;
+  const updateReceiveMessage = (data: Messages) => {
+    const { curName, userId, profileImg } = currentUser;
 
-      const messageData: Messages = {
-        isUser: true,
-        name: curName,
-        id: userId,
-        message: data.message,
-        time: data.time,
-        img: profileImg,
-      };
+    const messageData: Messages = {
+      isUser: true,
+      name: curName,
+      id: userId,
+      message: data.message,
+      time: data.time,
+      img: profileImg,
+    };
 
-      setMessages((prev) => [...prev, messageData]);
-    },
-    [currentUser]
-  );
+    setMessages((prev) => [...prev, messageData]);
+  };
 
   useEffect(() => {
     socket.on("joinChatRoom", socketMessage);

@@ -23,19 +23,18 @@ import { setUser } from "@/store/getCurrentUserSlice";
 import { getStorage } from "@/data/storage";
 
 const Navbar = React.memo(() => {
-  const selector = useAppSelector((state) => state.currentUser);
   const modalState = useAppSelector((state) => state.modalState);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const userInfo = getStorage();
 
+
   useEffect(() => {
     if (userInfo) {
       dispatch(setUser(userInfo));
     }
   }, [modalState]);
-
   const onOpenModal = (type: TModalType) =>
     dispatch(toggleModal({ type, isOpen: true }));
 

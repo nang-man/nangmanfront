@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import dayjs from "dayjs";
 
-import ChatBubble from "@/app/chat/ChatBubble";
 import { Messages } from "@/types/index";
 
 interface ChatModalRoomProps {
@@ -34,14 +33,16 @@ const ChatModalRoom = React.memo(
 
     const findUser = fllowers.find((user) => user.id === userId);
 
-    console.log(findUser, socket);
-
     useEffect(() => {
       socket.on("sendMessage", updateReceiveMessage);
     });
 
     const sendMessage = (userId: string, message: string, time: string) => {
-      socket.emit("sendMessage", userId, message, time);
+      socket.emit(
+        "sendMessage",
+        { userId, message, time },
+        (message: Messages) => updateReceiveMessage(message)
+      );
     };
 
     socket.on("receiveMessage", (message: string) => {
@@ -59,8 +60,12 @@ const ChatModalRoom = React.memo(
 
       setMessage("");
 
-      sendMessage(userId, message, dayJs.format("YYYY-MM-DDTAhh:mm"));
+      sendMessage(userId, message, dayJs.format("hh:mm"));
     };
+
+    if (!joinChat) {
+      return;
+    }
 
     return (
       <div>
@@ -68,21 +73,23 @@ const ChatModalRoom = React.memo(
           <ul className="overflow-y-auto max-h-[400px]">
             {messages &&
               messages.map((message, idx: number) => (
-                // <ChatBubble
-                // key={`${message.name}+${idx}`}
-                // name={message.name}
-                // message={message.message}
-                // date={message.time}
-                // img={message.img}
-                // isUser={message.isUser}
-                <li key={`${message.name}+${idx}`}>
-                  {message.name}
-                  {message.message}
-                  {message.time}
-                  {message.img}
-                  {message.isUser}
+                <li key={idx}>
+                  {findUser && (
+                    <div className="flex">
+                      <div>
+                        <img src={findUser?.src} />
+                      </div>
+                      <div className="flex flex-col">
+                        <p>
+                          {findUser?.name} {message.time}
+                        </p>
+                        <div>
+                          <p>{message.message}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </li>
-                // />
               ))}
           </ul>
         </div>
