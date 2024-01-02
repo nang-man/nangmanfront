@@ -87,10 +87,25 @@ const PasswordModal = () => {
               {/* {errors.passwordConfirm?.message} */}
             </p>
           </div>
+          <div className="grid grid-cols-2 gap-[3%] font-semibold">
+            <button
+              type={isPhoneChecked ? "submit" : "button"}
+              onClick={isPhoneChecked ? undefined : onCheckCode}
+              className="bg-emerald-500 text-white rounded-md p-4 pt-6  hover:bg-emerald-600"
+            >
+              확인
+            </button>
+            <button
+              onClick={onCancel}
+              className="bg-gray-200 p-4 pt-6 rounded-md hover:bg-gray-300"
+            >
+              취소
+            </button>
+          </div>
         </>
       ) : (
         <>
-          <h2 className="font-semibold text-lg">전화번호를 입력해주세요.</h2>
+          <h2 className="font-semibold">전화번호를 입력해주세요.</h2>
           <div className="grid grid-cols-7-3 gap-[5%]">
             <Input
               id="phone"
@@ -112,42 +127,27 @@ const PasswordModal = () => {
             </button>
           </div>
           <div className="grid grid-cols-7-3 gap-[5%]">
-            <input
+            <Input
+              id="code"
+              label="code"
+              actionLabel="code"
+              register={register}
+              errors={errors}
+              required
               disabled={!isSend}
-              type="text"
-              // className={style}
-              {...register("code", {
-                required: "Please enter your code.",
-                minLength: {
-                  value: 5,
-                  message: "Code must be at least 5 characters",
-                },
-              })}
             />
             <button
               onClick={onCheckCode}
-              className="bg-emerald-500 text-white rounded-md"
+              className={`text-white rounded-md ${
+                isSend ? "bg-emerald-500" : "bg-gray-400"
+              }`}
+              disabled={!isSend}
             >
               확인
             </button>
           </div>
         </>
       )}
-      <div className="grid grid-cols-2 gap-[3%] font-semibold">
-        <button
-          type={isPhoneChecked ? "submit" : "button"}
-          onClick={isPhoneChecked ? undefined : onCheckCode}
-          className="bg-emerald-500 text-white rounded-md p-4 pt-6  hover:bg-emerald-600"
-        >
-          확인
-        </button>
-        <button
-          onClick={onCancel}
-          className="bg-gray-200 p-4 pt-6 rounded-md hover:bg-gray-300"
-        >
-          취소
-        </button>
-      </div>
     </form>
   );
 

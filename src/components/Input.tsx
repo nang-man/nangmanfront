@@ -31,6 +31,8 @@ const Input = ({
 
   const isMatchPassword = id === "matchPassword";
 
+  const isCode = id === "code";
+  console.log(errors[id]);
   return (
     <div className="w-full relative">
       <input
@@ -59,6 +61,12 @@ const Input = ({
           }),
           ...(isMatchPassword && {
             validate: (value: string) => (password === value ? true : false),
+          }),
+          ...(isCode && {
+            minLength: {
+              value: 5,
+              message: "Code must be at least 5 characters",
+            },
           }),
         })}
         placeholder=" "

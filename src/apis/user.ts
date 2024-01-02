@@ -4,7 +4,8 @@ import { URL } from "@/data/url";
 export interface IUpdateUser {
   userId: string;
   name: string;
-  profileImg: FileList;
+  profileImg: string;
+  // profileImg: FileList;
   phone: string;
 }
 export interface IUpdateUserPassword {

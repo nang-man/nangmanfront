@@ -39,17 +39,41 @@ const MyPageUpdate = React.memo(() => {
   );
 
   const [isUserWithdrawal, setIsUserWithdrawal] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState<string>();
   const avatarImg = watch("image");
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  // Avatar preview
+  useEffect(() => {
+    if (avatarImg) {
+      const img = avatarImg[0];
+      const imageUrl = URL.createObjectURL(img);
+      setAvatarPreview(imageUrl);
+    }
+  }, [avatarImg]);
+
+  // Sumbit
   const onSubmit: SubmitHandler<IFormData> = (data) => {
+    const fileReader = new FileReader();
+
+    let srcData: string | null | ArrayBuffer = "";
+    fileReader.onload = () => {
+      srcData = fileReader.result;
+      // console.log("base64:", srcData);
+      return srcData;
+    };
+
+    const img = data.image[0];
+    const blob: Blob = img.slice(0, img.size, img.type);
+
+    fileReader.readAsDataURL(blob);
+
     updateUsers({
       userId: userInfo.userId,
       name: data.name,
-      profileImg: data.image,
+      profileImg: srcData,
       phone: String(data.phone),
     });
 
