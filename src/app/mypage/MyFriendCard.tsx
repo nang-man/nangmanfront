@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@components/Avatar";
 import { FaTrashAlt } from "react-icons/fa";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleModal } from "@/store/modalSlice";
 import { TYPE_CHAT } from "@/store/types";
 
@@ -31,8 +31,12 @@ const MyFriendCard = ({ name, image, userId, email }: IMyFriendCard) => {
     <li className="w-full h-auto max-h-[80px] flex justify-between bg-white border-2 rounded-md py-2 px-3">
       <article className="flex">
         {image && (
-          <div className="bg-gray-400 rounded-full border-2 w-[3.5em] h-[3.5em] overflow-hidden cursor-pointer">
-            <Avatar src={image} />
+          <div className="bg-gray-400 rounded-full border-2 overflow-hidden">
+            <Avatar
+              src={image}
+              profileSize={"w-[3.5em] h-[3.5em]"}
+              name={name}
+            />
           </div>
         )}
         <figcaption className="ml-5 flex flex-col gap-1 justify-center">

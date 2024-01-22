@@ -7,7 +7,6 @@ const initialState: IModal = {
   signup: false,
   createChat: false,
   chat: false,
-  isPhoneCheck: false,
 };
 
 export const modalSlice = createSlice({
@@ -21,16 +20,9 @@ export const modalSlice = createSlice({
         [type]: isOpen,
       });
     },
-    checkUserPhone: (state, action: PayloadAction<{ isCheck: boolean }>) => {
-      const { isCheck } = action.payload;
-      return (state = {
-        ...state,
-        isPhoneCheck: isCheck,
-      });
-    },
   },
 });
 
-export const { toggleModal, checkUserPhone } = modalSlice.actions;
+export const { toggleModal } = modalSlice.actions;
 
 export default modalSlice.reducer;

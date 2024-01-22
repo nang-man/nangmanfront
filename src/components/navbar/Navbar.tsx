@@ -26,9 +26,8 @@ const Navbar = React.memo(() => {
   const modalState = useAppSelector((state) => state.modalState);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const userData = useAppSelector((state) => state.currentUser);
   const userInfo = getStorage();
-
 
   useEffect(() => {
     if (userInfo) {
@@ -143,7 +142,7 @@ const Navbar = React.memo(() => {
                 onClick={() => onOpenModal(TYPE_SIGNUP)}
                 className="mt-2 rounded-full bg-gray-100 relative group"
               >
-                <Avatar src="" height="[30px]" width="[30px]" />
+                <Avatar src="" isNonMembers />
                 <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                   <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
                     <div className="absolute inset-0 -left-1 flex items-center">
@@ -160,11 +159,7 @@ const Navbar = React.memo(() => {
                 onClick={onLogout}
                 className="mt-2 rounded-full bg-gray-100 relative group"
               >
-                <Avatar
-                  src={`${currentUser.profileImg}`}
-                  height="[30px]"
-                  width="[30px]"
-                />
+                <Avatar src={userData.profileImg} name={userData.name} />
                 <div className="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                   <div className="relative whitespace-nowrap rounded-md bg-white px-4 py-2 drop-shadow-lg">
                     <div className="absolute inset-0 -left-1 flex items-center">

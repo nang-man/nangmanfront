@@ -54,13 +54,14 @@ const CreateChatModal = () => {
 
     await create({ userId, roomName, tags, count });
 
-    navigate(`/chat/${userId}`);
+    navigate(`/list`);
   };
 
   const onCloseModal = useCallback(
     () => dispatch(toggleModal({ type: TYPE_CREATE_CHAT, isOpen: false })),
     [dispatch]
   );
+
   const bodyContent = (
     <article onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
@@ -81,7 +82,7 @@ const CreateChatModal = () => {
       />
       <Counter
         title="Guests"
-        value={count}
+        value={count || 2}
         onChange={(value) => setCustomValue("guestCount", value)}
       />
     </article>

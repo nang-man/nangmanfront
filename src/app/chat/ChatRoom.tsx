@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import ChatBubble from "./ChatBubble";
-import { io } from "socket.io-client";
 import dayjs from "dayjs";
+import { socket } from "@/data/socket";
 
 const dummyData = {
   name: "홍길동",
@@ -71,31 +71,26 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    // const socket = io(URL);
 
-    socket.on("handshake", socketMessage);
     socket.on("joinChatRoom", socketMessage);
     socket.on("leaveChatRoom", socketMessage);
     socket.on("sendMessage", updateReceiveMessage);
     socket.on("disconnect", socketMessage);
 
-    setSocketInstance(socket);
     setJoinChat(true);
 
+    socket.emit("joinChatRoom", {
+      name: socket.id,
+      roomId: roomId,
+    });
+
     return () => {
-      socket.disconnect();
+      if (socket.connected) {
+        socket.disconnect();
+      }
     };
   }, []);
-
-  // Join chat room immediately
-  useEffect(() => {
-    if (socketInstance && joinChat) {
-      socketInstance.emit("joinChatRoom", {
-        name: socketInstance.id,
-        roomId: roomId,
-      });
-    }
-  }, [joinChat, socketInstance]);
 
   // Chat scroll Motion
   useEffect(() => {
@@ -117,12 +112,12 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
     e.preventDefault();
     if (inputMessage === "") return;
 
-    if (!socketInstance.connected) {
+    if (!socket.connected) {
       setInputMessage("");
       return window.alert("연결에 실패하였습니다.");
     } else {
       const data = {
-        id: socketInstance.id,
+        id: socket.id,
         message: inputMessage,
         time: dayJs.format("YYYY-MM-DDTAhh:mm"),
       };
@@ -138,14 +133,14 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
 
     // Join chat room
     if (!joinChat) {
-      socketInstance.emit("joinChatRoom", {
-        name: socketInstance.id,
+      socket.emit("joinChatRoom", {
+        name: socket.id,
         roomId: roomId,
       });
       setJoinChat(true);
     }
 
-    socketInstance.emit(
+    socket.emit(
       "sendMessage",
       {
         name: data.id,
@@ -171,14 +166,12 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
   };
 
   const leaveRoom = () => {
-    socketInstance.emit("leaveChatRoom", {
+    socket.emit("leaveChatRoom", {
       name: dummyData.id,
       roomId: roomId,
     });
-  };
 
-  const disconnect = () => {
-    socketInstance.emit("disconnect", { message: "The connection is closed" });
+    socket.emit("disconnect", { message: "The connection is closed" });
     setJoinChat(false);
   };
 
@@ -189,7 +182,7 @@ const ChatRoom = ({ roomId, userData }: IChatRoomProps) => {
         ref={scrollRef}
         className="h-[85%] w-full overflow-scroll scrollbar-hidden"
       >
-        {socketInstance.connected && joinChat && (
+        {socket.connected && joinChat && (
           <li className="text-gray-500 text-sm">
             -------채팅방에 입장하였습니다.-------
           </li>

@@ -5,10 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { IoSettingsOutline } from "react-icons/io5";
 
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { checkUserPhone } from "@/store/modalSlice";
 import { logout } from "@/apis/auth";
-import { FaArrowRight } from "react-icons/fa";
-import { updateUsers } from "@/apis/user";
 
 interface IFormData {
   image: FileList;
@@ -34,9 +31,9 @@ const MyPageUpdate = React.memo(() => {
   } = useForm<IFormData>();
 
   const userInfo = useAppSelector((state) => state.currentUser);
-  const isPhoneChecked = useAppSelector(
-    (state) => state.modalState.isPhoneCheck
-  );
+
+  const session = sessionStorage.getItem("user") as string;
+  const userSessionInfo = JSON.parse(session);
 
   const [isUserWithdrawal, setIsUserWithdrawal] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string>();
@@ -56,26 +53,12 @@ const MyPageUpdate = React.memo(() => {
 
   // Sumbit
   const onSubmit: SubmitHandler<IFormData> = (data) => {
-    const fileReader = new FileReader();
-
-    let srcData: string | null | ArrayBuffer = "";
-    fileReader.onload = () => {
-      srcData = fileReader.result;
-      // console.log("base64:", srcData);
-      return srcData;
-    };
-
-    const img = data.image[0];
-    const blob: Blob = img.slice(0, img.size, img.type);
-
-    fileReader.readAsDataURL(blob);
-
-    updateUsers({
-      userId: userInfo.userId,
-      name: data.name,
-      profileImg: srcData,
-      phone: String(data.phone),
-    });
+    // updateUsers({
+    //   userId: userInfo.userId,
+    //   name: data.name,
+    //   profileImg: "",
+    //   phone: String(data.phone),
+    // });
 
     navigate("/mypage", { replace: true });
   };
@@ -88,7 +71,6 @@ const MyPageUpdate = React.memo(() => {
 
   const onGoMyPage = () => {
     navigate("/mypage");
-    dispatch(checkUserPhone({ isCheck: false }));
   };
 
   const onLogout = () => {
@@ -107,12 +89,14 @@ const MyPageUpdate = React.memo(() => {
             <h4>프로필</h4>
             <label
               htmlFor="image"
-              className="bg-gray-400 rounded-full border-2 w-32 h-32 overflow-hidden cursor-pointer transition hover:border-spacing-10 hover:border-emerald-500"
+              className="bg-emerald-300 rounded-full border-2 w-32 h-32 overflow-hidden cursor-pointer transition hover:border-spacing-10 hover:border-emerald-500"
             >
-              <img
-                alt="avatar"
-                src={avatarPreview ? avatarPreview : userInfo.profileImg}
-              />
+              {(avatarPreview || userInfo.profileImg) && (
+                <img
+                  alt="avatar"
+                  src={avatarPreview ? avatarPreview : userInfo.profileImg}
+                />
+              )}
             </label>
             <input
               id="image"
@@ -165,17 +149,6 @@ const MyPageUpdate = React.memo(() => {
             </div>
           </li>
         </ul>
-
-        {/* Updata password */}
-        {!isPhoneChecked && (
-          <button
-            onClick={onModalToggle}
-            className="group/btnIcon font-semibold block mt-8 text-gray-800 text-[1.1rem] hover:text-gray-500"
-          >
-            비밀번호 변경
-            <FaArrowRight className="inline-block translate-y-[-3px] ml-2 group-hover/btnIcon:translate-x-2" />
-          </button>
-        )}
         <div className="float-right">
           <button
             className="btn bg-emerald-500 text-white hover:bg-emerald-600 mt-8 mr-3"

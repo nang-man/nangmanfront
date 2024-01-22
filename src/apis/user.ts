@@ -7,6 +7,7 @@ export interface IUpdateUser {
   profileImg: string;
   // profileImg: FileList;
   phone: string;
+  authToken: string;
 }
 export interface IUpdateUserPassword {
   userId: string;
@@ -39,13 +40,23 @@ export const updateUsers = async ({
   profileImg,
   name,
   phone,
+  authToken,
 }: IUpdateUser) => {
   try {
-    await axios.patch(`${URL}/api/user/${userId}`, {
-      name: name,
-      phone: phone,
-      profileImg: profileImg,
-    });
+    await axios.patch(
+      `${URL}/api/user/${userId}`,
+      {
+        name: name,
+        phone: phone,
+        profileImg: profileImg,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${authToken}`,
+        },
+      }
+    );
   } catch (error) {
     console.error(error);
   }

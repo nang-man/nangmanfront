@@ -2,20 +2,26 @@
 import { useState } from "react";
 import MyFriendCard from "@/app/mypage/MyFriendCard";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import userAvatar from "@/assets/user.png";
 import { useAppSelector } from "@/store/hooks";
+import Avatar from "@components/Avatar";
 
 const MyPageInfo = () => {
   const [more, setMore] = useState(false);
   const userInfo = useAppSelector((state) => state.currentUser);
-
-  const onToggleMore = () => setMore((prev) => !prev);
+  const onToggleMore = () => {
+    setMore((prev) => !prev);
+  };
 
   return (
     <section className="h-auto w-[50%] mx-auto min-w-[400px] py-5 px-5 overflow-scroll scrollbar-hidden">
       <figure className="flex gap-10 mt-10">
-        <div className="bg-gray-400 rounded-full border-2 w-[12em] h-[12em] overflow-hidden">
-          <img alt="avatar" src={userAvatar} />
+        <div className="overflow-hidden">
+          <Avatar
+            src={userInfo.profileImg}
+            name={userInfo.name}
+            profileSize="w-[12em] h-[12em]"
+            fontSize="5xl"
+          />
         </div>
         <figcaption>
           <h2 className="text-2xl font-semibold">{userInfo.name}</h2>
@@ -43,25 +49,28 @@ const MyPageInfo = () => {
             <>
               <MyFriendCard
                 name={"이름"}
-                image={"image"}
+                image={"default url"}
                 email="test@test.com"
               />
               <MyFriendCard
                 name={"김낭만"}
-                image={"image"}
+                image={"default url"}
                 email="test@test.com"
               />
               <MyFriendCard
                 name={"이름"}
-                image={"image"}
+                image={"default url"}
                 email="test@test.com"
               />
             </>
           ) : (
-            "친구를 추가해주세요."
+            <li>"친구를 추가해주세요."</li>
           )}
 
-          {more && [1, 2, 3, 4].map(() => <MyFriendCard name={"이름"} />)}
+          {more &&
+            [1, 2, 3, 4].map((index) => (
+              <MyFriendCard name={"이름"} key={index + ""} />
+            ))}
         </ul>
       </div>
     </section>
